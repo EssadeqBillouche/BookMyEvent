@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --dir . --max-warnings 0"
-  },
+    "lint": "next lint . --max-warnings 0"  },
   "dependencies": {
     "next": "16.1.6",
     "react": "19.2.3",
