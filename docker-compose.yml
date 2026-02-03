@@ -1,7 +1,9 @@
+version: '3.8'
+
 services:
-  # Database Service
+  # 1. Database Service
   db:
-    image: postgres:15-alphine
+    image: postgres:15-alpine
     container_name: event_db
     restart: always
     environment:
@@ -18,7 +20,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Back-end Service
+  # 2. Back-end Service
   backend:
     build:
       context: ./backend
@@ -26,8 +28,9 @@ services:
     container_name: event_backend
     restart: always
     environment:
+      # We use 'db' as the hostname because Docker links them internally
       DATABASE_URL: postgres://${DB_USER:-admin}:${DB_PASSWORD:-password123}@db:5432/${DB_NAME:-event_manager}
-      JWT_SECRET: ${JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET:-supersecretdevkey}
       PORT: 3000
     ports:
       - "3000:3000"
@@ -35,8 +38,7 @@ services:
       db:
         condition: service_healthy
 
-  # Front-end Service
-
+  # 3. Front-end Service
   frontend:
     build:
       context: ./frontend
@@ -44,11 +46,14 @@ services:
     container_name: event_frontend
     restart: always
     environment:
+      # IMPORTANT: 'localhost' works for browser-side calls. 
+      # For Server-Side Rendering (SSR), you might need an internal URL.
       NEXT_PUBLIC_API_URL: http://localhost:3000
     ports:
       - "3001:3000"
     depends_on:
       - backend
 
+# Persistent storage for your database so data isn't lost when containers stop
 volumes:
   postgres_data:
