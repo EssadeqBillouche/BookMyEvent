@@ -17,6 +17,9 @@ export class UserService {
       email: createUserDto.email,
       password: createUserDto.password,
       role: createUserDto.role || UserRole.PARTICIPANT,
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
+      profilePicture: createUserDto.profilePicture,
     });
     return this.userRepository.save(user);
   }

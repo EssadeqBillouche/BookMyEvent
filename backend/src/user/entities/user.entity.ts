@@ -22,4 +22,13 @@ export class User {
     default: UserRole.PARTICIPANT,
   })
   role: UserRole;
+
+  @Column({ nullable: false })
+  firstName: string;
+
+  @Column({ nullable: false })
+  lastName: string;
+
+  @Column({ nullable: true })
+  profilePicture: string;
 }

@@ -1,7 +1,7 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional } from 'class-validator';
-import { UserRole } from '../entities/user.entity';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsEnum, IsOptional, isString, isNotEmpty } from 'class-validator';
+import { UserRole } from '../../user/entities/user.entity';
 
-export class CreateUserDto {
+export class RegisterDto {
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @IsNotEmpty({ message: 'Email is required' })
   email: string;
@@ -16,14 +16,15 @@ export class CreateUserDto {
   role?: UserRole;
 
   @IsString()
-  @IsNotEmpty({ message: 'First name is required' })
-  firstName: string;
+  @IsNotEmpty({message : 'first name is required'})
+  firstName : string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Last name is required' })
-  lastName: string;
+  @IsNotEmpty({message : 'first name is required'})
+  lastName : string;
 
   @IsString()
-  @IsOptional()
-  profilePicture?: string;
+  @IsNotEmpty({message : 'first name is required'})
+  profilePicture : string;
+
 }

@@ -1,26 +1,111 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { UserService } from '../user/user.service';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { User } from '../user/entities/user.entity';
+
+export interface AuthResponse {
+  access_token: string;
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    firstName: string;
+    lastName: string;
+    profilePicture: string;
+  };
+}
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async register(registerDto: RegisterDto): Promise<AuthResponse> {
+    const { email, firstName, lastName, password, role, profilePicture } = registerDto;
+
+    // Check if user already exists
+    const existingUser = await this.userService.findByEmail(email);
+    if (existingUser) {
+      throw new ConflictException('User with this email already exists');
+    }
+
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create user
+    const user = await this.userService.create({
+      email,
+      password: hashedPassword,
+      role,
+      firstName,
+      lastName,
+      profilePicture,
+    });
+
+    // Generate JWT token
+    return this.generateAuthResponse(user);
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async login(loginDto: LoginDto): Promise<AuthResponse> {
+    const { email, password } = loginDto;
+
+    // Find user with password
+    const user = await this.userService.findByEmailWithPassword(email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid email or password');
+    }
+
+    // Generate JWT token
+    return this.generateAuthResponse(user);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  async validateUser(email: string, password: string): Promise<User | null> {
+    const user = await this.userService.findByEmailWithPassword(email);
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return user;
+    }
+    return null;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  private generateAuthResponse(user: User): AuthResponse {
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePicture: user.profilePicture,
+      },
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async getProfile(userId: string): Promise<Omit<User, 'password'>> {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    // Exclude password and return all other properties
+    const { password, ...rest } = user;
+    return rest;
   }
 }
