@@ -50,6 +50,9 @@ describe('AuthController', () => {
       email: 'newuser@example.com',
       password: 'password123',
       role: UserRole.PARTICIPANT,
+      firstName:"essadeq",
+      lastName:"billouche",
+      profilePicture :"sdkjfkldsjfkljds/ccc"
     };
 
     it('should register a new user successfully', async () => {
@@ -65,6 +68,11 @@ describe('AuthController', () => {
       const registerDtoWithoutRole = {
         email: 'newuser@example.com',
         password: 'password123',
+        firstName:"essadeq",
+      lastName:"billouche",
+            profilePicture :"sdkjfkldsjfkljds/ccc"
+
+
       };
       mockAuthService.register.mockResolvedValue(mockAuthResponse);
 
