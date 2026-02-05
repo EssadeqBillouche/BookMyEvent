@@ -1,3 +1,19 @@
+/**
+ * Login Page
+ * 
+ * User authentication page with email/password login.
+ * Implements HTTP-only cookie-based authentication.
+ * 
+ * Features:
+ * - Email and password input validation
+ * - Password visibility toggle
+ * - Error handling and display
+ * - Loading state during authentication
+ * - Redirect to dashboard on success
+ * 
+ * @page
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -10,24 +26,46 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import ErrorAlert from '@/components/ui/ErrorAlert';
 
+/**
+ * Login Page Component
+ * 
+ * Handles user authentication and redirects to dashboard on success.
+ * 
+ * @returns JSX login page with form
+ */
 export default function LoginPage() {
+  // Form state management
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
   const { login } = useAuth();
   const router = useRouter();
 
+  /**
+   * Handle Login Form Submission
+   * 
+   * Validates and submits login credentials.
+   * On success, redirects to dashboard.
+   * On failure, displays error message.
+   * 
+   * @param e - Form submission event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
+      // Authenticate user (sets HTTP-only cookie)
       await login(email, password);
+      
+      // Redirect to dashboard on success
       router.push('/dashboard');
     } catch (err: any) {
+      // Display user-friendly error message
       setError(err.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
