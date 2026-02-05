@@ -50,17 +50,17 @@ export default function Button({ children, variant = 'primary', loading, disable
    * - outline: Transparent with border
    */
   const variants = {
-    primary: 'text-white hover:shadow-lg',
-    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
-    outline: 'border-2 bg-transparent hover:bg-gray-50',
+    primary: 'text-white hover:shadow-2xl hover:scale-105',
+    secondary: 'text-white/90 hover:bg-white/15',
+    outline: 'border-2 bg-transparent hover:shadow-xl text-white',
   };
 
-  /**
-   * Inline styles for gradient background (primary variant)
-   * Gradient cannot be applied via Tailwind classes
-   */
   const primaryStyle = {
-    background: variant === 'primary' ? 'linear-gradient(to right, #003580, #009fe3)' : undefined,
+    background: variant === 'primary' ? 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)' : 
+                variant === 'secondary' ? 'rgba(255, 255, 255, 0.1)' : undefined,
+    borderColor: variant === 'outline' ? 'rgba(255, 255, 255, 0.3)' : variant === 'primary' ? 'rgba(78, 205, 196, 0.4)' : undefined,
+    backdropFilter: 'blur(20px)',
+    WebkitBackdropFilter: 'blur(20px)',
   };
 
   return (
