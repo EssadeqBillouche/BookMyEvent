@@ -62,6 +62,9 @@ describe('AuthService', () => {
       email: 'newuser@example.com',
       password: 'password123',
       role: UserRole.PARTICIPANT,
+      firstName:"essadeq",
+      lastName:"billouche",
+      profilePicture :"sdkjfkldsjfkljds/ccc"
     };
 
     it('should successfully register a new user', async () => {
@@ -104,6 +107,10 @@ describe('AuthService', () => {
       const registerDtoWithoutRole = {
         email: 'newuser@example.com',
         password: 'password123',
+        firstName:"essadeq",
+      lastName:"billouche",
+      profilePicture :"sdkjfkldsjfkljds/ccc"
+
       };
       const createdUser = { ...mockUser, email: registerDtoWithoutRole.email };
 
@@ -125,6 +132,7 @@ describe('AuthService', () => {
     const loginDto = {
       email: 'test@example.com',
       password: 'password123',
+    
     };
 
     it('should successfully login a user with valid credentials', async () => {

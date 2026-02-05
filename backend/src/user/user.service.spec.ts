@@ -13,6 +13,9 @@ describe('UserService', () => {
     email: 'test@example.com',
     password: 'hashedPassword123',
     role: UserRole.PARTICIPANT,
+    firstName : "essadeq",
+    lastName:"billouche",
+    profilePicture :"sdkjfkldsjfkljds/ccc"
   };
 
   const mockRepository = {
@@ -51,6 +54,9 @@ describe('UserService', () => {
       email: 'newuser@example.com',
       password: 'hashedPassword',
       role: UserRole.PARTICIPANT,
+      firstName : "essadeq",
+    lastName:"billouche",
+    profilePicture :"sdkjfkldsjfkljds/ccc"
     };
 
     it('should create a new user', async () => {
