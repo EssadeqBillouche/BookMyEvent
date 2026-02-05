@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+    <nav className="glass-card sticky top-4 mx-4 z-50 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Brand Logo */}
@@ -59,17 +59,14 @@ export default function Navbar() {
               /* Authenticated User UI */
               <>
                 {/* Welcome Message */}
-                <span className="text-sm text-gray-700">
-                  Welcome, <span className="font-semibold">{user.firstName}</span>
+                <span className="text-sm text-white/70">
+                  Welcome, <span className="font-semibold text-white">{user.firstName}</span>
                 </span>
                 
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors"
-                  style={{ backgroundColor: '#f3f4f6', color: '#7c90a6' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#e5e7eb')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                  className="glass-card flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 text-white hover:shadow-lg"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Logout</span>
@@ -79,15 +76,18 @@ export default function Navbar() {
               /* Guest User UI */
               <>
                 {/* Login Link */}
-                <Link href="/login" className="px-4 py-2 font-medium transition-colors" style={{ color: '#7c90a6' }}>
+                <Link 
+                  href="/login" 
+                  className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10" 
+                >
                   Login
                 </Link>
                 
                 {/* Sign Up Button */}
                 <Link
                   href="/register"
-                  className="px-6 py-2 text-white rounded-lg hover:shadow-lg transition-all duration-200 font-medium"
-                  style={{ background: 'linear-gradient(to right, #003580, #009fe3)' }}
+                  className="glass-card px-6 py-2 text-white rounded-lg transition-all duration-200 font-medium hover:shadow-lg hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.7) 0%, rgba(110, 231, 222, 0.7) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
                 >
                   Sign Up
                 </Link>
