@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { config } from 'process';
+import cookieParser from 'cookie-parser';
 
 
 const morgan = require('morgan')
@@ -22,8 +23,14 @@ async function bootstrap() {
     }),
   );
 
-  // Enable CORS
-  app.enableCors();
+  // Enable cookie parser
+  app.use(cookieParser());
+
+  // Enable CORS with credentials
+  app.enableCors({
+    origin: 'http://localhost:3000', // Frontend URL
+    credentials: true,
+  });
 
   // Enable HTTP request logging with morgan
   app.use(morgan('dev'));

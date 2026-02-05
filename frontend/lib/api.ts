@@ -7,15 +7,7 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
-
-// Add token to requests if it exists
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true, // Enable sending cookies
 });
 
 // Auth API
@@ -34,6 +26,11 @@ export const authAPI = {
 
   login: async (data: { email: string; password: string }) => {
     const response = await api.post('/auth/login', data);
+    return response.data;
+  },
+
+  logout: async () => {
+    const response = await api.post('/auth/logout');
     return response.data;
   },
 
