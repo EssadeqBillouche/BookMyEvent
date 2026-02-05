@@ -54,25 +54,37 @@ export default function Input({ label, icon, error, id, ...props }: InputProps) 
   return (
     <div>
       {/* Accessible Label */}
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
+      <label htmlFor={id} className="block text-sm font-medium mb-2 text-white">
         {label}
       </label>
       
       <div className="relative">
         {/* Leading Icon */}
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50">
           {icon}
         </div>
         
-        {/* Input Field */}
+        {/* Input Field - Glassmorphism */}
         <input
           id={id}
-          className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="glass-card w-full pl-11 pr-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
+          style={{ 
+            background: 'rgba(255, 255, 255, 0.12)',
+            borderColor: error ? 'rgba(78, 205, 196, 0.5)' : 'rgba(255, 255, 255, 0.25)',
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = '#4ecdc4';
+            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
+          }}
+          onBlur={(e) => {
+            if (!error) e.currentTarget.style.borderColor = 'var(--border)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
           {...props}
         />
         
         {/* Error Message */}
-        {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
+        {error && <p className="text-sm mt-1" style={{ color: '#4ecdc4' }}>{error}</p>}
       </div>
     </div>
   );
