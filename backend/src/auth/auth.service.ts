@@ -12,6 +12,9 @@ export interface AuthResponse {
     id: string;
     email: string;
     role: string;
+    firstName: string;
+    lastName: string;
+    profilePicture: string;
   };
 }
 
@@ -23,7 +26,7 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AuthResponse> {
-    const { email, password, role } = registerDto;
+    const { email, firstName, lastName, password, role, profilePicture } = registerDto;
 
     // Check if user already exists
     const existingUser = await this.userService.findByEmail(email);
@@ -40,6 +43,9 @@ export class AuthService {
       email,
       password: hashedPassword,
       role,
+      firstName,
+      lastName,
+      profilePicture,
     });
 
     // Generate JWT token
@@ -86,6 +92,9 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profilePicture: user.profilePicture,
       },
     };
   }
@@ -95,6 +104,8 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
-    return user;
+    // Exclude password and return all other properties
+    const { password, ...rest } = user;
+    return rest;
   }
 }
