@@ -14,4 +14,16 @@ export class CreateUserDto {
   @IsEnum(UserRole, { message: 'Role must be either admin or participant' })
   @IsOptional()
   role?: UserRole;
+
+  @IsString()
+  @IsNotEmpty({ message: 'First name is required' })
+  firstName: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'Last name is required' })
+  lastName: string;
+
+  @IsString()
+  @IsOptional()
+  profilePicture?: string;
 }
