@@ -15,6 +15,7 @@ export class UserController {
   @Post()
   @Roles(UserRole.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
+    // All required properties are validated by DTO
     return this.userService.create(createUserDto);
   }
 
