@@ -55,11 +55,45 @@ export default function Navbar() {
           
           {/* Navigation Actions */}
           <div className="flex items-center space-x-4">
+            {/* Public Events Link - visible to everyone */}
+            <Link
+              href="/events"
+              className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+            >
+              Events
+            </Link>
+
             {user ? (
               /* Authenticated User UI */
               <>
+                {/* Admin Links */}
+                {user.role === 'admin' && (
+                  <>
+                    <Link
+                      href="/admin/dashboard"
+                      className="px-4 py-2 font-medium transition-all rounded-lg text-[#4ecdc4] hover:bg-[#4ecdc4]/10"
+                    >
+                      Admin
+                    </Link>
+                    <Link
+                      href="/admin/events"
+                      className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                    >
+                      Manage Events
+                    </Link>
+                  </>
+                )}
+                
+                {/* Dashboard Link */}
+                <Link
+                  href={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
+                  className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                >
+                  Dashboard
+                </Link>
+                
                 {/* Welcome Message */}
-                <span className="text-sm text-white/70">
+                <span className="text-sm text-white/70 hidden sm:inline">
                   Welcome, <span className="font-semibold text-white">{user.firstName}</span>
                 </span>
                 

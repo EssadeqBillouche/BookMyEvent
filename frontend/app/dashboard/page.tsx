@@ -15,8 +15,13 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (!loading) {
+      if (!user) {
+        router.push('/login');
+      } else if (user.role === 'admin') {
+        // Redirect admins to admin dashboard
+        router.push('/admin/dashboard');
+      }
     }
   }, [user, loading, router]);
 
@@ -36,7 +41,7 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative\">
         <div className="mb-10">
           <h1 className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
-            Welcome back, {user.firstName}! 👋
+            Welcome back, {user.firstName}
           </h1>
           <p className="text-lg text-white/70">Manage your events and profile</p>
         </div>

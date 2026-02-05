@@ -193,3 +193,238 @@ export const userAPI = {
     return response.data;
   },
 };
+
+/**
+ * Event Types
+ */
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  capacity: number;
+  registeredCount: number;
+  status: 'draft' | 'published' | 'cancelled' | 'completed';
+  imageUrl?: string;
+  price: number;
+  isFeatured: boolean;
+  createdById: string;
+  createdBy?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateEventData {
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  capacity: number;
+  status?: 'draft' | 'published';
+  imageUrl?: string;
+  price?: number;
+  isFeatured?: boolean;
+}
+
+export interface UpdateEventData extends Partial<CreateEventData> {}
+
+/**
+ * Event Management API Methods
+ * 
+ * CRUD operations for event management.
+ * Admin-only operations require admin role.
+ */
+export const eventAPI = {
+  /**
+   * Get All Published Events (Public)
+   */
+  getAll: async (): Promise<Event[]> => {
+    const response = await api.get('/events');
+    return response.data;
+  },
+
+  /**
+   * Get All Events for Admin (includes drafts, cancelled)
+   */
+  getAllAdmin: async (): Promise<Event[]> => {
+    const response = await api.get('/events/admin');
+    return response.data;
+  },
+
+  /**
+   * Get Upcoming Events (Public)
+   */
+  getUpcoming: async (limit?: number): Promise<Event[]> => {
+    const response = await api.get('/events/upcoming', { params: { limit } });
+    return response.data;
+  },
+
+  /**
+   * Get Featured Events (Public)
+   */
+  getFeatured: async (): Promise<Event[]> => {
+    const response = await api.get('/events/featured');
+    return response.data;
+  },
+
+  /**
+   * Get Single Event by ID (Public for published events)
+   */
+  getById: async (id: string): Promise<Event> => {
+    const response = await api.get(`/events/${id}`);
+    return response.data;
+  },
+
+  /**
+   * Get Single Event by ID for Admin (includes unpublished)
+   */
+  getByIdAdmin: async (id: string): Promise<Event> => {
+    const response = await api.get(`/events/${id}/admin`);
+    return response.data;
+  },
+
+  /**
+   * Create New Event (Admin only)
+   */
+  create: async (data: CreateEventData): Promise<Event> => {
+    const response = await api.post('/events', data);
+    return response.data;
+  },
+
+  /**
+   * Update Event (Admin only)
+   */
+  update: async (id: string, data: UpdateEventData): Promise<Event> => {
+    const response = await api.patch(`/events/${id}`, data);
+    return response.data;
+  },
+
+  /**
+   * Publish Event (Admin only)
+   */
+  publish: async (id: string): Promise<Event> => {
+    const response = await api.patch(`/events/${id}/publish`);
+    return response.data;
+  },
+
+  /**
+   * Cancel Event (Admin only)
+   */
+  cancel: async (id: string): Promise<Event> => {
+    const response = await api.patch(`/events/${id}/cancel`);
+    return response.data;
+  },
+
+  /**
+   * Delete Event (Admin only)
+   */
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/events/${id}`);
+  },
+};
+
+/**
+ * Registration Types
+ */
+export interface Registration {
+  id: string;
+  userId: string;
+  eventId: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'attended';
+  notes?: string;
+  registeredAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  event: Event;
+}
+
+export interface CreateRegistrationData {
+  eventId: string;
+  notes?: string;
+}
+
+/**
+ * Registration API Methods
+ */
+export const registrationAPI = {
+  /**
+   * Register for an event (Authenticated users)
+   */
+  register: async (data: CreateRegistrationData): Promise<Registration> => {
+    const response = await api.post('/registrations', data);
+    return response.data;
+  },
+
+  /**
+   * Get all registrations (Admin only)
+   */
+  getAll: async (): Promise<Registration[]> => {
+    const response = await api.get('/registrations');
+    return response.data;
+  },
+
+  /**
+   * Get registrations for a specific event (Admin only)
+   */
+  getByEvent: async (eventId: string): Promise<Registration[]> => {
+    const response = await api.get(`/registrations/event/${eventId}`);
+    return response.data;
+  },
+
+  /**
+   * Get my registrations
+   */
+  getMyRegistrations: async (): Promise<Registration[]> => {
+    const response = await api.get('/registrations/my');
+    return response.data;
+  },
+
+  /**
+   * Check if user is registered for an event
+   */
+  checkRegistration: async (eventId: string): Promise<{ isRegistered: boolean }> => {
+    const response = await api.get(`/registrations/check/${eventId}`);
+    return response.data;
+  },
+
+  /**
+   * Get event registration statistics (Admin only)
+   */
+  getEventStats: async (eventId: string): Promise<{
+    total: number;
+    confirmed: number;
+    cancelled: number;
+    attended: number;
+  }> => {
+    const response = await api.get(`/registrations/stats/${eventId}`);
+    return response.data;
+  },
+
+  /**
+   * Cancel my registration
+   */
+  cancel: async (id: string): Promise<Registration> => {
+    const response = await api.patch(`/registrations/${id}/cancel`);
+    return response.data;
+  },
+
+  /**
+   * Delete registration (Admin only)
+   */
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/registrations/${id}`);
+  },
+};

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ import AuthLayout from '@/components/layouts/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import ErrorAlert from '@/components/ui/ErrorAlert';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -22,8 +23,25 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { register, user, loading: authLoading, getRedirectPath } = useAuth();
   const router = useRouter();
+
+  // Redirect authenticated users based on their role
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push(getRedirectPath(user));
+    }
+  }, [user, authLoading, router, getRedirectPath]);
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Don't render form if already authenticated
+  if (user) {
+    return <LoadingSpinner />;
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,14 +64,15 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await register({
+      const newUser = await register({
         email: formData.email,
         password: formData.password,
         firstName: formData.firstName,
         lastName: formData.lastName,
         profilePicture: formData.profilePicture || 'https://ui-avatars.com/api/?name=' + formData.firstName + '+' + formData.lastName,
       });
-      router.push('/dashboard');
+      // New users are participants, redirect to participant dashboard
+      router.push(getRedirectPath(newUser));
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
