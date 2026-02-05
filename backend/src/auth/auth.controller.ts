@@ -6,7 +6,10 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Res,
+  Req,
 } from '@nestjs/common';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -21,15 +24,43 @@ export class AuthController {
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() registerDto: RegisterDto) {
-    return this.authService.register(registerDto);
+  async register(
+    @Body() registerDto: RegisterDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const result = await this.authService.register(registerDto);
+    
+    // Set HTTP-only cookie
+    response.cookie('access_token', result.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 3600000, // 1 hour
+    });
+
+    // Return user data without token
+    return { user: result.user };
   }
 
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const result = await this.authService.login(loginDto);
+    
+    // Set HTTP-only cookie
+    response.cookie('access_token', result.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 3600000, // 1 hour
+    });
+
+    // Return user data without token
+    return { user: result.user };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -42,5 +73,13 @@ export class AuthController {
   @Get('me')
   async getCurrentUser(@CurrentUser() user: any) {
     return user;
+  }
+
+  @Public()
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('access_token');
+    return { message: 'Logged out successfully' };
   }
 }
