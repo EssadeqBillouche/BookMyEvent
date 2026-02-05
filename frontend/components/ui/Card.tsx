@@ -41,7 +41,7 @@ interface CardProps {
  */
 export default function Card({ children, className = '' }: CardProps) {
   return (
-    <div className={`bg-white rounded-2xl shadow-lg p-8 border border-gray-100 ${className}`}>
+    <div className={`glass-card p-8 backdrop-blur-2xl ${className}`} style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
       {children}
     </div>
   );
