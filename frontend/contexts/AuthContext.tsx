@@ -23,7 +23,7 @@ interface AuthContextType {
     lastName: string;
     profilePicture?: string;
   }) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,24 +33,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      authAPI
-        .getCurrentUser()
-        .then((userData) => setUser(userData))
-        .catch(() => {
-          localStorage.removeItem('access_token');
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    // Check if user is logged in on mount by calling /auth/me
+    authAPI
+      .getCurrentUser()
+      .then((userData) => setUser(userData))
+      .catch(() => {
+        setUser(null);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const login = async (email: string, password: string) => {
     const response = await authAPI.login({ email, password });
-    localStorage.setItem('access_token', response.access_token);
     setUser(response.user);
   };
 
@@ -62,12 +56,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     profilePicture?: string;
   }) => {
     const response = await authAPI.register(data);
-    localStorage.setItem('access_token', response.access_token);
     setUser(response.user);
   };
 
-  const logout = () => {
-    localStorage.removeItem('access_token');
+  const logout = async () => {
+    await authAPI.logout();
     setUser(null);
   };
 
