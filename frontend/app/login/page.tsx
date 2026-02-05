@@ -1,3 +1,19 @@
+/**
+ * Login Page
+ * 
+ * User authentication page with email/password login.
+ * Implements HTTP-only cookie-based authentication.
+ * 
+ * Features:
+ * - Email and password input validation
+ * - Password visibility toggle
+ * - Error handling and display
+ * - Loading state during authentication
+ * - Redirect to dashboard on success
+ * 
+ * @page
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -10,24 +26,46 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import ErrorAlert from '@/components/ui/ErrorAlert';
 
+/**
+ * Login Page Component
+ * 
+ * Handles user authentication and redirects to dashboard on success.
+ * 
+ * @returns JSX login page with form
+ */
 export default function LoginPage() {
+  // Form state management
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
   const { login } = useAuth();
   const router = useRouter();
 
+  /**
+   * Handle Login Form Submission
+   * 
+   * Validates and submits login credentials.
+   * On success, redirects to dashboard.
+   * On failure, displays error message.
+   * 
+   * @param e - Form submission event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
+      // Authenticate user (sets HTTP-only cookie)
       await login(email, password);
+      
+      // Redirect to dashboard on success
       router.push('/dashboard');
     } catch (err: any) {
+      // Display user-friendly error message
       setError(err.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
@@ -51,24 +89,35 @@ export default function LoginPage() {
         />
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="block text-sm font-medium mb-2 text-white">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="glass-card w-full pl-11 pr-12 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
+              style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(78, 205, 196, 0.6)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+              }}
               placeholder="••••••••"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors text-white/50 hover:text-white"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -81,9 +130,9 @@ export default function LoginPage() {
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-gray-600">
+        <p className="text-white/70">
           Don't have an account?{' '}
-          <Link href="/register" className="font-semibold" style={{ color: '#003580' }}>
+          <Link href="/register" className="font-semibold hover:underline" style={{ color: '#4ecdc4' }}>
             Sign up
           </Link>
         </p>

@@ -116,25 +116,36 @@ export default function RegisterPage() {
         />
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="block text-sm font-medium mb-2 text-white">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
             <input
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={handleChange}
-              className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="glass-card w-full pl-11 pr-12 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
+              style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(78, 205, 196, 0.6)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+              }}
               placeholder="••••••••"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors text-white/50 hover:text-white"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -142,18 +153,29 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-white">
             Confirm Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
             <input
               id="confirmPassword"
               name="confirmPassword"
               type={showPassword ? 'text' : 'password'}
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full pl-11 pr-12 py-3 border border-gray-300 rounded-lg outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="glass-card w-full pl-11 pr-12 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
+              style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(78, 205, 196, 0.6)';
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
+              }}
               placeholder="••••••••"
               required
             />
@@ -166,9 +188,9 @@ export default function RegisterPage() {
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-gray-600">
+        <p className="text-white/70">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold" style={{ color: '#003580' }}>
+          <Link href="/login" className="font-semibold hover:underline" style={{ color: '#4ecdc4' }}>
             Sign in
           </Link>
         </p>
