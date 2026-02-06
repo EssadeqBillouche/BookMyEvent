@@ -63,23 +63,20 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`glass-card sticky transition-all duration-300 ease-out z-50 
-        ${scrolled ? 'top-0 left-0 w-full mx-0 rounded-none h-20 shadow-lg shadow-black/20' : 'top-4 mx-4 rounded-2xl'}
+      className={`glass-card sticky transition-all duration-300 ease-in-out z-50 
+        ${scrolled ? 'top-0 left-0 w-full mx-0 rounded-lg h-20 shadow-lg shadow-black/20' : 'top-4 mx-4 rounded-2xl'}
       `}
       style={{
-        background: scrolled
-          ? 'rgba(29, 48, 63, 0.98)'
-          : 'rgba(255, 255, 255, 0.1)',
-        borderColor: scrolled
-          ? 'rgba(78, 205, 196, 0.3)'
-          : 'rgba(255, 255, 255, 0.2)',
+        background: 'rgba(29, 48, 63, 0.98)',
+        borderColor: 'rgba(78, 205, 196, 0.3)',
         backdropFilter: 'blur(20px)',
         margin: scrolled ? 0 : undefined,
-        borderRadius: scrolled ? 0 : undefined,
+        borderRadius: scrolled ? '0.75rem' : undefined,
         left: scrolled ? 0 : undefined,
         right: scrolled ? 0 : undefined,
         width: scrolled ? '100vw' : undefined,
         height: scrolled ? '5rem' : undefined,
+        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
       }}
     >
       <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${scrolled ? 'h-20' : ''}`}>
