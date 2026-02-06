@@ -15,6 +15,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -26,12 +27,26 @@ import Logo from './Logo';
  * 
  * Responsive navigation bar with authentication-aware UI.
  * Uses sticky positioning to remain visible during scroll.
+ * Features dynamic opacity that increases on scroll for better visibility.
  * 
  * @returns JSX navigation element
  */
 export default function Navbar() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+
+  /**
+   * Track scroll position to update navbar opacity
+   */
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   /**
    * Handle Logout
@@ -47,7 +62,20 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="glass-card sticky top-4 mx-4 z-50 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+    <nav 
+      className={`glass-card sticky top-4 mx-4 z-50 rounded-2xl transition-all duration-300 ease-out ${
+        scrolled ? 'shadow-lg shadow-black/20' : ''
+      }`} 
+      style={{ 
+        background: scrolled 
+          ? 'rgba(29, 48, 63, 0.95)' 
+          : 'rgba(255, 255, 255, 0.1)', 
+        borderColor: scrolled 
+          ? 'rgba(78, 205, 196, 0.3)' 
+          : 'rgba(255, 255, 255, 0.2)',
+        backdropFilter: 'blur(20px)',
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Brand Logo */}
