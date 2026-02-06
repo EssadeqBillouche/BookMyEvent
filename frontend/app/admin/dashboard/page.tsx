@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { eventAPI, Event } from '@/lib/api';
+import { eventAPI, Event, api } from '@/lib/api';
 import { 
   Calendar, 
   Users, 
@@ -17,7 +17,8 @@ import {
   XCircle,
   FileText,
   Settings,
-  Shield
+  Shield,
+  ClipboardList
 } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
@@ -28,6 +29,7 @@ function AdminDashboardContent() {
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pendingRegistrations, setPendingRegistrations] = useState(0);
   const [stats, setStats] = useState({
     totalEvents: 0,
     publishedEvents: 0,
@@ -40,7 +42,17 @@ function AdminDashboardContent() {
 
   useEffect(() => {
     fetchDashboardData();
+    fetchPendingRegistrations();
   }, []);
+
+  const fetchPendingRegistrations = async () => {
+    try {
+      const response = await api.get('/registrations/pending/all');
+      setPendingRegistrations(response.data.length);
+    } catch (error) {
+      console.error('Failed to fetch pending registrations:', error);
+    }
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -161,6 +173,33 @@ function AdminDashboardContent() {
             <p className="text-sm text-white/60 mt-1">Registrations</p>
           </div>
         </div>
+
+        {/* Pending Registrations Alert */}
+        {pendingRegistrations > 0 && (
+          <Link href="/admin/registrations">
+            <div className="glass-card p-6 rounded-xl mb-8 transition-all duration-300 hover:scale-[1.02] cursor-pointer" 
+              style={{ background: 'rgba(255, 217, 61, 0.15)', borderColor: 'rgba(255, 217, 61, 0.4)' }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-[#ffd93d]/20">
+                    <ClipboardList className="w-8 h-8 text-[#ffd93d]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      {pendingRegistrations} Pending Registration{pendingRegistrations !== 1 ? 's' : ''}
+                    </h3>
+                    <p className="text-white/70">Click to review and approve pending registrations</p>
+                  </div>
+                </div>
+                <div className="hidden sm:block">
+                  <span className="px-4 py-2 rounded-lg font-semibold text-[#ffd93d]" style={{ background: 'rgba(255, 217, 61, 0.2)' }}>
+                    Review Now →
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        )}
 
         {/* Secondary Stats */}
         <div className="grid md:grid-cols-3 gap-4 mb-8">
