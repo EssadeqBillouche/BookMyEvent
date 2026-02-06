@@ -13,9 +13,9 @@ describe('UserService', () => {
     email: 'test@example.com',
     password: 'hashedPassword123',
     role: UserRole.PARTICIPANT,
-    firstName : "essadeq",
-    lastName:"billouche",
-    profilePicture :"sdkjfkldsjfkljds/ccc"
+    firstName: 'essadeq',
+    lastName: 'billouche',
+    profilePicture: 'sdkjfkldsjfkljds/ccc',
   };
 
   const mockRepository = {
@@ -54,9 +54,9 @@ describe('UserService', () => {
       email: 'newuser@example.com',
       password: 'hashedPassword',
       role: UserRole.PARTICIPANT,
-      firstName : "essadeq",
-    lastName:"billouche",
-    profilePicture :"sdkjfkldsjfkljds/ccc"
+      firstName: 'essadeq',
+      lastName: 'billouche',
+      profilePicture: 'sdkjfkldsjfkljds/ccc',
     };
 
     it('should create a new user', async () => {
@@ -69,6 +69,9 @@ describe('UserService', () => {
         email: createUserDto.email,
         password: createUserDto.password,
         role: createUserDto.role,
+        firstName: createUserDto.firstName,
+        lastName: createUserDto.lastName,
+        profilePicture: createUserDto.profilePicture,
       });
       expect(mockRepository.save).toHaveBeenCalledWith(mockUser);
       expect(result).toEqual(mockUser);
@@ -78,6 +81,8 @@ describe('UserService', () => {
       const createUserDtoWithoutRole = {
         email: 'newuser@example.com',
         password: 'hashedPassword',
+        firstName: 'essadeq',
+        lastName: 'billouche',
       };
       mockRepository.create.mockReturnValue(mockUser);
       mockRepository.save.mockResolvedValue(mockUser);
@@ -88,6 +93,9 @@ describe('UserService', () => {
         email: createUserDtoWithoutRole.email,
         password: createUserDtoWithoutRole.password,
         role: UserRole.PARTICIPANT,
+        firstName: createUserDtoWithoutRole.firstName,
+        lastName: createUserDtoWithoutRole.lastName,
+        profilePicture: undefined,
       });
     });
   });
