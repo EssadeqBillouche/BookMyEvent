@@ -41,7 +41,7 @@ export class Registration {
   @Column({
     type: 'enum',
     enum: RegistrationStatus,
-    default: RegistrationStatus.CONFIRMED,
+    default: RegistrationStatus.PENDING,
   })
   status: RegistrationStatus;
 
