@@ -62,22 +62,28 @@ export default function Navbar() {
   };
 
   return (
-    <nav 
-      className={`glass-card sticky top-4 mx-4 z-50 rounded-2xl transition-all duration-300 ease-out ${
-        scrolled ? 'shadow-lg shadow-black/20' : ''
-      }`} 
-      style={{ 
-        background: scrolled 
-          ? 'rgba(29, 48, 63, 0.95)' 
-          : 'rgba(255, 255, 255, 0.1)', 
-        borderColor: scrolled 
-          ? 'rgba(78, 205, 196, 0.3)' 
+    <nav
+      className={`glass-card sticky transition-all duration-300 ease-out z-50 
+        ${scrolled ? 'top-0 left-0 w-full mx-0 rounded-none h-20 shadow-lg shadow-black/20' : 'top-4 mx-4 rounded-2xl'}
+      `}
+      style={{
+        background: scrolled
+          ? 'rgba(29, 48, 63, 0.98)'
+          : 'rgba(255, 255, 255, 0.1)',
+        borderColor: scrolled
+          ? 'rgba(78, 205, 196, 0.3)'
           : 'rgba(255, 255, 255, 0.2)',
         backdropFilter: 'blur(20px)',
+        margin: scrolled ? 0 : undefined,
+        borderRadius: scrolled ? 0 : undefined,
+        left: scrolled ? 0 : undefined,
+        right: scrolled ? 0 : undefined,
+        width: scrolled ? '100vw' : undefined,
+        height: scrolled ? '5rem' : undefined,
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${scrolled ? 'h-20' : ''}`}>
+        <div className={`flex justify-between items-center ${scrolled ? 'h-20' : 'h-16'}`}>
           {/* Brand Logo */}
           <Logo />
           
