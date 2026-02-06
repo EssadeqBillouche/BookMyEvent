@@ -15,6 +15,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -26,12 +27,26 @@ import Logo from './Logo';
  * 
  * Responsive navigation bar with authentication-aware UI.
  * Uses sticky positioning to remain visible during scroll.
+ * Features dynamic opacity that increases on scroll for better visibility.
  * 
  * @returns JSX navigation element
  */
 export default function Navbar() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+
+  /**
+   * Track scroll position to update navbar opacity
+   */
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   /**
    * Handle Logout
@@ -47,19 +62,69 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="glass-card sticky top-4 mx-4 z-50 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav
+      className={`glass-card sticky transition-all duration-300 ease-in-out z-50 
+        ${scrolled ? 'top-0 left-0 w-full mx-0 rounded-lg h-20 shadow-lg shadow-black/20' : 'top-4 mx-4 rounded-2xl'}
+      `}
+      style={{
+        background: 'rgba(29, 48, 63, 0.98)',
+        borderColor: 'rgba(78, 205, 196, 0.3)',
+        backdropFilter: 'blur(20px)',
+        margin: scrolled ? 0 : undefined,
+        borderRadius: scrolled ? '0.75rem' : undefined,
+        left: scrolled ? 0 : undefined,
+        right: scrolled ? 0 : undefined,
+        width: scrolled ? '100vw' : undefined,
+        height: scrolled ? '5rem' : undefined,
+        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
+      }}
+    >
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${scrolled ? 'h-20' : ''}`}>
+        <div className={`flex justify-between items-center ${scrolled ? 'h-20' : 'h-16'}`}>
           {/* Brand Logo */}
           <Logo />
           
           {/* Navigation Actions */}
           <div className="flex items-center space-x-4">
+            {/* Public Events Link - visible to everyone */}
+            <Link
+              href="/events"
+              className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+            >
+              Events
+            </Link>
+
             {user ? (
               /* Authenticated User UI */
               <>
+                {/* Admin Links */}
+                {user.role === 'admin' && (
+                  <>
+                    <Link
+                      href="/admin/dashboard"
+                      className="px-4 py-2 font-medium transition-all rounded-lg text-[#4ecdc4] hover:bg-[#4ecdc4]/10"
+                    >
+                      Admin
+                    </Link>
+                    <Link
+                      href="/admin/events"
+                      className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                    >
+                      Manage Events
+                    </Link>
+                  </>
+                )}
+                
+                {/* Dashboard Link */}
+                <Link
+                  href={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
+                  className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                >
+                  Dashboard
+                </Link>
+                
                 {/* Welcome Message */}
-                <span className="text-sm text-white/70">
+                <span className="text-sm text-white/70 hidden sm:inline">
                   Welcome, <span className="font-semibold text-white">{user.firstName}</span>
                 </span>
                 

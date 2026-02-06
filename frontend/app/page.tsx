@@ -13,58 +13,105 @@ export default function Home() {
     <PageLayout>
       <Navbar />
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
-        <div className="text-center space-y-8">
+      {/* Hero Section - Full Screen */}
+      <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Hero Image */}
+        <div className="absolute inset-0 w-full h-full -z-10">
+          <img
+            src="/hero-family-futuristic.jpg"
+            alt="Futuristic event dashboard background"
+            className="w-full h-full object-cover object-center animate-subtle-zoom"
+            style={{ filter: 'brightness(0.6)' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1d303f]/70 via-[#1d303f]/60 to-[#1d303f]/90" />
+          
+          {/* Animated gradient orbs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#4ecdc4]/20 rounded-full blur-3xl animate-pulse-slow" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#6ee7de]/20 rounded-full blur-3xl animate-pulse-slow-delay" />
+        </div>
+
+        <div className="relative w-full max-w-5xl mx-auto px-6 text-center space-y-10 animate-fade-in-up">
+          {/* Badge */}
           <div className="inline-block">
             
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-2xl">
+          {/* Main Heading */}
+          <h1 className="text-6xl md:text-8xl font-extrabold leading-tight text-white drop-shadow-2xl">
             Organize Events
             <br />
+            <span className="bg-gradient-to-r from-[#4ecdc4] via-[#6ee7de] to-[#4ecdc4] bg-clip-text text-transparent animate-gradient-shift">
               Effortlessly
+            </span>
           </h1>
 
-          <p className="text-xl max-w-2xl mx-auto leading-relaxed text-white/80">
+          {/* Subheading */}
+          <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-white/95 font-light">
             Create, manage, and attend events with ease. Join thousands of event
-            organizers and participants making memorable experiences.
+            organizers and participants making <span className="font-semibold text-[#4ecdc4]">memorable experiences</span>.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-6">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center pt-8">
             {user ? (
               <Link
                 href="/dashboard"
-                className="group glass-card flex items-center space-x-2 px-8 py-4 text-white rounded-xl transition-all duration-300 font-semibold text-lg hover:scale-105 hover:shadow-2xl"
-                style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+                className="group glass-card flex items-center space-x-3 px-10 py-5 text-white rounded-2xl transition-all duration-300 font-bold text-lg hover:scale-105 hover:shadow-2xl hover:shadow-[#4ecdc4]/30"
+                style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.9) 0%, rgba(110, 231, 222, 0.9) 100%)', borderColor: 'rgba(78, 205, 196, 0.5)' }}
               >
                 <span>Go to Dashboard</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
               </Link>
             ) : (
               <>
                 <Link
                   href="/register"
-                  className="group glass-card flex items-center space-x-2 px-8 py-4 text-white rounded-xl transition-all duration-300 font-semibold text-lg hover:scale-105 hover:shadow-2xl"
-                  style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+                  className="group glass-card flex items-center space-x-3 px-10 py-5 text-white rounded-2xl transition-all duration-300 font-bold text-lg hover:scale-105 hover:shadow-2xl hover:shadow-[#4ecdc4]/30"
+                  style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.9) 0%, rgba(110, 231, 222, 0.9) 100%)', borderColor: 'rgba(78, 205, 196, 0.5)' }}
                 >
-                  <span>Get Started</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <span>Get Started Free</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
                 <Link
-                  href="/login"
-                  className="glass-card px-8 py-4 rounded-xl transition-all duration-200 font-semibold text-lg hover:shadow-xl text-white hover:scale-105"
-                  style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                  href="/events"
+                  className="glass-card px-10 py-5 rounded-2xl transition-all duration-300 font-semibold text-lg hover:shadow-xl text-white hover:scale-105 border-2"
+                  style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.3)' }}
                 >
-                  Sign In
+                  Browse Events
                 </Link>
               </>
             )}
           </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-12">
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-[#4ecdc4] mb-2">10K+</div>
+              <div className="text-white/70 text-sm md:text-base">Events Created</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-[#4ecdc4] mb-2">500K+</div>
+              <div className="text-white/70 text-sm md:text-base">Happy Attendees</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-[#4ecdc4] mb-2">99%</div>
+              <div className="text-white/70 text-sm md:text-base">Satisfaction Rate</div>
+            </div>
+          </div>
         </div>
 
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
+            <div className="w-1.5 h-3 rounded-full bg-white/60 animate-scroll-indicator" />
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mt-32">
+        <div className="grid md:grid-cols-3 gap-8">
           <div className="group glass-card p-8 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 group-hover:rotate-6" style={{ background: 'linear-gradient(135deg, rgba(29, 48, 63, 0.9) 0%, rgba(42, 68, 86, 0.9) 100%)', boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)' }}>
               <Calendar className="w-8 h-8 text-white" />

@@ -16,15 +16,16 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import ErrorAlert from '@/components/ui/ErrorAlert';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 /**
  * Login Page Component
@@ -41,14 +42,34 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-  const { login } = useAuth();
+  const { login, user, loading: authLoading, getRedirectPath } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect');
+
+  // Redirect authenticated users based on their role
+  useEffect(() => {
+    if (!authLoading && user) {
+      // If there's a redirect URL, use it; otherwise use role-based redirect
+      router.push(redirectUrl || getRedirectPath(user));
+    }
+  }, [user, authLoading, router, getRedirectPath, redirectUrl]);
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return <LoadingSpinner />;
+  }
+
+  // Don't render form if already authenticated
+  if (user) {
+    return <LoadingSpinner />;
+  }
 
   /**
    * Handle Login Form Submission
    * 
    * Validates and submits login credentials.
-   * On success, redirects to dashboard.
+   * On success, redirects to dashboard or custom redirect URL.
    * On failure, displays error message.
    * 
    * @param e - Form submission event
@@ -60,10 +81,10 @@ export default function LoginPage() {
 
     try {
       // Authenticate user (sets HTTP-only cookie)
-      await login(email, password);
+      const loggedInUser = await login(email, password);
       
-      // Redirect to dashboard on success
-      router.push('/dashboard');
+      // Redirect to custom URL if provided, otherwise role-based redirect
+      router.push(redirectUrl || getRedirectPath(loggedInUser));
     } catch (err: any) {
       // Display user-friendly error message
       setError(err.response?.data?.message || 'Invalid email or password');

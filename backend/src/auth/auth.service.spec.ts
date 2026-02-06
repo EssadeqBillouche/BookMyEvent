@@ -18,6 +18,9 @@ describe('AuthService', () => {
     email: 'test@example.com',
     password: 'hashedPassword123',
     role: UserRole.PARTICIPANT,
+    firstName: 'John',
+    lastName: 'Doe',
+    profilePicture: 'https://example.com/photo.jpg',
   };
 
   const mockUserService = {
@@ -62,9 +65,9 @@ describe('AuthService', () => {
       email: 'newuser@example.com',
       password: 'password123',
       role: UserRole.PARTICIPANT,
-      firstName:"essadeq",
-      lastName:"billouche",
-      profilePicture :"sdkjfkldsjfkljds/ccc"
+      firstName: 'John',
+      lastName: 'Doe',
+      profilePicture: 'https://example.com/photo.jpg',
     };
 
     it('should successfully register a new user', async () => {
@@ -82,6 +85,9 @@ describe('AuthService', () => {
         email: registerDto.email,
         password: 'hashedPassword',
         role: registerDto.role,
+        firstName: registerDto.firstName,
+        lastName: registerDto.lastName,
+        profilePicture: registerDto.profilePicture,
       });
       expect(result).toEqual({
         access_token: 'mock-jwt-token',
@@ -89,6 +95,9 @@ describe('AuthService', () => {
           id: createdUser.id,
           email: createdUser.email,
           role: createdUser.role,
+          firstName: createdUser.firstName,
+          lastName: createdUser.lastName,
+          profilePicture: createdUser.profilePicture,
         },
       });
     });
@@ -107,10 +116,9 @@ describe('AuthService', () => {
       const registerDtoWithoutRole = {
         email: 'newuser@example.com',
         password: 'password123',
-        firstName:"essadeq",
-      lastName:"billouche",
-      profilePicture :"sdkjfkldsjfkljds/ccc"
-
+        firstName: 'John',
+        lastName: 'Doe',
+        profilePicture: 'https://example.com/photo.jpg',
       };
       const createdUser = { ...mockUser, email: registerDtoWithoutRole.email };
 
@@ -124,6 +132,9 @@ describe('AuthService', () => {
         email: registerDtoWithoutRole.email,
         password: 'hashedPassword',
         role: undefined,
+        firstName: registerDtoWithoutRole.firstName,
+        lastName: registerDtoWithoutRole.lastName,
+        profilePicture: registerDtoWithoutRole.profilePicture,
       });
     });
   });
@@ -132,7 +143,6 @@ describe('AuthService', () => {
     const loginDto = {
       email: 'test@example.com',
       password: 'password123',
-    
     };
 
     it('should successfully login a user with valid credentials', async () => {
@@ -159,6 +169,9 @@ describe('AuthService', () => {
           id: mockUser.id,
           email: mockUser.email,
           role: mockUser.role,
+          firstName: mockUser.firstName,
+          lastName: mockUser.lastName,
+          profilePicture: mockUser.profilePicture,
         },
       });
     });

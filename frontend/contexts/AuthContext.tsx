@@ -37,15 +37,16 @@ interface User {
 interface AuthContextType {
   user: User | null;           // Current authenticated user or null
   loading: boolean;             // Initial authentication check in progress
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
   register: (data: {
     email: string;
     password: string;
     firstName: string;
     lastName: string;
     profilePicture?: string;
-  }) => Promise<void>;
+  }) => Promise<User>;
   logout: () => Promise<void>;
+  getRedirectPath: (user: User | null) => string;  // Get appropriate redirect based on role
 }
 
 /**
@@ -109,15 +110,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * @param email - User email address
    * @param password - User password (sent securely over HTTPS)
    * 
+   * @returns The authenticated user
    * @throws {Error} If credentials are invalid
    * 
    * Side Effects:
    * - Updates user state on success
    * - HTTP-only cookie is set by backend
    */
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<User> => {
     const response = await authAPI.login({ email, password });
     setUser(response.user);
+    return response.user;
   };
 
   /**
@@ -128,6 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * 
    * @param data - User registration information
    * 
+   * @returns The newly created user
    * @throws {Error} If registration fails (e.g., email already exists)
    * 
    * Side Effects:
@@ -141,9 +145,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     firstName: string;
     lastName: string;
     profilePicture?: string;
-  }) => {
+  }): Promise<User> => {
     const response = await authAPI.register(data);
     setUser(response.user);
+    return response.user;
   };
 
   /**
@@ -164,8 +169,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  /**
+   * Get Redirect Path Based on User Role
+   * 
+   * Returns the appropriate dashboard path based on user role.
+   * Admins are redirected to admin dashboard, participants to regular dashboard.
+   * 
+   * @param targetUser - User to check role for (can be null)
+   * @returns Appropriate redirect path
+   */
+  const getRedirectPath = (targetUser: User | null): string => {
+    if (!targetUser) return '/login';
+    return targetUser.role === 'admin' ? '/admin/dashboard' : '/dashboard';
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, getRedirectPath }}>
       {children}
     </AuthContext.Provider>
   );
