@@ -117,6 +117,46 @@ export class RegistrationController {
   }
 
   /**
+   * Validate/approve a pending registration (Admin only)
+   * PATCH /registrations/:id/validate
+   */
+  @Patch(':id/validate')
+  @Roles(UserRole.ADMIN)
+  validate(@Param('id', ParseUUIDPipe) id: string) {
+    return this.registrationService.validate(id);
+  }
+
+  /**
+   * Refuse/reject a pending registration (Admin only)
+   * PATCH /registrations/:id/refuse
+   */
+  @Patch(':id/refuse')
+  @Roles(UserRole.ADMIN)
+  refuse(@Param('id', ParseUUIDPipe) id: string) {
+    return this.registrationService.refuse(id);
+  }
+
+  /**
+   * Get all pending registrations (Admin only)
+   * GET /registrations/pending/all
+   */
+  @Get('pending/all')
+  @Roles(UserRole.ADMIN)
+  findAllPending() {
+    return this.registrationService.findAllPending();
+  }
+
+  /**
+   * Get pending registrations for a specific event (Admin only)
+   * GET /registrations/pending/event/:eventId
+   */
+  @Get('pending/event/:eventId')
+  @Roles(UserRole.ADMIN)
+  findPendingByEvent(@Param('eventId', ParseUUIDPipe) eventId: string) {
+    return this.registrationService.findPendingByEvent(eventId);
+  }
+
+  /**
    * Delete registration (Admin only)
    * DELETE /registrations/:id
    */

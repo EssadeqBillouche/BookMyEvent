@@ -56,19 +56,18 @@ export class RegistrationService {
       throw new ConflictException('You are already registered for this event');
     }
 
-    // Create registration
+    // Create registration with PENDING status
     const registration = this.registrationRepository.create({
       userId: user.id,
       eventId,
       notes,
-      status: RegistrationStatus.CONFIRMED,
+      status: RegistrationStatus.PENDING,
     });
 
     // Save registration
     const savedRegistration = await this.registrationRepository.save(registration);
 
-    // Increment event registered count
-    await this.eventRepository.increment({ id: eventId }, 'registeredCount', 1);
+    // Note: registered count will be incremented when admin validates the registration
 
     return this.findOne(savedRegistration.id);
   }
@@ -183,6 +182,7 @@ export class RegistrationService {
    */
   async getEventStats(eventId: string): Promise<{
     total: number;
+    pending: number;
     confirmed: number;
     cancelled: number;
     attended: number;
@@ -193,9 +193,79 @@ export class RegistrationService {
 
     return {
       total: registrations.length,
+      pending: registrations.filter(r => r.status === RegistrationStatus.PENDING).length,
       confirmed: registrations.filter(r => r.status === RegistrationStatus.CONFIRMED).length,
       cancelled: registrations.filter(r => r.status === RegistrationStatus.CANCELLED).length,
       attended: registrations.filter(r => r.status === RegistrationStatus.ATTENDED).length,
     };
+  }
+
+  /**
+   * Validate/approve a pending registration (Admin only)
+   */
+  async validate(id: string): Promise<Registration> {
+    const registration = await this.findOne(id);
+
+    // Check if registration is pending
+    if (registration.status !== RegistrationStatus.PENDING) {
+      throw new BadRequestException('Only pending registrations can be validated');
+    }
+
+    // Check if event still has capacity
+    const event = await this.eventRepository.findOne({ where: { id: registration.eventId } });
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+
+    if (event.registeredCount >= event.capacity) {
+      throw new BadRequestException('Event is at full capacity');
+    }
+
+    // Update status to confirmed
+    registration.status = RegistrationStatus.CONFIRMED;
+    const savedRegistration = await this.registrationRepository.save(registration);
+
+    // Increment event registered count
+    await this.eventRepository.increment({ id: registration.eventId }, 'registeredCount', 1);
+
+    return savedRegistration;
+  }
+
+  /**
+   * Refuse/reject a pending registration (Admin only)
+   */
+  async refuse(id: string): Promise<Registration> {
+    const registration = await this.findOne(id);
+
+    // Check if registration is pending
+    if (registration.status !== RegistrationStatus.PENDING) {
+      throw new BadRequestException('Only pending registrations can be refused');
+    }
+
+    // Update status to cancelled
+    registration.status = RegistrationStatus.CANCELLED;
+    return this.registrationRepository.save(registration);
+  }
+
+  /**
+   * Get all pending registrations (Admin only)
+   */
+  async findAllPending(): Promise<Registration[]> {
+    return this.registrationRepository.find({
+      where: { status: RegistrationStatus.PENDING },
+      relations: ['user', 'event'],
+      order: { registeredAt: 'DESC' },
+    });
+  }
+
+  /**
+   * Get pending registrations for a specific event (Admin only)
+   */
+  async findPendingByEvent(eventId: string): Promise<Registration[]> {
+    return this.registrationRepository.find({
+      where: { eventId, status: RegistrationStatus.PENDING },
+      relations: ['user', 'event'],
+      order: { registeredAt: 'DESC' },
+    });
   }
 }
