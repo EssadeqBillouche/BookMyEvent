@@ -133,7 +133,6 @@ describe('RegistrationService', () => {
         .mockResolvedValueOnce(mockRegistration); // Return after save
       mockRegistrationRepository.create.mockReturnValue(mockRegistration);
       mockRegistrationRepository.save.mockResolvedValue(mockRegistration);
-      mockEventRepository.increment.mockResolvedValue({ affected: 1 });
 
       const result = await service.create(createRegistrationDto, mockUser);
 
@@ -144,13 +143,10 @@ describe('RegistrationService', () => {
         userId: mockUser.id,
         eventId: createRegistrationDto.eventId,
         notes: createRegistrationDto.notes,
-        status: RegistrationStatus.CONFIRMED,
+        status: RegistrationStatus.PENDING,
       });
-      expect(mockEventRepository.increment).toHaveBeenCalledWith(
-        { id: createRegistrationDto.eventId },
-        'registeredCount',
-        1,
-      );
+      // Note: registered count is NOT incremented on create - only when admin validates
+      expect(mockEventRepository.increment).not.toHaveBeenCalled();
       expect(result).toEqual(mockRegistration);
     });
 
@@ -413,6 +409,7 @@ describe('RegistrationService', () => {
       });
       expect(result).toEqual({
         total: 4,
+        pending: 0,
         confirmed: 2,
         cancelled: 1,
         attended: 1,
@@ -426,6 +423,7 @@ describe('RegistrationService', () => {
 
       expect(result).toEqual({
         total: 0,
+        pending: 0,
         confirmed: 0,
         cancelled: 0,
         attended: 0,
