@@ -12,7 +12,6 @@ import {
   IsBoolean,
   MaxLength,
   MinLength,
-  ValidateIf,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { EventStatus } from '../entities/event.entity';

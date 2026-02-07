@@ -14,9 +14,11 @@ export class RolesGuard implements CanActivate {
     ]);
     if (!requiredRoles) return true;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { user } = context.switchToHttp().getRequest();
     if (!user) return false;
     
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     return requiredRoles.includes(user.role);
   }
 }

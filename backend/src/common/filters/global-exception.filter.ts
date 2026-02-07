@@ -38,7 +38,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         message = exceptionResponse;
         error = exception.name;
       } else if (typeof exceptionResponse === 'object') {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const responseObj = exceptionResponse as Record<string, any>;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message = responseObj.message || exception.message;
         error = responseObj.error || exception.name;
       } else {
@@ -73,6 +75,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     };
 
     // Log error details (excluding 404s to reduce noise)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (status !== HttpStatus.NOT_FOUND) {
       this.logger.warn(
         `${request.method} ${request.url} - ${status} - ${JSON.stringify(message)}`,

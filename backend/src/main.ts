@@ -11,11 +11,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
-import { config } from 'process';
 import cookieParser from 'cookie-parser';
-
-// Morgan is used for HTTP request logging in development
-const morgan = require('morgan')
+import morgan from 'morgan';
 
 /**
  * Bootstrap function initializes and configures the NestJS application.
@@ -100,4 +97,4 @@ async function bootstrap() {
 }
 
 // Initialize application
-bootstrap();
+void bootstrap();

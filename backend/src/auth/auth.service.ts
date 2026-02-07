@@ -194,6 +194,7 @@ export class AuthService {
     }
     
     // Destructure to exclude password from response
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = user;
     return rest;
   }

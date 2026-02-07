@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { GlobalExceptionFilter } from './global-exception.filter';
 

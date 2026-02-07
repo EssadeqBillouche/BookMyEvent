@@ -17,7 +17,6 @@ import {
   HttpCode,
   HttpStatus,
   Res,
-  Req,
 } from '@nestjs/common';
 import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
@@ -156,7 +155,7 @@ export class AuthController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getCurrentUser(@CurrentUser() user: any) {
+  getCurrentUser(@CurrentUser() user: any): any {
     return user;
   }
 
@@ -177,7 +176,7 @@ export class AuthController {
   @Public()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@Res({ passthrough: true }) response: Response) {
+  logout(@Res({ passthrough: true }) response: Response): { message: string } {
     response.clearCookie('access_token');
     return { message: 'Logged out successfully' };
   }

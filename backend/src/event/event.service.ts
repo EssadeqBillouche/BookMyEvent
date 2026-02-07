@@ -2,14 +2,13 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event, EventStatus } from './entities/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { User, UserRole } from '../user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class EventService {
@@ -96,6 +95,7 @@ export class EventService {
   /**
    * Update an event (Admin only)
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async update(id: string, updateEventDto: UpdateEventDto, user: User): Promise<Event> {
     const event = await this.findOne(id, true);
 
@@ -136,6 +136,7 @@ export class EventService {
   /**
    * Delete an event (Admin only)
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async remove(id: string, user: User): Promise<void> {
     const event = await this.findOne(id, true);
     
