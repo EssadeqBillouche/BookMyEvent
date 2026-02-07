@@ -28,7 +28,10 @@ export class RegistrationController {
    * POST /registrations
    */
   @Post()
-  create(@Body() createRegistrationDto: CreateRegistrationDto, @CurrentUser() user: User) {
+  create(
+    @Body() createRegistrationDto: CreateRegistrationDto,
+    @CurrentUser() user: User,
+  ) {
     return this.registrationService.create(createRegistrationDto, user);
   }
 
@@ -70,7 +73,10 @@ export class RegistrationController {
     @Param('eventId', ParseUUIDPipe) eventId: string,
     @CurrentUser() user: User,
   ) {
-    const isRegistered = await this.registrationService.isUserRegistered(user.id, eventId);
+    const isRegistered = await this.registrationService.isUserRegistered(
+      user.id,
+      eventId,
+    );
     return { isRegistered };
   }
 

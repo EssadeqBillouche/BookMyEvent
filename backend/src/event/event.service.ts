@@ -48,7 +48,9 @@ export class EventService {
 
     // Filter by status if provided
     if (options?.status) {
-      queryBuilder.andWhere('event.status = :status', { status: options.status });
+      queryBuilder.andWhere('event.status = :status', {
+        status: options.status,
+      });
     }
 
     // For public view, only show published events
@@ -110,16 +112,24 @@ export class EventService {
 
     // Build update data with proper type conversion
     const updateData: Partial<Event> = {};
-    
-    if (updateEventDto.title !== undefined) updateData.title = updateEventDto.title;
-    if (updateEventDto.description !== undefined) updateData.description = updateEventDto.description;
-    if (updateEventDto.location !== undefined) updateData.location = updateEventDto.location;
-    if (updateEventDto.capacity !== undefined) updateData.capacity = updateEventDto.capacity;
-    if (updateEventDto.status !== undefined) updateData.status = updateEventDto.status;
-    if (updateEventDto.imageUrl !== undefined) updateData.imageUrl = updateEventDto.imageUrl;
-    if (updateEventDto.price !== undefined) updateData.price = updateEventDto.price;
-    if (updateEventDto.isFeatured !== undefined) updateData.isFeatured = updateEventDto.isFeatured;
-    
+
+    if (updateEventDto.title !== undefined)
+      updateData.title = updateEventDto.title;
+    if (updateEventDto.description !== undefined)
+      updateData.description = updateEventDto.description;
+    if (updateEventDto.location !== undefined)
+      updateData.location = updateEventDto.location;
+    if (updateEventDto.capacity !== undefined)
+      updateData.capacity = updateEventDto.capacity;
+    if (updateEventDto.status !== undefined)
+      updateData.status = updateEventDto.status;
+    if (updateEventDto.imageUrl !== undefined)
+      updateData.imageUrl = updateEventDto.imageUrl;
+    if (updateEventDto.price !== undefined)
+      updateData.price = updateEventDto.price;
+    if (updateEventDto.isFeatured !== undefined)
+      updateData.isFeatured = updateEventDto.isFeatured;
+
     // Convert date strings to Date objects
     if (updateEventDto.startDate) {
       updateData.startDate = new Date(updateEventDto.startDate);
@@ -137,7 +147,7 @@ export class EventService {
    */
   async remove(id: string): Promise<void> {
     const event = await this.findOne(id, true);
-    
+
     // Prevent deletion of events with registrations
     if (event.registeredCount > 0) {
       throw new BadRequestException(
@@ -160,7 +170,9 @@ export class EventService {
 
     // Validate event is in the future
     if (new Date(event.startDate) <= new Date()) {
-      throw new BadRequestException('Cannot publish an event that has already started');
+      throw new BadRequestException(
+        'Cannot publish an event that has already started',
+      );
     }
 
     event.status = EventStatus.PUBLISHED;

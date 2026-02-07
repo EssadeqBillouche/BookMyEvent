@@ -6,7 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Registration, RegistrationStatus } from './entities/registration.entity';
+import {
+  Registration,
+  RegistrationStatus,
+} from './entities/registration.entity';
 import { CreateRegistrationDto } from './dto/create-registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
 import { User } from '../user/entities/user.entity';
@@ -24,11 +27,16 @@ export class RegistrationService {
   /**
    * Register a user for an event
    */
-  async create(createRegistrationDto: CreateRegistrationDto, user: User): Promise<Registration> {
+  async create(
+    createRegistrationDto: CreateRegistrationDto,
+    user: User,
+  ): Promise<Registration> {
     const { eventId, notes } = createRegistrationDto;
 
     // Find the event
-    const event = await this.eventRepository.findOne({ where: { id: eventId } });
+    const event = await this.eventRepository.findOne({
+      where: { id: eventId },
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -65,7 +73,8 @@ export class RegistrationService {
     });
 
     // Save registration
-    const savedRegistration = await this.registrationRepository.save(registration);
+    const savedRegistration =
+      await this.registrationRepository.save(registration);
 
     // Note: registered count will be incremented when admin validates the registration
 
@@ -131,7 +140,10 @@ export class RegistrationService {
   /**
    * Update registration (Admin only)
    */
-  async update(id: string, updateRegistrationDto: UpdateRegistrationDto): Promise<Registration> {
+  async update(
+    id: string,
+    updateRegistrationDto: UpdateRegistrationDto,
+  ): Promise<Registration> {
     const registration = await this.findOne(id);
     Object.assign(registration, updateRegistrationDto);
     return this.registrationRepository.save(registration);
@@ -145,7 +157,9 @@ export class RegistrationService {
 
     // Check if registration belongs to user
     if (registration.userId !== user.id) {
-      throw new BadRequestException('You can only cancel your own registrations');
+      throw new BadRequestException(
+        'You can only cancel your own registrations',
+      );
     }
 
     // Check if already cancelled
@@ -155,10 +169,15 @@ export class RegistrationService {
 
     // Update status
     registration.status = RegistrationStatus.CANCELLED;
-    const savedRegistration = await this.registrationRepository.save(registration);
+    const savedRegistration =
+      await this.registrationRepository.save(registration);
 
     // Decrement event registered count
-    await this.eventRepository.decrement({ id: registration.eventId }, 'registeredCount', 1);
+    await this.eventRepository.decrement(
+      { id: registration.eventId },
+      'registeredCount',
+      1,
+    );
 
     return savedRegistration;
   }
@@ -168,10 +187,14 @@ export class RegistrationService {
    */
   async remove(id: string): Promise<void> {
     const registration = await this.findOne(id);
-    
+
     // Decrement count if registration was confirmed
     if (registration.status === RegistrationStatus.CONFIRMED) {
-      await this.eventRepository.decrement({ id: registration.eventId }, 'registeredCount', 1);
+      await this.eventRepository.decrement(
+        { id: registration.eventId },
+        'registeredCount',
+        1,
+      );
     }
 
     await this.registrationRepository.delete(id);
@@ -193,10 +216,18 @@ export class RegistrationService {
 
     return {
       total: registrations.length,
-      pending: registrations.filter(r => r.status === RegistrationStatus.PENDING).length,
-      confirmed: registrations.filter(r => r.status === RegistrationStatus.CONFIRMED).length,
-      cancelled: registrations.filter(r => r.status === RegistrationStatus.CANCELLED).length,
-      attended: registrations.filter(r => r.status === RegistrationStatus.ATTENDED).length,
+      pending: registrations.filter(
+        (r) => r.status === RegistrationStatus.PENDING,
+      ).length,
+      confirmed: registrations.filter(
+        (r) => r.status === RegistrationStatus.CONFIRMED,
+      ).length,
+      cancelled: registrations.filter(
+        (r) => r.status === RegistrationStatus.CANCELLED,
+      ).length,
+      attended: registrations.filter(
+        (r) => r.status === RegistrationStatus.ATTENDED,
+      ).length,
     };
   }
 
@@ -208,11 +239,15 @@ export class RegistrationService {
 
     // Check if registration is pending
     if (registration.status !== RegistrationStatus.PENDING) {
-      throw new BadRequestException('Only pending registrations can be validated');
+      throw new BadRequestException(
+        'Only pending registrations can be validated',
+      );
     }
 
     // Check if event still has capacity
-    const event = await this.eventRepository.findOne({ where: { id: registration.eventId } });
+    const event = await this.eventRepository.findOne({
+      where: { id: registration.eventId },
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -223,10 +258,15 @@ export class RegistrationService {
 
     // Update status to confirmed
     registration.status = RegistrationStatus.CONFIRMED;
-    const savedRegistration = await this.registrationRepository.save(registration);
+    const savedRegistration =
+      await this.registrationRepository.save(registration);
 
     // Increment event registered count
-    await this.eventRepository.increment({ id: registration.eventId }, 'registeredCount', 1);
+    await this.eventRepository.increment(
+      { id: registration.eventId },
+      'registeredCount',
+      1,
+    );
 
     return savedRegistration;
   }
@@ -239,7 +279,9 @@ export class RegistrationService {
 
     // Check if registration is pending
     if (registration.status !== RegistrationStatus.PENDING) {
-      throw new BadRequestException('Only pending registrations can be refused');
+      throw new BadRequestException(
+        'Only pending registrations can be refused',
+      );
     }
 
     // Update status to cancelled

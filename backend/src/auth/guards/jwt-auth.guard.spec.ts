@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -51,10 +50,10 @@ describe('JwtAuthGuard', () => {
 
       const result = guard.canActivate(mockExecutionContext);
 
-      expect(mockReflector.getAllAndOverride).toHaveBeenCalledWith(IS_PUBLIC_KEY, [
-        mockExecutionContext.getHandler(),
-        mockExecutionContext.getClass(),
-      ]);
+      expect(mockReflector.getAllAndOverride).toHaveBeenCalledWith(
+        IS_PUBLIC_KEY,
+        [mockExecutionContext.getHandler(), mockExecutionContext.getClass()],
+      );
       expect(result).toBe(true);
     });
   });

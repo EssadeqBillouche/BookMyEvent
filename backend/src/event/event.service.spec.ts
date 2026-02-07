@@ -173,7 +173,10 @@ describe('EventService', () => {
       };
       mockRepository.createQueryBuilder.mockReturnValue(queryBuilder);
 
-      await service.findAll({ status: EventStatus.DRAFT, includePrivate: true });
+      await service.findAll({
+        status: EventStatus.DRAFT,
+        includePrivate: true,
+      });
 
       expect(queryBuilder.andWhere).toHaveBeenCalledWith(
         'event.status = :status',
@@ -251,7 +254,11 @@ describe('EventService', () => {
         .mockResolvedValueOnce(existingEvent)
         .mockResolvedValueOnce(updatedEvent);
 
-      const result = await service.update(mockEvent.id, updateEventDto, mockUser);
+      const result = await service.update(
+        mockEvent.id,
+        updateEventDto,
+        mockUser,
+      );
 
       expect(mockRepository.update).toHaveBeenCalled();
     });
@@ -370,9 +377,12 @@ describe('EventService', () => {
 
       const result = await service.findUpcoming(10);
 
-      expect(queryBuilder.where).toHaveBeenCalledWith('event.status = :status', {
-        status: EventStatus.PUBLISHED,
-      });
+      expect(queryBuilder.where).toHaveBeenCalledWith(
+        'event.status = :status',
+        {
+          status: EventStatus.PUBLISHED,
+        },
+      );
       expect(queryBuilder.limit).toHaveBeenCalledWith(10);
       expect(result).toEqual([upcomingEvent]);
     });

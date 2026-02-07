@@ -8,7 +8,10 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { RegistrationService } from './registration.service';
-import { Registration, RegistrationStatus } from './entities/registration.entity';
+import {
+  Registration,
+  RegistrationStatus,
+} from './entities/registration.entity';
 import { Event, EventStatus } from '../event/entities/event.entity';
 import { User, UserRole } from '../user/entities/user.entity';
 
@@ -339,7 +342,9 @@ describe('RegistrationService', () => {
         ...mockRegistration,
         status: RegistrationStatus.CANCELLED,
       };
-      mockRegistrationRepository.findOne.mockResolvedValue(cancelledRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        cancelledRegistration,
+      );
 
       await expect(
         service.cancel(mockRegistration.id, mockUser),
@@ -354,7 +359,9 @@ describe('RegistrationService', () => {
         status: RegistrationStatus.CONFIRMED,
       };
       // findOne is called internally which uses findOne with relations
-      mockRegistrationRepository.findOne.mockResolvedValue(confirmedRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        confirmedRegistration,
+      );
       mockRegistrationRepository.delete.mockResolvedValue({ affected: 1 });
       mockEventRepository.decrement.mockResolvedValue({ affected: 1 });
 
@@ -375,7 +382,9 @@ describe('RegistrationService', () => {
         ...mockRegistration,
         status: RegistrationStatus.CANCELLED,
       };
-      mockRegistrationRepository.findOne.mockResolvedValue(cancelledRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        cancelledRegistration,
+      );
       mockRegistrationRepository.delete.mockResolvedValue({ affected: 1 });
 
       await service.remove(cancelledRegistration.id);

@@ -132,7 +132,10 @@ describe('GlobalExceptionFilter', () => {
     });
 
     it('should handle unauthorized exception', () => {
-      const exception = new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      const exception = new HttpException(
+        'Unauthorized',
+        HttpStatus.UNAUTHORIZED,
+      );
 
       filter.catch(exception, mockArgumentsHost);
 
