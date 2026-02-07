@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,7 +8,10 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { RegistrationService } from './registration.service';
-import { Registration, RegistrationStatus } from './entities/registration.entity';
+import {
+  Registration,
+  RegistrationStatus,
+} from './entities/registration.entity';
 import { Event, EventStatus } from '../event/entities/event.entity';
 import { User, UserRole } from '../user/entities/user.entity';
 
@@ -129,7 +133,6 @@ describe('RegistrationService', () => {
         .mockResolvedValueOnce(mockRegistration); // Return after save
       mockRegistrationRepository.create.mockReturnValue(mockRegistration);
       mockRegistrationRepository.save.mockResolvedValue(mockRegistration);
-      mockEventRepository.increment.mockResolvedValue({ affected: 1 });
 
       const result = await service.create(createRegistrationDto, mockUser);
 
@@ -140,13 +143,10 @@ describe('RegistrationService', () => {
         userId: mockUser.id,
         eventId: createRegistrationDto.eventId,
         notes: createRegistrationDto.notes,
-        status: RegistrationStatus.CONFIRMED,
+        status: RegistrationStatus.PENDING,
       });
-      expect(mockEventRepository.increment).toHaveBeenCalledWith(
-        { id: createRegistrationDto.eventId },
-        'registeredCount',
-        1,
-      );
+      // Note: registered count is NOT incremented on create - only when admin validates
+      expect(mockEventRepository.increment).not.toHaveBeenCalled();
       expect(result).toEqual(mockRegistration);
     });
 
@@ -338,7 +338,9 @@ describe('RegistrationService', () => {
         ...mockRegistration,
         status: RegistrationStatus.CANCELLED,
       };
-      mockRegistrationRepository.findOne.mockResolvedValue(cancelledRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        cancelledRegistration,
+      );
 
       await expect(
         service.cancel(mockRegistration.id, mockUser),
@@ -353,7 +355,9 @@ describe('RegistrationService', () => {
         status: RegistrationStatus.CONFIRMED,
       };
       // findOne is called internally which uses findOne with relations
-      mockRegistrationRepository.findOne.mockResolvedValue(confirmedRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        confirmedRegistration,
+      );
       mockRegistrationRepository.delete.mockResolvedValue({ affected: 1 });
       mockEventRepository.decrement.mockResolvedValue({ affected: 1 });
 
@@ -374,7 +378,9 @@ describe('RegistrationService', () => {
         ...mockRegistration,
         status: RegistrationStatus.CANCELLED,
       };
-      mockRegistrationRepository.findOne.mockResolvedValue(cancelledRegistration);
+      mockRegistrationRepository.findOne.mockResolvedValue(
+        cancelledRegistration,
+      );
       mockRegistrationRepository.delete.mockResolvedValue({ affected: 1 });
 
       await service.remove(cancelledRegistration.id);
@@ -403,6 +409,7 @@ describe('RegistrationService', () => {
       });
       expect(result).toEqual({
         total: 4,
+        pending: 0,
         confirmed: 2,
         cancelled: 1,
         attended: 1,
@@ -416,6 +423,7 @@ describe('RegistrationService', () => {
 
       expect(result).toEqual({
         total: 0,
+        pending: 0,
         confirmed: 0,
         cancelled: 0,
         attended: 0,

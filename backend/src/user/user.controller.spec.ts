@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -13,10 +14,9 @@ describe('UserController', () => {
     email: 'test@example.com',
     password: 'hashedPassword123',
     role: UserRole.PARTICIPANT,
-    firstName : "essadeq",
-    lastName:"billouche",
-    profilePicture :"sdkjfkldsjfkljds/ccc"
-
+    firstName: 'essadeq',
+    lastName: 'billouche',
+    profilePicture: 'sdkjfkldsjfkljds/ccc',
   };
 
   const mockUserService = {
@@ -54,9 +54,9 @@ describe('UserController', () => {
       email: 'newuser@example.com',
       password: 'password123',
       role: UserRole.PARTICIPANT,
-      firstName : "essadeq",
-      lastName:"billouche",
-      profilePicture :"sdkjfkldsjfkljds/ccc"
+      firstName: 'essadeq',
+      lastName: 'billouche',
+      profilePicture: 'sdkjfkldsjfkljds/ccc',
     };
 
     it('should create a new user', async () => {
@@ -111,7 +111,10 @@ describe('UserController', () => {
 
       const result = await controller.update(mockUser.id, updateUserDto);
 
-      expect(userService.update).toHaveBeenCalledWith(mockUser.id, updateUserDto);
+      expect(userService.update).toHaveBeenCalledWith(
+        mockUser.id,
+        updateUserDto,
+      );
       expect(result).toEqual(updatedUser);
     });
   });

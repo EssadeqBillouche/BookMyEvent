@@ -10,14 +10,14 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [ 
-            UserModule,
-            AuthModule,
-            EventModule,
-            RegistrationModule,
-            ConfigModule.forRoot({isGlobal : true}),
-            TypeOrmModule.forRootAsync(typeOrmConfig)
-          ],
+  imports: [
+    UserModule,
+    AuthModule,
+    EventModule,
+    RegistrationModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync(typeOrmConfig),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -22,13 +22,19 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
    * Override startDate with optional validation
    */
   @IsOptional()
-  @IsDateString({}, { message: 'Start date must be a valid ISO 8601 date string' })
+  @IsDateString(
+    {},
+    { message: 'Start date must be a valid ISO 8601 date string' },
+  )
   startDate?: string;
 
   /**
    * Override endDate with optional validation
    */
   @IsOptional()
-  @IsDateString({}, { message: 'End date must be a valid ISO 8601 date string' })
+  @IsDateString(
+    {},
+    { message: 'End date must be a valid ISO 8601 date string' },
+  )
   endDate?: string;
 }

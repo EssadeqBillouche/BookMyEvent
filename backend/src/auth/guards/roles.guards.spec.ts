@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -54,7 +55,9 @@ describe('RolesGuard', () => {
     it('should return true when user has required role', () => {
       const user = { id: '1', email: 'admin@test.com', role: UserRole.ADMIN };
       mockReflector.getAllAndOverride.mockReturnValue([UserRole.ADMIN]);
-      (mockExecutionContext.switchToHttp().getRequest as jest.Mock).mockReturnValue({
+      (
+        mockExecutionContext.switchToHttp().getRequest as jest.Mock
+      ).mockReturnValue({
         user,
       });
 
@@ -64,9 +67,15 @@ describe('RolesGuard', () => {
     });
 
     it('should return false when user does not have required role', () => {
-      const user = { id: '1', email: 'user@test.com', role: UserRole.PARTICIPANT };
+      const user = {
+        id: '1',
+        email: 'user@test.com',
+        role: UserRole.PARTICIPANT,
+      };
       mockReflector.getAllAndOverride.mockReturnValue([UserRole.ADMIN]);
-      (mockExecutionContext.switchToHttp().getRequest as jest.Mock).mockReturnValue({
+      (
+        mockExecutionContext.switchToHttp().getRequest as jest.Mock
+      ).mockReturnValue({
         user,
       });
 
@@ -77,7 +86,9 @@ describe('RolesGuard', () => {
 
     it('should return false when user is not present', () => {
       mockReflector.getAllAndOverride.mockReturnValue([UserRole.ADMIN]);
-      (mockExecutionContext.switchToHttp().getRequest as jest.Mock).mockReturnValue({});
+      (
+        mockExecutionContext.switchToHttp().getRequest as jest.Mock
+      ).mockReturnValue({});
 
       const result = guard.canActivate(mockExecutionContext);
 
@@ -90,7 +101,9 @@ describe('RolesGuard', () => {
         UserRole.ADMIN,
         UserRole.PARTICIPANT,
       ]);
-      (mockExecutionContext.switchToHttp().getRequest as jest.Mock).mockReturnValue({
+      (
+        mockExecutionContext.switchToHttp().getRequest as jest.Mock
+      ).mockReturnValue({
         user,
       });
 

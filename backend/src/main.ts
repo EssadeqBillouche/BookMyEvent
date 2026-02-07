@@ -1,9 +1,9 @@
 /**
  * Application Bootstrap
- * 
+ *
  * Entry point for the NestJS application. Configures middleware, security,
  * validation, and global error handling before starting the HTTP server.
- * 
+ *
  * @module main
  */
 
@@ -11,22 +11,19 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
-import { config } from 'process';
 import cookieParser from 'cookie-parser';
-
-// Morgan is used for HTTP request logging in development
-const morgan = require('morgan')
+import morgan from 'morgan';
 
 /**
  * Bootstrap function initializes and configures the NestJS application.
- * 
+ *
  * Configuration includes:
  * - Global exception handling for consistent error responses
  * - Input validation and sanitization
  * - Cookie parsing for HTTP-only authentication
  * - CORS configuration for cross-origin requests
  * - HTTP request logging for debugging
- * 
+ *
  * @async
  * @throws {Error} If application fails to start or port is already in use
  */
@@ -43,7 +40,7 @@ async function bootstrap() {
   /**
    * Global Validation Pipe
    * Automatically validates incoming requests against DTO class-validator decorators.
-   * 
+   *
    * Options:
    * - whitelist: Strip properties not defined in DTO
    * - forbidNonWhitelisted: Throw error if extra properties are sent
@@ -67,11 +64,11 @@ async function bootstrap() {
   /**
    * CORS Configuration
    * Enables Cross-Origin Resource Sharing for frontend communication.
-   * 
+   *
    * Security considerations:
    * - origin: Only allow requests from trusted frontend domain
    * - credentials: Required for sending/receiving HTTP-only cookies
-   * 
+   *
    * @security In production, replace with actual frontend domain
    */
   app.enableCors({
@@ -83,7 +80,7 @@ async function bootstrap() {
    * HTTP Request Logger
    * Logs all incoming HTTP requests in development format.
    * Useful for debugging and monitoring API usage.
-   * 
+   *
    * @development Only recommended for development/staging environments
    */
   app.use(morgan('dev'));
@@ -91,7 +88,7 @@ async function bootstrap() {
   /**
    * Start HTTP Server
    * Binds application to port 4000 and begins listening for requests.
-   * 
+   *
    * @constant {number} PORT - Server port (should be moved to environment variable)
    */
   await app.listen(4000, () => {
@@ -100,4 +97,4 @@ async function bootstrap() {
 }
 
 // Initialize application
-bootstrap();
+void bootstrap();

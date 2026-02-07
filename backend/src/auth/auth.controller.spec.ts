@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -91,7 +93,10 @@ describe('AuthController', () => {
       };
       mockAuthService.register.mockResolvedValue(mockAuthResponse);
 
-      const result = await controller.register(registerDtoWithoutRole, mockResponse);
+      const result = await controller.register(
+        registerDtoWithoutRole,
+        mockResponse,
+      );
 
       expect(authService.register).toHaveBeenCalledWith(registerDtoWithoutRole);
       expect(result).toEqual({ user: mockUser });

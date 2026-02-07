@@ -12,7 +12,6 @@ import {
   IsBoolean,
   MaxLength,
   MinLength,
-  ValidateIf,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { EventStatus } from '../entities/event.entity';
@@ -36,14 +35,20 @@ export class CreateEventDto {
   /**
    * Event start date - must be a valid date in the future
    */
-  @IsDateString({}, { message: 'Start date must be a valid ISO 8601 date string' })
+  @IsDateString(
+    {},
+    { message: 'Start date must be a valid ISO 8601 date string' },
+  )
   @IsNotEmpty({ message: 'Start date is required' })
   startDate: string;
 
   /**
    * Event end date - must be a valid date and after start date
    */
-  @IsDateString({}, { message: 'End date must be a valid ISO 8601 date string' })
+  @IsDateString(
+    {},
+    { message: 'End date must be a valid ISO 8601 date string' },
+  )
   @IsNotEmpty({ message: 'End date is required' })
   endDate: string;
 

@@ -16,7 +16,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -28,13 +28,12 @@ import ErrorAlert from '@/components/ui/ErrorAlert';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 /**
- * Login Page Component
+ * Login Form Component
  * 
- * Handles user authentication and redirects to dashboard on success.
- * 
- * @returns JSX login page with form
+ * Internal component that uses useSearchParams.
+ * Wrapped in Suspense boundary by parent component.
  */
-export default function LoginPage() {
+function LoginForm() {
   // Form state management
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,9 +84,10 @@ export default function LoginPage() {
       
       // Redirect to custom URL if provided, otherwise role-based redirect
       router.push(redirectUrl || getRedirectPath(loggedInUser));
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
       // Display user-friendly error message
-      setError(err.response?.data?.message || 'Invalid email or password');
+      setError(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -152,12 +152,27 @@ export default function LoginPage() {
 
       <div className="mt-6 text-center">
         <p className="text-white/70">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="font-semibold hover:underline" style={{ color: '#4ecdc4' }}>
             Sign up
           </Link>
         </p>
       </div>
     </AuthLayout>
+  );
+}
+
+/**
+ * Login Page Component
+ * 
+ * Wraps LoginForm in Suspense boundary for useSearchParams support.
+ * 
+ * @returns JSX login page with form wrapped in Suspense
+ */
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <LoginForm />
+    </Suspense>
   );
 }

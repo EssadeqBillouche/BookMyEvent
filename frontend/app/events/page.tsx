@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { eventAPI, Event } from '@/lib/api';
-import { Calendar, MapPin, Users, Search, Filter, DollarSign, Star } from 'lucide-react';
+import { Calendar, MapPin, Users, Search, Filter, Star } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
+import Image from 'next/image';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function EventsPage() {
@@ -23,13 +24,14 @@ export default function EventsPage() {
 
   useEffect(() => {
     filterAndSortEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, searchTerm, priceFilter, sortBy]);
 
   const fetchEvents = async () => {
     try {
       const data = await eventAPI.getAll();
       setEvents(data);
-    } catch (err: any) {
+    } catch {
       setError('Failed to load events');
     } finally {
       setLoading(false);
@@ -188,10 +190,12 @@ export default function EventsPage() {
                   {/* Event Image */}
                   <div className="relative h-48 overflow-hidden">
                     {event.imageUrl ? (
-                      <img
+                      <Image
                         src={event.imageUrl}
                         alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        unoptimized
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-[#4ecdc4]/30 to-[#6ee7de]/30 flex items-center justify-center">

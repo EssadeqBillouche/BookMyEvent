@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
@@ -72,14 +74,16 @@ describe('AuthService', () => {
 
     it('should successfully register a new user', async () => {
       const createdUser = { ...mockUser, email: registerDto.email };
-      
+
       mockUserService.findByEmail.mockResolvedValue(null);
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
       mockUserService.create.mockResolvedValue(createdUser);
 
       const result = await authService.register(registerDto);
 
-      expect(mockUserService.findByEmail).toHaveBeenCalledWith(registerDto.email);
+      expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+        registerDto.email,
+      );
       expect(bcrypt.hash).toHaveBeenCalledWith(registerDto.password, 10);
       expect(mockUserService.create).toHaveBeenCalledWith({
         email: registerDto.email,
@@ -108,7 +112,9 @@ describe('AuthService', () => {
       await expect(authService.register(registerDto)).rejects.toThrow(
         ConflictException,
       );
-      expect(mockUserService.findByEmail).toHaveBeenCalledWith(registerDto.email);
+      expect(mockUserService.findByEmail).toHaveBeenCalledWith(
+        registerDto.email,
+      );
       expect(mockUserService.create).not.toHaveBeenCalled();
     });
 

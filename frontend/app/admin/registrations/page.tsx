@@ -46,6 +46,7 @@ export default function AdminRegistrationsPage() {
     if (user?.role === 'admin') {
       fetchRegistrations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, filter]);
 
   const fetchRegistrations = async () => {
@@ -63,8 +64,9 @@ export default function AdminRegistrationsPage() {
       }
       
       setRegistrations(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch registrations');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to fetch registrations');
     } finally {
       setLoading(false);
     }
@@ -75,8 +77,9 @@ export default function AdminRegistrationsPage() {
       setProcessingId(id);
       await api.patch(`/registrations/${id}/validate`);
       await fetchRegistrations();
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to validate registration');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      alert(error.response?.data?.message || 'Failed to validate registration');
     } finally {
       setProcessingId(null);
     }
@@ -89,8 +92,9 @@ export default function AdminRegistrationsPage() {
       setProcessingId(id);
       await api.patch(`/registrations/${id}/refuse`);
       await fetchRegistrations();
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to refuse registration');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      alert(error.response?.data?.message || 'Failed to refuse registration');
     } finally {
       setProcessingId(null);
     }

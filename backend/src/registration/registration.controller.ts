@@ -16,7 +16,6 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guards';
 import { Roles } from '../auth/decorators/roles.decorators';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { Public } from '../auth/decorators/public.decorator';
 import { User, UserRole } from '../user/entities/user.entity';
 
 @Controller('registrations')
@@ -29,7 +28,10 @@ export class RegistrationController {
    * POST /registrations
    */
   @Post()
-  create(@Body() createRegistrationDto: CreateRegistrationDto, @CurrentUser() user: User) {
+  create(
+    @Body() createRegistrationDto: CreateRegistrationDto,
+    @CurrentUser() user: User,
+  ) {
     return this.registrationService.create(createRegistrationDto, user);
   }
 
@@ -71,7 +73,10 @@ export class RegistrationController {
     @Param('eventId', ParseUUIDPipe) eventId: string,
     @CurrentUser() user: User,
   ) {
-    const isRegistered = await this.registrationService.isUserRegistered(user.id, eventId);
+    const isRegistered = await this.registrationService.isUserRegistered(
+      user.id,
+      eventId,
+    );
     return { isRegistered };
   }
 

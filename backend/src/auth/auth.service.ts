@@ -1,14 +1,18 @@
 /**
  * Authentication Service
- * 
+ *
  * Core business logic for user authentication including registration, login,
  * and profile management. Handles password hashing, JWT token generation,
  * and user validation.
- * 
+ *
  * @module AuthService
  */
 
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
@@ -18,7 +22,7 @@ import { User } from '../user/entities/user.entity';
 
 /**
  * Authentication Response Interface
- * 
+ *
  * Defines the structure of successful authentication responses.
  * Contains JWT token and sanitized user data (password excluded).
  */
@@ -47,21 +51,22 @@ export class AuthService {
 
   /**
    * Register New User
-   * 
+   *
    * Creates a new user account with hashed password and generates
    * authentication token for immediate login.
-   * 
+   *
    * @param registerDto - User registration data (email, password, name, etc.)
    * @returns Authentication response with token and user data
-   * 
+   *
    * @throws {ConflictException} If email is already registered
-   * 
+   *
    * Security:
    * - Passwords are hashed using bcrypt with 10 salt rounds
    * - Email uniqueness is enforced at database level
    */
   async register(registerDto: RegisterDto): Promise<AuthResponse> {
-    const { email, firstName, lastName, password, role, profilePicture } = registerDto;
+    const { email, firstName, lastName, password, role, profilePicture } =
+      registerDto;
 
     // Verify email availability to prevent duplicate accounts
     const existingUser = await this.userService.findByEmail(email);
@@ -89,14 +94,14 @@ export class AuthService {
 
   /**
    * Authenticate User (Login)
-   * 
+   *
    * Validates user credentials and generates JWT token for authenticated session.
-   * 
+   *
    * @param loginDto - Login credentials (email and password)
    * @returns Authentication response with token and user data
-   * 
+   *
    * @throws {UnauthorizedException} If credentials are invalid
-   * 
+   *
    * Security:
    * - Generic error message prevents email enumeration attacks
    * - Password comparison uses bcrypt timing-safe comparison
@@ -123,13 +128,13 @@ export class AuthService {
 
   /**
    * Validate User Credentials
-   * 
+   *
    * Internal method used by Passport strategies to validate user credentials.
-   * 
+   *
    * @param email - User email address
    * @param password - Plain text password
    * @returns User object if valid, null otherwise
-   * 
+   *
    * @internal Used by passport-local strategy
    */
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -142,25 +147,25 @@ export class AuthService {
 
   /**
    * Generate Authentication Response
-   * 
+   *
    * Private helper method to create JWT token and format authentication response.
-   * 
+   *
    * @param user - Authenticated user entity
    * @returns Formatted auth response with token and user data
-   * 
+   *
    * JWT Payload contains:
    * - sub: User ID (subject)
    * - email: User email
    * - role: User role for authorization
-   * 
+   *
    * @private
    */
   private generateAuthResponse(user: User): AuthResponse {
     // Construct JWT payload with minimal necessary claims
     const payload = {
-      sub: user.id,      // Standard JWT claim for user identifier
+      sub: user.id, // Standard JWT claim for user identifier
       email: user.email,
-      role: user.role,   // Used for role-based access control
+      role: user.role, // Used for role-based access control
     };
 
     return {
@@ -179,12 +184,12 @@ export class AuthService {
 
   /**
    * Get User Profile
-   * 
+   *
    * Retrieves complete user profile data excluding sensitive information.
-   * 
+   *
    * @param userId - Unique user identifier
    * @returns User profile without password
-   * 
+   *
    * @throws {UnauthorizedException} If user not found
    */
   async getProfile(userId: string): Promise<Omit<User, 'password'>> {
@@ -192,8 +197,9 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
-    
+
     // Destructure to exclude password from response
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = user;
     return rest;
   }

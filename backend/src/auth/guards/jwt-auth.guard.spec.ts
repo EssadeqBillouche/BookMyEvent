@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -47,10 +50,10 @@ describe('JwtAuthGuard', () => {
 
       const result = guard.canActivate(mockExecutionContext);
 
-      expect(mockReflector.getAllAndOverride).toHaveBeenCalledWith(IS_PUBLIC_KEY, [
-        mockExecutionContext.getHandler(),
-        mockExecutionContext.getClass(),
-      ]);
+      expect(mockReflector.getAllAndOverride).toHaveBeenCalledWith(
+        IS_PUBLIC_KEY,
+        [mockExecutionContext.getHandler(), mockExecutionContext.getClass()],
+      );
       expect(result).toBe(true);
     });
   });
