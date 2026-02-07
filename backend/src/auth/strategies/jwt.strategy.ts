@@ -26,6 +26,17 @@ export interface JwtPayload {
   role: string;   // User role for authorization checks
 }
 
+/**
+ * Validated User Interface
+ * 
+ * Defines the structure of the user object attached to requests after JWT validation.
+ */
+export interface ValidatedUser {
+  id: string;
+  email: string;
+  role: string;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   /**
@@ -89,7 +100,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * Note: This method runs on every authenticated request.
    * Consider caching user data to reduce database queries.
    */
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtPayload): Promise<ValidatedUser> {
     // Verify user still exists (handles deleted/disabled accounts)
     const user = await this.userService.findById(payload.sub);
     if (!user) {
@@ -102,7 +113,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
      * This object becomes available in controllers via @CurrentUser() decorator.
      * Contains minimal data from JWT payload, not full database user object.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return { id: payload.sub, email: payload.email, role: payload.role };
   }
 }
