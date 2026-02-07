@@ -123,7 +123,7 @@ function AdminDashboardContent() {
               <Shield className="w-8 h-8 text-[#4ecdc4]" />
               <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
             </div>
-            <p className="text-white/70">Welcome back, {user?.firstName}! Here's your platform overview.</p>
+            <p className="text-white/70">Welcome back, {user?.firstName}! Here&apos;s your platform overview.</p>
           </div>
           <Link
             href="/admin/events/create"

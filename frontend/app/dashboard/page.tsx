@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { Calendar, User, Mail, Shield } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
-import Card from '@/components/ui/Card';
 import StatCard from '@/components/ui/StatCard';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 

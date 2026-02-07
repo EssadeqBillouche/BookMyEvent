@@ -85,9 +85,10 @@ export default function LoginPage() {
       
       // Redirect to custom URL if provided, otherwise role-based redirect
       router.push(redirectUrl || getRedirectPath(loggedInUser));
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
       // Display user-friendly error message
-      setError(err.response?.data?.message || 'Invalid email or password');
+      setError(error.response?.data?.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -152,7 +153,7 @@ export default function LoginPage() {
 
       <div className="mt-6 text-center">
         <p className="text-white/70">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="font-semibold hover:underline" style={{ color: '#4ecdc4' }}>
             Sign up
           </Link>

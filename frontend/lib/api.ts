@@ -171,7 +171,7 @@ export const userAPI = {
    * 
    * @throws {AxiosError} If not authorized or user not found
    */
-  update: async (id: string, data: any) => {
+  update: async (id: string, data: Partial<{ email: string; firstName: string; lastName: string; profilePicture: string }>) => {
     const response = await api.patch(`/users/${id}`, data);
     return response.data;
   },
@@ -234,7 +234,7 @@ export interface CreateEventData {
   isFeatured?: boolean;
 }
 
-export interface UpdateEventData extends Partial<CreateEventData> {}
+export type UpdateEventData = Partial<CreateEventData>;
 
 /**
  * Event Management API Methods

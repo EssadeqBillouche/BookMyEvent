@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { eventAPI, Event, UpdateEventData } from '@/lib/api';
-import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Image, FileText, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, DollarSign, Image as ImageIcon, FileText, Save, Trash2 } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
 import AdminRoute from '@/components/auth/AdminRoute';
@@ -34,6 +34,7 @@ function EditEventContent() {
     if (eventId) {
       fetchEvent();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   const fetchEvent = async () => {
@@ -52,8 +53,9 @@ function EditEventContent() {
         price: data.price,
         isFeatured: data.isFeatured,
       });
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } }; message?: string };
+      setError(error.response?.data?.message || 'Failed to fetch event');
     } finally {
       setLoading(false);
     }
@@ -91,8 +93,9 @@ function EditEventContent() {
 
       await eventAPI.update(eventId, formData);
       router.push('/admin/events');
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Failed to update event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } }; message?: string };
+      setError(error.response?.data?.message || error.message || 'Failed to update event');
     } finally {
       setSaving(false);
     }
@@ -106,8 +109,9 @@ function EditEventContent() {
     try {
       await eventAPI.delete(eventId);
       router.push('/admin/events');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to delete event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to delete event');
     }
   };
 
@@ -218,7 +222,7 @@ function EditEventContent() {
 
             <div>
               <label className="block text-sm font-medium mb-2 text-white">
-                <Image className="w-4 h-4 inline mr-1" />
+                <ImageIcon className="w-4 h-4 inline mr-1" />
                 Image URL (Optional)
               </label>
               <input

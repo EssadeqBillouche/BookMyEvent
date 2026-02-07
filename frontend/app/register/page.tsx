@@ -73,8 +73,9 @@ export default function RegisterPage() {
       });
       // New users are participants, redirect to participant dashboard
       router.push(getRedirectPath(newUser));
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

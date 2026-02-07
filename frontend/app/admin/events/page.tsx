@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { eventAPI, Event } from '@/lib/api';
-import { Plus, Edit2, Trash2, Eye, Calendar, Users, MapPin, DollarSign, MoreVertical, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Plus, Edit2, Trash2, Eye, Calendar, Users, MapPin, DollarSign, MoreVertical, CheckCircle, XCircle } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
 import AdminRoute from '@/components/auth/AdminRoute';
 import Link from 'next/link';
 
 function AdminEventsContent() {
-  const { user } = useAuth();
+  const { } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -25,8 +25,9 @@ function AdminEventsContent() {
       setLoading(true);
       const data = await eventAPI.getAllAdmin();
       setEvents(data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch events');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to fetch events');
     } finally {
       setLoading(false);
     }
@@ -36,8 +37,9 @@ function AdminEventsContent() {
     try {
       await eventAPI.publish(id);
       fetchEvents();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to publish event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to publish event');
     }
     setActionMenuOpen(null);
   };
@@ -46,8 +48,9 @@ function AdminEventsContent() {
     try {
       await eventAPI.cancel(id);
       fetchEvents();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to cancel event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to cancel event');
     }
     setActionMenuOpen(null);
   };
@@ -57,8 +60,9 @@ function AdminEventsContent() {
     try {
       await eventAPI.delete(id);
       fetchEvents();
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to delete event');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'Failed to delete event');
     }
     setActionMenuOpen(null);
   };

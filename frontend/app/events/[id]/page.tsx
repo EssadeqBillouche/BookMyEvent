@@ -8,7 +8,6 @@ import {
   Calendar, 
   MapPin, 
   Users, 
-  DollarSign, 
   Clock, 
   ArrowLeft, 
   Share2, 
@@ -16,12 +15,12 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  User as UserIcon,
   Star
 } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
+import Image from 'next/image';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function EventDetailPage() {
@@ -41,19 +40,21 @@ export default function EventDetailPage() {
     if (eventId) {
       fetchEvent();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventId]);
 
   useEffect(() => {
     if (user && eventId && !authLoading) {
       checkRegistration();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, eventId, authLoading]);
 
   const fetchEvent = async () => {
     try {
       const data = await eventAPI.getById(eventId);
       setEvent(data);
-    } catch (err: any) {
+    } catch {
       setError('Event not found');
     } finally {
       setLoading(false);
@@ -64,7 +65,7 @@ export default function EventDetailPage() {
     try {
       const { isRegistered: registered } = await registrationAPI.checkRegistration(eventId);
       setIsRegistered(registered);
-    } catch (err) {
+    } catch {
       // User might not be authenticated
     }
   };
@@ -85,8 +86,9 @@ export default function EventDetailPage() {
       setRegistrationMessage('Successfully registered for this event!');
       // Refresh event data to update count
       fetchEvent();
-    } catch (err: any) {
-      setRegistrationMessage(err.response?.data?.message || 'Failed to register');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setRegistrationMessage(error.response?.data?.message || 'Failed to register');
     } finally {
       setRegistering(false);
     }
@@ -167,12 +169,14 @@ export default function EventDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Event Image */}
-            <div className="relative rounded-2xl overflow-hidden">
+            <div className="relative rounded-2xl overflow-hidden h-[400px]">
               {event.imageUrl ? (
-                <img
+                <Image
                   src={event.imageUrl}
                   alt={event.title}
-                  className="w-full h-[400px] object-cover"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               ) : (
                 <div className="w-full h-[400px] bg-gradient-to-br from-[#4ecdc4]/30 to-[#6ee7de]/30 flex items-center justify-center">
@@ -333,7 +337,7 @@ export default function EventDetailPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-center gap-2 py-4 px-6 rounded-xl bg-green-500/20 text-green-400">
                       <CheckCircle className="w-5 h-5" />
-                      <span className="font-semibold">You're Registered!</span>
+                      <span className="font-semibold">You&apos;re Registered!</span>
                     </div>
                     <Link
                       href="/dashboard"

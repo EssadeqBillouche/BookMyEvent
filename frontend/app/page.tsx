@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Calendar, Users, Sparkles, ArrowRight, CheckCircle, Star, MapPin, Clock, Shield, Zap, Heart, Mail, Phone, Github, Twitter, Linkedin } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
@@ -17,11 +18,13 @@ export default function Home() {
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
         {/* Background Hero Image */}
         <div className="absolute inset-0 w-full h-full -z-10">
-          <img
+          <Image
             src="/hero-family-futuristic.jpg"
             alt="Futuristic event dashboard background"
-            className="w-full h-full object-cover object-center animate-subtle-zoom"
+            fill
+            className="object-cover object-center animate-subtle-zoom"
             style={{ filter: 'brightness(0.6)' }}
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#1d303f]/70 via-[#1d303f]/60 to-[#1d303f]/90" />
           
@@ -227,7 +230,7 @@ export default function Home() {
               Perfect for Any Event
             </h2>
             <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              From small meetups to large conferences, we've got you covered
+              From small meetups to large conferences, we&apos;ve got you covered
             </p>
           </div>
 
@@ -342,7 +345,7 @@ export default function Home() {
                     <Star key={i} className="w-5 h-5 fill-[#ffd93d] text-[#ffd93d]" />
                   ))}
                 </div>
-                <p className="text-white/80 mb-6 leading-relaxed">"{testimonial.quote}"</p>
+                <p className="text-white/80 mb-6 leading-relaxed">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)' }}>
                     {testimonial.name.split(' ').map(n => n[0]).join('')}
