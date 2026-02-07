@@ -95,8 +95,7 @@ export class EventService {
   /**
    * Update an event (Admin only)
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async update(id: string, updateEventDto: UpdateEventDto, user: User): Promise<Event> {
+  async update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
     const event = await this.findOne(id, true);
 
     // Validate dates if provided
@@ -136,8 +135,7 @@ export class EventService {
   /**
    * Delete an event (Admin only)
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async remove(id: string, user: User): Promise<void> {
+  async remove(id: string): Promise<void> {
     const event = await this.findOne(id, true);
     
     // Prevent deletion of events with registrations

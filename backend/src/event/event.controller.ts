@@ -105,9 +105,8 @@ export class EventController {
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateEventDto: UpdateEventDto,
-    @CurrentUser() user: User,
   ) {
-    return this.eventService.update(id, updateEventDto, user);
+    return this.eventService.update(id, updateEventDto);
   }
 
   /**
@@ -136,7 +135,7 @@ export class EventController {
    */
   @Delete(':id')
   @Roles(UserRole.ADMIN)
-  remove(@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: User) {
-    return this.eventService.remove(id, user);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.eventService.remove(id);
   }
 }

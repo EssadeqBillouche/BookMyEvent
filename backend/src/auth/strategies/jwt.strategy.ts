@@ -102,7 +102,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
      * This object becomes available in controllers via @CurrentUser() decorator.
      * Contains minimal data from JWT payload, not full database user object.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return { id: payload.sub, email: payload.email, role: payload.role };
   }
 }

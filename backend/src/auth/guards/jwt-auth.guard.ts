@@ -23,10 +23,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleRequest(err: any, user: any, info: any) {
     if (err || !user) {
       throw err || new UnauthorizedException('Invalid or missing authentication token');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return user;
   }
 }

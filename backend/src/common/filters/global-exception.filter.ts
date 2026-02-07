@@ -42,6 +42,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         const responseObj = exceptionResponse as Record<string, any>;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         message = responseObj.message || exception.message;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         error = responseObj.error || exception.name;
       } else {
         message = exception.message;
