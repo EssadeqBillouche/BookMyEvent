@@ -16,7 +16,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -28,13 +28,12 @@ import ErrorAlert from '@/components/ui/ErrorAlert';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 /**
- * Login Page Component
+ * Login Form Component
  * 
- * Handles user authentication and redirects to dashboard on success.
- * 
- * @returns JSX login page with form
+ * Internal component that uses useSearchParams.
+ * Wrapped in Suspense boundary by parent component.
  */
-export default function LoginPage() {
+function LoginForm() {
   // Form state management
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -160,5 +159,20 @@ export default function LoginPage() {
         </p>
       </div>
     </AuthLayout>
+  );
+}
+
+/**
+ * Login Page Component
+ * 
+ * Wraps LoginForm in Suspense boundary for useSearchParams support.
+ * 
+ * @returns JSX login page with form wrapped in Suspense
+ */
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <LoginForm />
+    </Suspense>
   );
 }
