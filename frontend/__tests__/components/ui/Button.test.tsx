@@ -10,19 +10,20 @@ describe('Button Component', () => {
   it('renders with primary variant by default', () => {
     render(<Button>Primary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-[var(--accent-primary)]', 'text-[var(--text-inverse)]');
+    expect(button).toHaveClass('text-gray-900');
+    expect(button).toHaveStyle({ backgroundColor: '#d4a574' });
   });
 
   it('applies secondary variant styles', () => {
     render(<Button variant="secondary">Secondary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-[var(--accent-secondary)]', 'text-[var(--text-inverse)]');
+    expect(button).toHaveClass('bg-[#5eaaa8]', 'text-white');
   });
 
   it('applies outline variant styles', () => {
     render(<Button variant="outline">Outline</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-transparent', 'border');
+    expect(button).toHaveClass('bg-[var(--bg-tertiary)]', 'border');
   });
 
   it('applies ghost variant styles', () => {

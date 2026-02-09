@@ -93,7 +93,7 @@ function CreateEventContent() {
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Events</span>
           </Link>
-          <h1 className="text-4xl font-bold text-[var(--text-primary)]">Create New Event</h1>
+          <h1 className="text-3xl md:text-4xl font-semibold text-[var(--text-primary)] tracking-tight">Create New Event</h1>
           <p className="text-[var(--text-secondary)] mt-2">Fill in the details to create a new event</p>
         </div>
 
@@ -122,7 +122,7 @@ function CreateEventContent() {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                 placeholder="Enter event title"
                 required
                 minLength={3}
@@ -139,7 +139,7 @@ function CreateEventContent() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] resize-none"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)] resize-none"
                 placeholder="Describe your event..."
                 required
                 minLength={10}
@@ -156,7 +156,7 @@ function CreateEventContent() {
                 name="imageUrl"
                 value={formData.imageUrl}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -180,7 +180,7 @@ function CreateEventContent() {
                   value={formData.startDate}
                   onChange={handleChange}
                   min={minDateTime}
-                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                   required
                 />
               </div>
@@ -195,7 +195,7 @@ function CreateEventContent() {
                   value={formData.endDate}
                   onChange={handleChange}
                   min={formData.startDate || minDateTime}
-                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                   required
                 />
               </div>
@@ -218,7 +218,7 @@ function CreateEventContent() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                 placeholder="Enter venue address or 'Online'"
                 required
                 maxLength={500}
@@ -238,7 +238,7 @@ function CreateEventContent() {
                   onChange={handleChange}
                   min={1}
                   max={100000}
-                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                   required
                 />
                 <p className="text-[var(--text-tertiary)] text-xs mt-1">Maximum number of attendees</p>
@@ -256,7 +256,7 @@ function CreateEventContent() {
                   onChange={handleChange}
                   min={0}
                   step={0.01}
-                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary-muted)] hover:border-[var(--border-strong)]"
                 />
                 <p className="text-[var(--text-tertiary)] text-xs mt-1">Leave as 0 for free events</p>
               </div>
@@ -294,7 +294,8 @@ function CreateEventContent() {
               type="button"
               onClick={(e) => handleSubmit(e, true)}
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-[var(--text-inverse)] bg-[var(--accent-primary)] rounded-lg transition-all duration-300 font-semibold hover:bg-[var(--accent-primary-hover)]"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-gray-900 rounded-lg transition-all duration-300 font-semibold hover:opacity-90"
+              style={{ backgroundColor: '#d4a574' }}
             >
               <Eye className="w-5 h-5" />
               {loading ? 'Publishing...' : 'Save & Publish'}

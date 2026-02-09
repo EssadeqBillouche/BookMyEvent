@@ -231,7 +231,8 @@ export default function MyRegistrationsPage() {
             </p>
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[var(--accent-primary)] text-[var(--text-inverse)] font-medium hover:bg-[var(--accent-primary-hover)] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-gray-900 font-medium hover:opacity-90 transition-colors"
+              style={{ backgroundColor: '#d4a574' }}
             >
               <Calendar className="w-5 h-5" />
               Browse Events
@@ -309,7 +310,8 @@ export default function MyRegistrationsPage() {
                           <button
                             onClick={() => handleDownloadTicket(registration.id)}
                             disabled={isDownloading}
-                            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--accent-primary)] text-[var(--text-inverse)] font-medium hover:bg-[var(--accent-primary-hover)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-gray-900 font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{ backgroundColor: '#d4a574' }}
                           >
                             {isDownloading ? (
                               <>

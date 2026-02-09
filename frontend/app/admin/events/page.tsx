@@ -116,7 +116,8 @@ function AdminEventsContent() {
           </div>
           <Link
             href="/admin/events/create"
-            className="flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg transition-all duration-300 font-medium hover:bg-[var(--accent-primary-hover)] hover:shadow-lg"
+            className="flex items-center space-x-2 px-6 py-3 text-gray-900 rounded-lg transition-all duration-300 font-medium hover:opacity-90 hover:shadow-lg"
+            style={{ backgroundColor: '#d4a574' }}
           >
             <Plus className="w-5 h-5" />
             <span>Create Event</span>
@@ -158,7 +159,8 @@ function AdminEventsContent() {
             <p className="text-[var(--text-secondary)] mb-6">Create your first event to get started</p>
             <Link
               href="/admin/events/create"
-              className="inline-flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg font-medium hover:bg-[var(--accent-primary-hover)]"
+              className="inline-flex items-center space-x-2 px-6 py-3 text-gray-900 rounded-lg font-medium hover:opacity-90"
+              style={{ backgroundColor: '#d4a574' }}
             >
               <Plus className="w-5 h-5" />
               <span>Create Event</span>

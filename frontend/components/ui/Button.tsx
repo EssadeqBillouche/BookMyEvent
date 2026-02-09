@@ -73,26 +73,26 @@ export default function Button({
    * Each variant has a distinct visual identity
    */
   const variantStyles = {
-    // Primary - Muted gold accent (main CTA)
+    // Primary - Gold accent (main CTA)
     primary: `
-      bg-[var(--accent-primary)] text-[var(--text-inverse)]
-      hover:bg-[var(--accent-primary-hover)]
-      focus-visible:ring-[var(--accent-primary)]
+      text-gray-900
+      hover:opacity-90
+      focus-visible:ring-amber-500
       shadow-sm hover:shadow-md
     `,
-    // Secondary - Soft teal accent
+    // Secondary - Teal accent
     secondary: `
-      bg-[var(--accent-secondary)] text-[var(--text-inverse)]
-      hover:bg-[var(--accent-secondary-hover)]
-      focus-visible:ring-[var(--accent-secondary)]
+      bg-[#5eaaa8] text-white
+      hover:bg-[#7bc4c2]
+      focus-visible:ring-[#5eaaa8]
       shadow-sm hover:shadow-md
     `,
-    // Outline - Bordered, transparent background
+    // Outline - Bordered with visible background
     outline: `
-      bg-transparent text-[var(--text-primary)]
-      border border-[var(--border-default)]
-      hover:border-[var(--border-strong)] hover:bg-[var(--bg-hover)]
-      focus-visible:ring-[var(--accent-primary)]
+      bg-[var(--bg-tertiary)] text-[var(--text-primary)]
+      border border-[var(--border-strong)]
+      hover:border-[var(--accent-secondary)] hover:bg-[var(--bg-hover)]
+      focus-visible:ring-[var(--accent-secondary)]
     `,
     // Ghost - Minimal, no border
     ghost: `
@@ -109,9 +109,18 @@ export default function Button({
     `,
   };
 
+  // Get inline styles for primary variant to ensure color is applied
+  const getInlineStyles = () => {
+    if (variant === 'primary') {
+      return { backgroundColor: '#d4a574' };
+    }
+    return {};
+  };
+
   return (
     <button
       className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      style={getInlineStyles()}
       disabled={disabled || loading}
       {...props}
     >
