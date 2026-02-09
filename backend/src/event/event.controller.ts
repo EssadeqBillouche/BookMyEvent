@@ -10,6 +10,14 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+  ApiCookieAuth,
+} from '@nestjs/swagger';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -21,6 +29,7 @@ import { Public } from '../auth/decorators/public.decorator';
 import { UserRole, User } from '../user/entities/user.entity';
 import { EventStatus } from './entities/event.entity';
 
+@ApiTags('Events')
 @Controller('events')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class EventController {
@@ -32,6 +41,11 @@ export class EventController {
    */
   @Post()
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Create a new event', description: 'Admin only - Creates a new event' })
+  @ApiResponse({ status: 201, description: 'Event created successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin role required' })
   create(@Body() createEventDto: CreateEventDto, @CurrentUser() user: User) {
     return this.eventService.create(createEventDto, user);
   }
@@ -42,6 +56,9 @@ export class EventController {
    */
   @Get()
   @Public()
+  @ApiOperation({ summary: 'Get all published events', description: 'Public endpoint - Returns all published events' })
+  @ApiQuery({ name: 'status', required: false, enum: EventStatus })
+  @ApiResponse({ status: 200, description: 'List of events' })
   findAll(@Query('status') status?: EventStatus) {
     return this.eventService.findAll({ status });
   }
@@ -52,6 +69,10 @@ export class EventController {
    */
   @Get('admin')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Get all events (admin)', description: 'Admin only - Returns all events including drafts' })
+  @ApiResponse({ status: 200, description: 'List of all events' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin role required' })
   findAllAdmin() {
     return this.eventService.findAllForAdmin();
   }
@@ -62,6 +83,9 @@ export class EventController {
    */
   @Get('upcoming')
   @Public()
+  @ApiOperation({ summary: 'Get upcoming events', description: 'Public endpoint - Returns upcoming published events' })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiResponse({ status: 200, description: 'List of upcoming events' })
   findUpcoming(@Query('limit') limit?: number) {
     return this.eventService.findUpcoming(limit);
   }
@@ -72,6 +96,8 @@ export class EventController {
    */
   @Get('featured')
   @Public()
+  @ApiOperation({ summary: 'Get featured events', description: 'Public endpoint - Returns featured events' })
+  @ApiResponse({ status: 200, description: 'List of featured events' })
   findFeatured() {
     return this.eventService.findFeatured();
   }
@@ -82,6 +108,10 @@ export class EventController {
    */
   @Get(':id')
   @Public()
+  @ApiOperation({ summary: 'Get event by ID', description: 'Public endpoint - Returns event details' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event details' })
+  @ApiResponse({ status: 404, description: 'Event not found' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventService.findOne(id);
   }
@@ -92,6 +122,11 @@ export class EventController {
    */
   @Get(':id/admin')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Get event by ID (admin)', description: 'Admin only - Returns event including unpublished' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event details' })
+  @ApiResponse({ status: 404, description: 'Event not found' })
   findOneAdmin(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventService.findOne(id, true);
   }
@@ -102,6 +137,11 @@ export class EventController {
    */
   @Patch(':id')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Update event', description: 'Admin only - Update event details' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event updated successfully' })
+  @ApiResponse({ status: 404, description: 'Event not found' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateEventDto: UpdateEventDto,
@@ -115,6 +155,10 @@ export class EventController {
    */
   @Patch(':id/publish')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Publish event', description: 'Admin only - Publish a draft event' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event published successfully' })
   publish(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventService.publish(id);
   }
@@ -125,6 +169,10 @@ export class EventController {
    */
   @Patch(':id/cancel')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Cancel event', description: 'Admin only - Cancel an event' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event cancelled successfully' })
   cancel(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventService.cancel(id);
   }
@@ -135,6 +183,11 @@ export class EventController {
    */
   @Delete(':id')
   @Roles(UserRole.ADMIN)
+  @ApiCookieAuth()
+  @ApiOperation({ summary: 'Delete event', description: 'Admin only - Permanently delete an event' })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({ status: 200, description: 'Event deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Event not found' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.eventService.remove(id);
   }

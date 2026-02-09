@@ -23,12 +23,21 @@ import {
   Res,
   HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiCookieAuth,
+  ApiProduces,
+} from '@nestjs/swagger';
 import type { Response } from 'express';
 import { TicketService } from './ticket.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 
+@ApiTags('Tickets')
 @Controller('tickets')
 @UseGuards(JwtAuthGuard) // All routes require authentication
 export class TicketController {
@@ -69,6 +78,17 @@ export class TicketController {
    * ```
    */
   @Get(':registrationId/download')
+  @ApiCookieAuth()
+  @ApiOperation({ 
+    summary: 'Download PDF ticket', 
+    description: 'Download a PDF ticket for a confirmed registration. Only the registration owner can download.' 
+  })
+  @ApiParam({ name: 'registrationId', type: 'string', format: 'uuid' })
+  @ApiProduces('application/pdf')
+  @ApiResponse({ status: 200, description: 'PDF ticket file download' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Not your registration or not confirmed' })
+  @ApiResponse({ status: 404, description: 'Registration not found' })
   async downloadTicket(
     @Param('registrationId', ParseUUIDPipe) registrationId: string,
     @CurrentUser() user: User,
@@ -121,6 +141,18 @@ export class TicketController {
    * ```
    */
   @Get(':registrationId/check')
+  @ApiCookieAuth()
+  @ApiOperation({ 
+    summary: 'Check ticket availability', 
+    description: 'Check if a ticket can be downloaded for a registration' 
+  })
+  @ApiParam({ name: 'registrationId', type: 'string', format: 'uuid' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Ticket availability status',
+    schema: { example: { canDownload: true } }
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async checkTicketAvailability(
     @Param('registrationId', ParseUUIDPipe) registrationId: string,
     @CurrentUser() user: User,
