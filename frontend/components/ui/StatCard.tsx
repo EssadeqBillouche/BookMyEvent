@@ -1,27 +1,92 @@
+/**
+ * Stat Card Component
+ * 
+ * Premium statistic display card with elegant styling.
+ * Supports dark/light themes via CSS variables.
+ * Part of the EventBook design system.
+ * 
+ * @component
+ */
+
 import { ReactNode } from 'react';
 
 interface StatCardProps {
   title: string;
   value: string | number;
-  subtitle: string;
+  subtitle?: string;
   icon: ReactNode;
-  iconBgColor: string;
-  iconColor: string;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  variant?: 'default' | 'accent';
 }
 
-export default function StatCard({ title, value, subtitle, icon, iconBgColor, iconColor }: StatCardProps) {
+export default function StatCard({ 
+  title, 
+  value, 
+  subtitle, 
+  icon, 
+  trend,
+  variant = 'default'
+}: StatCardProps) {
   return (
-    <div className="glass-card p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform hover:scale-110 hover:rotate-6" style={{ backgroundColor: iconBgColor, backdropFilter: 'blur(10px)' }}>
-          <div style={{ color: iconColor }}>{icon}</div>
+    <div 
+      className={`
+        rounded-xl p-6 
+        transition-all duration-200 
+        hover:shadow-[var(--shadow-md)]
+        ${variant === 'accent' 
+          ? 'bg-[var(--accent-primary-muted)] border border-[var(--accent-primary)]/20' 
+          : 'bg-[var(--bg-elevated)] border border-[var(--border-default)]'
+        }
+      `}
+    >
+      <div className="flex items-start justify-between mb-4">
+        <div 
+          className={`
+            w-10 h-10 rounded-lg 
+            flex items-center justify-center 
+            ${variant === 'accent'
+              ? 'bg-[var(--accent-primary)]/20 text-[var(--accent-primary)]'
+              : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)]'
+            }
+          `}
+        >
+          {icon}
         </div>
+        {trend && (
+          <span 
+            className={`
+              text-xs font-medium px-2 py-1 rounded-md
+              ${trend.isPositive 
+                ? 'bg-[var(--success-muted)] text-[var(--success)]' 
+                : 'bg-[var(--error-muted)] text-[var(--error)]'
+              }
+            `}
+          >
+            {trend.isPositive ? '+' : ''}{trend.value}%
+          </span>
+        )}
       </div>
-      <p className="text-4xl font-bold text-white">{value}</p>
-      <p className="text-sm mt-2 text-white/60">
-        {subtitle}
+      
+      <p 
+        className={`
+          text-3xl font-semibold mb-1 tracking-tight
+          ${variant === 'accent' 
+            ? 'text-[var(--accent-primary)]' 
+            : 'text-[var(--text-primary)]'
+          }
+        `}
+      >
+        {value}
       </p>
+      
+      <p className="text-sm text-[var(--text-secondary)]">{title}</p>
+      
+      {subtitle && (
+        <p className="text-xs text-[var(--text-tertiary)] mt-2">{subtitle}</p>
+      )}
     </div>
   );
 }

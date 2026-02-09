@@ -101,13 +101,13 @@ function AdminDashboardContent() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'published':
-        return <CheckCircle className="w-4 h-4 text-[#4ecdc4]" />;
+        return <CheckCircle className="w-4 h-4 text-[var(--success)]" />;
       case 'draft':
-        return <FileText className="w-4 h-4 text-[#ffd93d]" />;
+        return <FileText className="w-4 h-4 text-[var(--warning)]" />;
       case 'cancelled':
-        return <XCircle className="w-4 h-4 text-red-400" />;
+        return <XCircle className="w-4 h-4 text-[var(--error)]" />;
       default:
-        return <Clock className="w-4 h-4 text-white/60" />;
+        return <Clock className="w-4 h-4 text-[var(--text-tertiary)]" />;
     }
   };
 
@@ -120,15 +120,14 @@ function AdminDashboardContent() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Shield className="w-8 h-8 text-[#4ecdc4]" />
-              <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
+              <Shield className="w-8 h-8 text-[var(--accent-secondary)]" />
+              <h1 className="text-3xl md:text-4xl font-semibold text-[var(--text-primary)]">Admin Dashboard</h1>
             </div>
-            <p className="text-white/70">Welcome back, {user?.firstName}! Here&apos;s your platform overview.</p>
+            <p className="text-[var(--text-secondary)]">Welcome back, {user?.firstName}! Here&apos;s your platform overview.</p>
           </div>
           <Link
             href="/admin/events/create"
-            className="group glass-card flex items-center space-x-2 px-6 py-3 text-white rounded-xl transition-all duration-300 font-semibold hover:scale-105 hover:shadow-2xl"
-            style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+            className="group flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg transition-all duration-300 font-medium hover:bg-[var(--accent-primary-hover)] hover:shadow-lg"
           >
             <Plus className="w-5 h-5" />
             <span>Create Event</span>
@@ -137,62 +136,61 @@ function AdminDashboardContent() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="glass-card p-6 rounded-xl transition-all duration-300 hover:scale-105" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl transition-all duration-300 hover:border-[var(--border-strong)]">
             <div className="flex items-center justify-between mb-3">
-              <Calendar className="w-8 h-8 text-[#4ecdc4]" />
-              <span className="text-xs text-white/50 font-medium">TOTAL</span>
+              <Calendar className="w-8 h-8 text-[var(--accent-secondary)]" />
+              <span className="text-xs text-[var(--text-tertiary)] font-medium">TOTAL</span>
             </div>
-            <p className="text-3xl font-bold text-white">{stats.totalEvents}</p>
-            <p className="text-sm text-white/60 mt-1">Total Events</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{stats.totalEvents}</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">Total Events</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl transition-all duration-300 hover:scale-105" style={{ background: 'rgba(78, 205, 196, 0.15)', borderColor: 'rgba(78, 205, 196, 0.3)' }}>
+          <div className="bg-[var(--success-muted)] border border-[var(--success)]/30 p-6 rounded-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-3">
-              <CheckCircle className="w-8 h-8 text-[#4ecdc4]" />
-              <span className="text-xs text-[#4ecdc4] font-medium">LIVE</span>
+              <CheckCircle className="w-8 h-8 text-[var(--success)]" />
+              <span className="text-xs text-[var(--success)] font-medium">LIVE</span>
             </div>
-            <p className="text-3xl font-bold text-white">{stats.publishedEvents}</p>
-            <p className="text-sm text-white/60 mt-1">Published</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{stats.publishedEvents}</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">Published</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl transition-all duration-300 hover:scale-105" style={{ background: 'rgba(255, 217, 61, 0.15)', borderColor: 'rgba(255, 217, 61, 0.3)' }}>
+          <div className="bg-[var(--warning-muted)] border border-[var(--warning)]/30 p-6 rounded-xl transition-all duration-300">
             <div className="flex items-center justify-between mb-3">
-              <FileText className="w-8 h-8 text-[#ffd93d]" />
-              <span className="text-xs text-[#ffd93d] font-medium">PENDING</span>
+              <FileText className="w-8 h-8 text-[var(--warning)]" />
+              <span className="text-xs text-[var(--warning)] font-medium">PENDING</span>
             </div>
-            <p className="text-3xl font-bold text-white">{stats.draftEvents}</p>
-            <p className="text-sm text-white/60 mt-1">Drafts</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{stats.draftEvents}</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">Drafts</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl transition-all duration-300 hover:scale-105" style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl transition-all duration-300 hover:border-[var(--border-strong)]">
             <div className="flex items-center justify-between mb-3">
-              <Users className="w-8 h-8 text-white/80" />
-              <span className="text-xs text-white/50 font-medium">USERS</span>
+              <Users className="w-8 h-8 text-[var(--text-secondary)]" />
+              <span className="text-xs text-[var(--text-tertiary)] font-medium">USERS</span>
             </div>
-            <p className="text-3xl font-bold text-white">{stats.totalRegistrations}</p>
-            <p className="text-sm text-white/60 mt-1">Registrations</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{stats.totalRegistrations}</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">Registrations</p>
           </div>
         </div>
 
         {/* Pending Registrations Alert */}
         {pendingRegistrations > 0 && (
           <Link href="/admin/registrations">
-            <div className="glass-card p-6 rounded-xl mb-8 transition-all duration-300 hover:scale-[1.02] cursor-pointer" 
-              style={{ background: 'rgba(255, 217, 61, 0.15)', borderColor: 'rgba(255, 217, 61, 0.4)' }}>
+            <div className="bg-[var(--warning-muted)] border border-[var(--warning)]/40 p-6 rounded-xl mb-8 transition-all duration-300 hover:border-[var(--warning)] cursor-pointer">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-[#ffd93d]/20">
-                    <ClipboardList className="w-8 h-8 text-[#ffd93d]" />
+                  <div className="p-3 rounded-xl bg-[var(--warning)]/20">
+                    <ClipboardList className="w-8 h-8 text-[var(--warning)]" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-white mb-1">
+                    <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-1">
                       {pendingRegistrations} Pending Registration{pendingRegistrations !== 1 ? 's' : ''}
                     </h3>
-                    <p className="text-white/70">Click to review and approve pending registrations</p>
+                    <p className="text-[var(--text-secondary)]">Click to review and approve pending registrations</p>
                   </div>
                 </div>
                 <div className="hidden sm:block">
-                  <span className="px-4 py-2 rounded-lg font-semibold text-[#ffd93d]" style={{ background: 'rgba(255, 217, 61, 0.2)' }}>
+                  <span className="px-4 py-2 rounded-lg font-medium text-[var(--warning)] bg-[var(--warning)]/20">
                     Review Now →
                   </span>
                 </div>
@@ -203,61 +201,61 @@ function AdminDashboardContent() {
 
         {/* Secondary Stats */}
         <div className="grid md:grid-cols-3 gap-4 mb-8">
-          <div className="glass-card p-6 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 rounded-lg bg-[#4ecdc4]/20">
-                <TrendingUp className="w-5 h-5 text-[#4ecdc4]" />
+              <div className="p-2 rounded-lg bg-[var(--accent-secondary-muted)]">
+                <TrendingUp className="w-5 h-5 text-[var(--accent-secondary)]" />
               </div>
-              <span className="text-white/60 text-sm">Total Capacity</span>
+              <span className="text-[var(--text-secondary)] text-sm">Total Capacity</span>
             </div>
-            <p className="text-2xl font-bold text-white">{stats.totalCapacity.toLocaleString()}</p>
+            <p className="text-2xl font-semibold text-[var(--text-primary)]">{stats.totalCapacity.toLocaleString()}</p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 rounded-lg bg-[#ffd93d]/20">
-                <BarChart3 className="w-5 h-5 text-[#ffd93d]" />
+              <div className="p-2 rounded-lg bg-[var(--accent-primary-muted)]">
+                <BarChart3 className="w-5 h-5 text-[var(--accent-primary)]" />
               </div>
-              <span className="text-white/60 text-sm">Fill Rate</span>
+              <span className="text-[var(--text-secondary)] text-sm">Fill Rate</span>
             </div>
-            <p className="text-2xl font-bold text-white">
+            <p className="text-2xl font-semibold text-[var(--text-primary)]">
               {stats.totalCapacity > 0 
                 ? Math.round((stats.totalRegistrations / stats.totalCapacity) * 100) 
                 : 0}%
             </p>
           </div>
 
-          <div className="glass-card p-6 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 rounded-lg bg-green-500/20">
-                <DollarSign className="w-5 h-5 text-green-400" />
+              <div className="p-2 rounded-lg bg-[var(--success-muted)]">
+                <DollarSign className="w-5 h-5 text-[var(--success)]" />
               </div>
-              <span className="text-white/60 text-sm">Potential Revenue</span>
+              <span className="text-[var(--text-secondary)] text-sm">Potential Revenue</span>
             </div>
-            <p className="text-2xl font-bold text-white">${stats.totalRevenue.toLocaleString()}</p>
+            <p className="text-2xl font-semibold text-[var(--text-primary)]">${stats.totalRevenue.toLocaleString()}</p>
           </div>
         </div>
 
         {/* Content Grid */}
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Recent Events */}
-          <div className="glass-card p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">Recent Events</h2>
-              <Link href="/admin/events" className="text-[#4ecdc4] text-sm hover:underline">
+              <h2 className="text-xl font-semibold text-[var(--text-primary)]">Recent Events</h2>
+              <Link href="/admin/events" className="text-[var(--accent-secondary)] text-sm hover:underline">
                 View All →
               </Link>
             </div>
 
             {loading ? (
-              <div className="text-center py-8 text-white/60">Loading...</div>
+              <div className="text-center py-8 text-[var(--text-secondary)]">Loading...</div>
             ) : recentEvents.length === 0 ? (
               <div className="text-center py-8">
-                <Calendar className="w-12 h-12 mx-auto mb-3 text-white/30" />
-                <p className="text-white/60">No events created yet</p>
+                <Calendar className="w-12 h-12 mx-auto mb-3 text-[var(--text-tertiary)]" />
+                <p className="text-[var(--text-secondary)]">No events created yet</p>
                 <Link
                   href="/admin/events/create"
-                  className="inline-block mt-4 text-[#4ecdc4] hover:underline"
+                  className="inline-block mt-4 text-[var(--accent-secondary)] hover:underline"
                 >
                   Create your first event →
                 </Link>
@@ -267,20 +265,19 @@ function AdminDashboardContent() {
                 {recentEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="flex items-center justify-between p-4 rounded-xl transition-all hover:bg-white/5"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                    className="flex items-center justify-between p-4 rounded-lg bg-[var(--bg-tertiary)] transition-all hover:bg-[var(--bg-hover)]"
                   >
                     <div className="flex items-center gap-3">
                       {getStatusIcon(event.status)}
                       <div>
-                        <p className="text-white font-medium">{event.title}</p>
-                        <p className="text-white/50 text-sm">{formatDate(event.startDate)}</p>
+                        <p className="text-[var(--text-primary)] font-medium">{event.title}</p>
+                        <p className="text-[var(--text-tertiary)] text-sm">{formatDate(event.startDate)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/events/${event.id}/edit`}
-                        className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                        className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all"
                       >
                         <Edit2 className="w-4 h-4" />
                       </Link>
@@ -292,43 +289,42 @@ function AdminDashboardContent() {
           </div>
 
           {/* Upcoming Events */}
-          <div className="glass-card p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white">Upcoming Events</h2>
-              <Clock className="w-5 h-5 text-white/40" />
+              <h2 className="text-xl font-semibold text-[var(--text-primary)]">Upcoming Events</h2>
+              <Clock className="w-5 h-5 text-[var(--text-tertiary)]" />
             </div>
 
             {loading ? (
-              <div className="text-center py-8 text-white/60">Loading...</div>
+              <div className="text-center py-8 text-[var(--text-secondary)]">Loading...</div>
             ) : upcomingEvents.length === 0 ? (
               <div className="text-center py-8">
-                <Clock className="w-12 h-12 mx-auto mb-3 text-white/30" />
-                <p className="text-white/60">No upcoming events</p>
+                <Clock className="w-12 h-12 mx-auto mb-3 text-[var(--text-tertiary)]" />
+                <p className="text-[var(--text-secondary)]">No upcoming events</p>
               </div>
             ) : (
               <div className="space-y-3">
                 {upcomingEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="p-4 rounded-xl"
-                    style={{ background: 'rgba(78, 205, 196, 0.1)', borderColor: 'rgba(78, 205, 196, 0.2)' }}
+                    className="p-4 rounded-lg bg-[var(--accent-secondary-muted)] border border-[var(--accent-secondary)]/20"
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-white font-medium">{event.title}</p>
-                      <span className="text-[#4ecdc4] text-sm font-medium">
+                      <p className="text-[var(--text-primary)] font-medium">{event.title}</p>
+                      <span className="text-[var(--accent-secondary)] text-sm font-medium">
                         {formatDate(event.startDate)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/50">{event.location}</span>
-                      <span className="text-white/70">
+                      <span className="text-[var(--text-tertiary)]">{event.location}</span>
+                      <span className="text-[var(--text-secondary)]">
                         {event.registeredCount}/{event.capacity} registered
                       </span>
                     </div>
                     {/* Progress bar */}
-                    <div className="mt-3 h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div className="mt-3 h-2 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#4ecdc4] rounded-full transition-all"
+                        className="h-full bg-[var(--accent-secondary)] rounded-full transition-all"
                         style={{ width: `${(event.registeredCount / event.capacity) * 100}%` }}
                       />
                     </div>
@@ -340,33 +336,33 @@ function AdminDashboardContent() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8 glass-card p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
-          <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
+        <div className="mt-8 bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
+          <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link
               href="/admin/events/create"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-white/10 transition-all text-white/80 hover:text-white"
+              className="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               <Plus className="w-8 h-8" />
               <span className="text-sm font-medium">New Event</span>
             </Link>
             <Link
               href="/admin/events"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-white/10 transition-all text-white/80 hover:text-white"
+              className="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               <Calendar className="w-8 h-8" />
               <span className="text-sm font-medium">All Events</span>
             </Link>
             <Link
               href="/dashboard"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-white/10 transition-all text-white/80 hover:text-white"
+              className="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               <Eye className="w-8 h-8" />
               <span className="text-sm font-medium">View Profile</span>
             </Link>
             <Link
               href="/"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-white/10 transition-all text-white/80 hover:text-white"
+              className="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             >
               <Settings className="w-8 h-8" />
               <span className="text-sm font-medium">View Site</span>

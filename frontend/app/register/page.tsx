@@ -82,7 +82,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <AuthLayout title="Create Account" subtitle="Join us and start organizing events">
+    <AuthLayout title="Create account" subtitle="Join us and start organizing events">
       {error && <ErrorAlert message={error} />}
 
       <form onSubmit={handleSubmit} className="space-y-5">
@@ -136,36 +136,25 @@ export default function RegisterPage() {
         />
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-2 text-white">
+          <label htmlFor="password" className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
             <input
               id="password"
               name="password"
               type={showPassword ? 'text' : 'password'}
               value={formData.password}
               onChange={handleChange}
-              className="glass-card w-full pl-11 pr-12 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-              style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(78, 205, 196, 0.6)';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
-              }}
+              className="w-full pl-11 pr-12 py-3 bg-[var(--bg-primary)] border border-[var(--border-default)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-tertiary)] transition-all focus:outline-none focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 hover:border-[var(--border-strong)]"
               placeholder="••••••••"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors text-white/50 hover:text-white"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors text-[var(--text-tertiary)] hover:text-[var(--text-primary)]"
             >
               {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -173,44 +162,33 @@ export default function RegisterPage() {
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-white">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
             Confirm Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
             <input
               id="confirmPassword"
               name="confirmPassword"
               type={showPassword ? 'text' : 'password'}
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="glass-card w-full pl-11 pr-12 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-              style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(78, 205, 196, 0.6)';
-                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)';
-              }}
+              className="w-full pl-11 pr-12 py-3 bg-[var(--bg-primary)] border border-[var(--border-default)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-tertiary)] transition-all focus:outline-none focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 hover:border-[var(--border-strong)]"
               placeholder="••••••••"
               required
             />
           </div>
         </div>
 
-        <Button type="submit" loading={loading} className="w-full">
+        <Button type="submit" loading={loading} fullWidth className="mt-6">
           Create Account
         </Button>
       </form>
 
       <div className="mt-6 text-center">
-        <p className="text-white/70">
+        <p className="text-[var(--text-secondary)]">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold hover:underline" style={{ color: '#4ecdc4' }}>
+          <Link href="/login" className="font-medium text-[var(--accent-primary)] hover:text-[var(--accent-primary-hover)] transition-colors">
             Sign in
           </Link>
         </p>
