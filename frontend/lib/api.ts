@@ -428,3 +428,75 @@ export const registrationAPI = {
     await api.delete(`/registrations/${id}`);
   },
 };
+
+/**
+ * Ticket API Methods
+ *
+ * Methods for ticket generation and download.
+ * Only available for confirmed registrations.
+ */
+export const ticketAPI = {
+  /**
+   * Download PDF Ticket
+   *
+   * Downloads the PDF ticket for a confirmed registration.
+   * Triggers a file download in the browser.
+   *
+   * @param registrationId - The ID of the registration
+   * @throws {AxiosError} If registration not confirmed or not owned by user
+   *
+   * @example
+   * ```typescript
+   * await ticketAPI.download(registrationId);
+   * // Triggers file download automatically
+   * ```
+   */
+  download: async (registrationId: string): Promise<void> => {
+    const response = await api.get(`/tickets/${registrationId}/download`, {
+      responseType: 'blob',
+    });
+
+    // Extract filename from Content-Disposition header or use default
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = `ticket_${registrationId.slice(0, 8)}.pdf`;
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+      if (filenameMatch) {
+        filename = filenameMatch[1];
+      }
+    }
+
+    // Create blob URL and trigger download
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  },
+
+  /**
+   * Check Ticket Availability
+   *
+   * Checks if a ticket can be downloaded for a registration.
+   * Useful for conditional UI rendering (show/hide download button).
+   *
+   * @param registrationId - The ID of the registration to check
+   * @returns Promise with canDownload boolean
+   *
+   * @example
+   * ```typescript
+   * const { canDownload } = await ticketAPI.checkAvailability(regId);
+   * if (canDownload) {
+   *   // Show download button
+   * }
+   * ```
+   */
+  checkAvailability: async (registrationId: string): Promise<{ canDownload: boolean }> => {
+    const response = await api.get(`/tickets/${registrationId}/check`);
+    return response.data;
+  },
+};
