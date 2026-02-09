@@ -130,7 +130,7 @@ export default function EventsPage() {
                 placeholder="Search events..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 focus:border-[var(--accent-primary)] transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary-muted)] focus:border-[var(--accent-primary)] hover:border-[var(--border-strong)] transition-all"
               />
             </div>
 
@@ -140,7 +140,7 @@ export default function EventsPage() {
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value as 'all' | 'free' | 'paid')}
-                className="px-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 transition-all"
+                className="px-4 py-3 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary-muted)] focus:border-[var(--accent-primary)] hover:border-[var(--border-strong)] transition-all cursor-pointer"
               >
                 <option value="all">All Events</option>
                 <option value="free">Free Events</option>
@@ -152,7 +152,7 @@ export default function EventsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'price' | 'popularity')}
-              className="px-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 transition-all"
+              className="px-4 py-3 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary-muted)] focus:border-[var(--accent-primary)] hover:border-[var(--border-strong)] transition-all cursor-pointer"
             >
               <option value="date">Sort by Date</option>
               <option value="price">Sort by Price</option>
