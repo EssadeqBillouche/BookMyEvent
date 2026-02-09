@@ -10,13 +10,13 @@ describe('Button Component', () => {
   it('renders with primary variant by default', () => {
     render(<Button>Primary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-[#C45D3A]', 'text-white');
+    expect(button).toHaveClass('bg-[var(--accent-primary)]', 'text-[var(--text-inverse)]');
   });
 
   it('applies secondary variant styles', () => {
     render(<Button variant="secondary">Secondary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-[#1A1A1A]', 'text-white');
+    expect(button).toHaveClass('bg-[var(--accent-secondary)]', 'text-[var(--text-inverse)]');
   });
 
   it('applies outline variant styles', () => {
@@ -31,10 +31,10 @@ describe('Button Component', () => {
     expect(button).toHaveClass('bg-transparent');
   });
 
-  it('applies dark variant styles', () => {
-    render(<Button variant="dark">Dark</Button>);
+  it('applies accent variant styles', () => {
+    render(<Button variant="accent">Accent</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('bg-[#2C3E2D]', 'text-white');
+    expect(button).toHaveClass('bg-[var(--accent-primary-muted)]', 'text-[var(--accent-primary)]');
   });
 
   it('shows loading state with spinner', () => {
@@ -84,13 +84,13 @@ describe('Button Component', () => {
   it('applies small size', () => {
     render(<Button size="sm">Small</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('px-4', 'py-2');
+    expect(button).toHaveClass('px-4', 'py-2', 'text-sm');
   });
 
   it('applies large size', () => {
     render(<Button size="lg">Large</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('px-8', 'py-4');
+    expect(button).toHaveClass('px-7', 'py-3.5', 'text-base');
   });
 
   it('applies full width', () => {

@@ -25,16 +25,16 @@ describe('LoadingSpinner Component', () => {
     expect(container).toHaveClass('flex', 'items-center', 'justify-center');
   });
 
-  it('has gradient background', () => {
+  it('has primary background', () => {
     render(<LoadingSpinner />);
     const container = screen.getByText('Loading...').parentElement?.parentElement;
-    expect(container).toHaveClass('bg-gradient-to-br');
+    expect(container).toHaveClass('bg-[var(--bg-primary)]');
   });
 
   it('spinner has correct dimensions', () => {
     render(<LoadingSpinner />);
     const spinner = document.querySelector('.animate-spin');
-    expect(spinner).toHaveClass('w-16', 'h-16');
+    expect(spinner).toHaveClass('w-8', 'h-8');
   });
 
   it('spinner has rounded shape', () => {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { eventAPI, registrationAPI, Event } from '@/lib/api';
+import { eventAPI, registrationAPI, ticketAPI, Event, Registration } from '@/lib/api';
 import { 
   Calendar, 
   MapPin, 
@@ -15,7 +15,9 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Star
+  Star,
+  Download,
+  Loader2
 } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
@@ -33,8 +35,10 @@ export default function EventDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
+  const [userRegistration, setUserRegistration] = useState<Registration | null>(null);
   const [registering, setRegistering] = useState(false);
   const [registrationMessage, setRegistrationMessage] = useState('');
+  const [downloadingTicket, setDownloadingTicket] = useState(false);
 
   useEffect(() => {
     if (eventId) {
@@ -61,12 +65,43 @@ export default function EventDetailPage() {
     }
   };
 
+  /**
+   * Check if user is registered and fetch their registration details
+   * This allows us to show the download ticket button for confirmed registrations
+   */
   const checkRegistration = async () => {
     try {
+      // First check if registered (confirmed status)
       const { isRegistered: registered } = await registrationAPI.checkRegistration(eventId);
       setIsRegistered(registered);
+
+      // Fetch user's registrations to get the full registration object
+      const myRegistrations = await registrationAPI.getMyRegistrations();
+      const eventRegistration = myRegistrations.find(
+        (reg: Registration) => reg.eventId === eventId
+      );
+      if (eventRegistration) {
+        setUserRegistration(eventRegistration);
+      }
     } catch {
       // User might not be authenticated
+    }
+  };
+
+  /**
+   * Handle PDF ticket download for confirmed registrations
+   */
+  const handleDownloadTicket = async () => {
+    if (!userRegistration) return;
+    
+    try {
+      setDownloadingTicket(true);
+      await ticketAPI.download(userRegistration.id);
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setRegistrationMessage(error.response?.data?.message || 'Failed to download ticket');
+    } finally {
+      setDownloadingTicket(false);
     }
   };
 
@@ -340,11 +375,43 @@ export default function EventDetailPage() {
                       <CheckCircle className="w-5 h-5" />
                       <span className="font-medium">You&apos;re Registered!</span>
                     </div>
+                    
+                    {/* Download Ticket Button - Only for confirmed registrations */}
+                    {userRegistration?.status === 'confirmed' && (
+                      <button
+                        onClick={handleDownloadTicket}
+                        disabled={downloadingTicket}
+                        className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg bg-[var(--accent-primary)] text-[var(--text-inverse)] font-medium hover:bg-[var(--accent-primary-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {downloadingTicket ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            Downloading...
+                          </>
+                        ) : (
+                          <>
+                            <Download className="w-5 h-5" />
+                            Download Ticket
+                          </>
+                        )}
+                      </button>
+                    )}
+
+                    {/* Pending Status Notice */}
+                    {userRegistration?.status === 'pending' && (
+                      <div className="text-center py-3 px-6 rounded-lg bg-[var(--warning-muted)] text-[var(--warning)]">
+                        <p className="text-sm font-medium">Awaiting Approval</p>
+                        <p className="text-xs mt-1 opacity-80">
+                          Your ticket will be available after confirmation
+                        </p>
+                      </div>
+                    )}
+
                     <Link
-                      href="/dashboard"
+                      href="/my-registrations"
                       className="block text-center py-3 px-6 rounded-lg border border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
                     >
-                      View My Registrations
+                      View All My Registrations
                     </Link>
                   </div>
                 ) : isEventPast ? (

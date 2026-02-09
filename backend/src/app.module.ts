@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { EventModule } from './event/event.module';
 import { RegistrationModule } from './registration/registration.module';
+import { TicketModule } from './ticket/ticket.module';
 import { typeOrmConfig } from 'config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     EventModule,
     RegistrationModule,
+    TicketModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync(typeOrmConfig),
   ],

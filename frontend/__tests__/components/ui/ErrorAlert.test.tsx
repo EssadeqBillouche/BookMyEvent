@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import ErrorAlert from '@/components/ui/ErrorAlert';
+import { ErrorAlert } from '@/components/ui/ErrorAlert';
 
 describe('ErrorAlert Component', () => {
   it('renders error message', () => {
@@ -10,20 +10,20 @@ describe('ErrorAlert Component', () => {
   it('renders the alert icon', () => {
     render(<ErrorAlert message="Error" />);
     // The AlertCircle icon from lucide-react should be present
-    const container = screen.getByText('Error').parentElement;
-    expect(container?.querySelector('svg')).toBeInTheDocument();
+    const alert = screen.getByRole('alert');
+    expect(alert.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('applies glassmorphism styling', () => {
+  it('applies error background styling', () => {
     render(<ErrorAlert message="Error" />);
-    const alert = screen.getByText('Error').parentElement;
-    expect(alert).toHaveClass('glass-card');
+    const alert = screen.getByRole('alert');
+    expect(alert).toHaveClass('bg-[var(--error-muted)]');
   });
 
   it('has proper margin bottom', () => {
     render(<ErrorAlert message="Error" />);
-    const alert = screen.getByText('Error').parentElement;
-    expect(alert).toHaveClass('mb-6');
+    const alert = screen.getByRole('alert');
+    expect(alert).toHaveClass('mb-4');
   });
 
   it('displays long error messages', () => {
@@ -34,7 +34,7 @@ describe('ErrorAlert Component', () => {
 
   it('renders with flex layout', () => {
     render(<ErrorAlert message="Error" />);
-    const alert = screen.getByText('Error').parentElement;
+    const alert = screen.getByRole('alert');
     expect(alert).toHaveClass('flex', 'items-start');
   });
 });

@@ -17,7 +17,7 @@ describe('Card Component', () => {
   it('applies default variant styling', () => {
     const { container } = render(<Card>Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('bg-white', 'border', 'rounded-xl');
+    expect(card).toHaveClass('bg-[var(--bg-elevated)]', 'border', 'rounded-xl');
   });
 
   it('applies additional className', () => {
@@ -59,19 +59,19 @@ describe('Card Component', () => {
   it('applies elevated variant with shadow', () => {
     const { container } = render(<Card variant="elevated">Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('shadow-md');
+    expect(card).toHaveClass('shadow-[var(--shadow-md)]');
   });
 
-  it('applies dark variant', () => {
-    const { container } = render(<Card variant="dark">Content</Card>);
+  it('applies glass variant', () => {
+    const { container } = render(<Card variant="glass">Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('bg-[#1A1A1A]', 'text-white');
+    expect(card).toHaveClass('glass-card');
   });
 
   it('applies hover effects when hover prop is true', () => {
     const { container } = render(<Card hover>Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('hover:shadow-lg', 'cursor-pointer');
+    expect(card).toHaveClass('hover:shadow-[var(--shadow-lg)]', 'cursor-pointer');
   });
 
   it('renders nested components', () => {

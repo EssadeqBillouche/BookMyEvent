@@ -50,10 +50,10 @@ describe('Input Component', () => {
     expect(screen.getByLabelText('Email')).toBeRequired();
   });
 
-  it('renders with glassmorphism styling', () => {
+  it('renders with elevated background styling', () => {
     render(<Input {...defaultProps} />);
     const input = screen.getByLabelText('Email');
-    expect(input).toHaveClass('glass-card');
+    expect(input).toHaveClass('bg-[var(--bg-elevated)]');
   });
 
   it('supports disabled state', () => {

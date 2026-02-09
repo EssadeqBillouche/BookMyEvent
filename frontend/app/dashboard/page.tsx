@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { Calendar, User, Mail, Shield, ArrowRight } from 'lucide-react';
+import { Calendar, User, Mail, Shield, ArrowRight, FileText } from 'lucide-react';
 import Link from 'next/link';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
@@ -114,22 +114,22 @@ export default function DashboardPage() {
             <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-6">Quick Actions</h2>
             <div className="space-y-3">
               <Link 
+                href="/my-registrations"
+                className="flex items-center justify-between p-4 bg-[var(--bg-tertiary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-[var(--accent-primary)]" />
+                  <span className="font-medium text-[var(--text-primary)]">My Registrations</span>
+                </div>
+                <ArrowRight className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors" />
+              </Link>
+              <Link 
                 href="/events"
                 className="flex items-center justify-between p-4 bg-[var(--bg-tertiary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors group"
               >
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-[var(--accent-primary)]" />
                   <span className="font-medium text-[var(--text-primary)]">Browse Events</span>
-                </div>
-                <ArrowRight className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors" />
-              </Link>
-              <Link 
-                href="/events/create"
-                className="flex items-center justify-between p-4 bg-[var(--bg-tertiary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-[var(--accent-primary)]" />
-                  <span className="font-medium text-[var(--text-primary)]">Create Event</span>
                 </div>
                 <ArrowRight className="w-4 h-4 text-[var(--text-tertiary)] group-hover:text-[var(--text-primary)] transition-colors" />
               </Link>
