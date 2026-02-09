@@ -10,22 +10,34 @@ describe('Button Component', () => {
   it('renders with primary variant by default', () => {
     render(<Button>Primary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('text-white');
+    expect(button).toHaveClass('bg-[#C45D3A]', 'text-white');
   });
 
   it('applies secondary variant styles', () => {
     render(<Button variant="secondary">Secondary</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('text-white/90');
+    expect(button).toHaveClass('bg-[#1A1A1A]', 'text-white');
   });
 
   it('applies outline variant styles', () => {
     render(<Button variant="outline">Outline</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('border-2', 'bg-transparent');
+    expect(button).toHaveClass('bg-transparent', 'border');
   });
 
-  it('shows loading state', () => {
+  it('applies ghost variant styles', () => {
+    render(<Button variant="ghost">Ghost</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('bg-transparent');
+  });
+
+  it('applies dark variant styles', () => {
+    render(<Button variant="dark">Dark</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('bg-[#2C3E2D]', 'text-white');
+  });
+
+  it('shows loading state with spinner', () => {
     render(<Button loading>Submit</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveTextContent('Loading...');
@@ -67,5 +79,23 @@ describe('Button Component', () => {
     render(<Button type="submit" data-testid="test-btn">Submit</Button>);
     const button = screen.getByTestId('test-btn');
     expect(button).toHaveAttribute('type', 'submit');
+  });
+
+  it('applies small size', () => {
+    render(<Button size="sm">Small</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('px-4', 'py-2');
+  });
+
+  it('applies large size', () => {
+    render(<Button size="lg">Large</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('px-8', 'py-4');
+  });
+
+  it('applies full width', () => {
+    render(<Button fullWidth>Full Width</Button>);
+    const button = screen.getByRole('button');
+    expect(button).toHaveClass('w-full');
   });
 });

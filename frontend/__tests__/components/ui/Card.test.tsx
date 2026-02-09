@@ -14,28 +14,64 @@ describe('Card Component', () => {
     expect(screen.getByText('Card content')).toBeInTheDocument();
   });
 
-  it('applies glassmorphism styling', () => {
+  it('applies default variant styling', () => {
     const { container } = render(<Card>Content</Card>);
-    const card = container.firstChild;
-    expect(card).toHaveClass('glass-card');
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('bg-white', 'border', 'rounded-xl');
   });
 
   it('applies additional className', () => {
     const { container } = render(<Card className="custom-class">Content</Card>);
-    const card = container.firstChild;
+    const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass('custom-class');
   });
 
-  it('has padding for content spacing', () => {
+  it('applies medium padding by default', () => {
     const { container } = render(<Card>Content</Card>);
-    const card = container.firstChild;
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('p-6');
+  });
+
+  it('applies small padding', () => {
+    const { container } = render(<Card padding="sm">Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('p-4');
+  });
+
+  it('applies large padding', () => {
+    const { container } = render(<Card padding="lg">Content</Card>);
+    const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass('p-8');
   });
 
-  it('has backdrop blur effect', () => {
-    const { container } = render(<Card>Content</Card>);
-    const card = container.firstChild;
-    expect(card).toHaveClass('backdrop-blur-2xl');
+  it('applies no padding', () => {
+    const { container } = render(<Card padding="none">Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).not.toHaveClass('p-4', 'p-6', 'p-8');
+  });
+
+  it('applies outlined variant', () => {
+    const { container } = render(<Card variant="outlined">Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('bg-transparent');
+  });
+
+  it('applies elevated variant with shadow', () => {
+    const { container } = render(<Card variant="elevated">Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('shadow-md');
+  });
+
+  it('applies dark variant', () => {
+    const { container } = render(<Card variant="dark">Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('bg-[#1A1A1A]', 'text-white');
+  });
+
+  it('applies hover effects when hover prop is true', () => {
+    const { container } = render(<Card hover>Content</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveClass('hover:shadow-lg', 'cursor-pointer');
   });
 
   it('renders nested components', () => {

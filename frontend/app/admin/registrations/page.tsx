@@ -102,16 +102,16 @@ export default function AdminRegistrationsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      pending: { color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', icon: Clock },
-      confirmed: { color: 'bg-green-500/20 text-green-300 border-green-500/30', icon: CheckCircle },
-      cancelled: { color: 'bg-red-500/20 text-red-300 border-red-500/30', icon: XCircle },
-      attended: { color: 'bg-blue-500/20 text-blue-300 border-blue-500/30', icon: CheckCircle },
+      pending: { color: 'bg-[var(--warning-muted)] text-[var(--warning)] border-[var(--warning)]/30', icon: Clock },
+      confirmed: { color: 'bg-[var(--success-muted)] text-[var(--success)] border-[var(--success)]/30', icon: CheckCircle },
+      cancelled: { color: 'bg-[var(--error-muted)] text-[var(--error)] border-[var(--error)]/30', icon: XCircle },
+      attended: { color: 'bg-[var(--info-muted)] text-[var(--info)] border-[var(--info)]/30', icon: CheckCircle },
     };
     const badge = badges[status as keyof typeof badges] || badges.pending;
     const Icon = badge.icon;
     
     return (
-      <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-lg text-sm font-semibold border ${badge.color}`}>
+      <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-lg text-sm font-medium border ${badge.color}`}>
         <Icon className="w-4 h-4" />
         <span className="capitalize">{status}</span>
       </span>
@@ -123,8 +123,8 @@ export default function AdminRegistrationsPage() {
       <PageLayout>
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#4ecdc4]" />
-          <p className="text-white/70 mt-4">Loading registrations...</p>
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[var(--accent-secondary)]" />
+          <p className="text-[var(--text-secondary)] mt-4">Loading registrations...</p>
         </div>
       </PageLayout>
     );
@@ -141,8 +141,8 @@ export default function AdminRegistrationsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Manage Registrations</h1>
-          <p className="text-white/70">Validate or refuse pending event registrations</p>
+          <h1 className="text-3xl md:text-4xl font-semibold text-[var(--text-primary)] mb-2">Manage Registrations</h1>
+          <p className="text-[var(--text-secondary)]">Validate or refuse pending event registrations</p>
         </div>
 
         {/* Filter Tabs */}
@@ -151,12 +151,11 @@ export default function AdminRegistrationsPage() {
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all whitespace-nowrap ${
+              className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
                 filter === tab
-                  ? 'bg-[#4ecdc4] text-white'
-                  : 'glass-card text-white/70 hover:text-white hover:bg-white/10'
+                  ? 'bg-[var(--accent-secondary)] text-[var(--text-inverse)]'
+                  : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-[var(--border-default)]'
               }`}
-              style={filter !== tab ? { background: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' } : {}}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -165,25 +164,24 @@ export default function AdminRegistrationsPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="glass-card p-4 rounded-xl mb-6" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
-            <p className="text-red-300">{error}</p>
+          <div className="bg-[var(--error-muted)] border border-[var(--error)]/30 p-4 rounded-lg mb-6">
+            <p className="text-[var(--error)]">{error}</p>
           </div>
         )}
 
         {/* Registrations List */}
         {registrations.length === 0 ? (
-          <div className="glass-card p-12 rounded-2xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255, 255, 255, 0.1)' }}>
-            <Clock className="w-16 h-16 mx-auto text-white/30 mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No Registrations Found</h3>
-            <p className="text-white/60">There are no {filter !== 'all' ? filter : ''} registrations at the moment.</p>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-12 rounded-xl text-center">
+            <Clock className="w-16 h-16 mx-auto text-[var(--text-tertiary)] mb-4" />
+            <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">No Registrations Found</h3>
+            <p className="text-[var(--text-secondary)]">There are no {filter !== 'all' ? filter : ''} registrations at the moment.</p>
           </div>
         ) : (
           <div className="space-y-4">
             {registrations.map((registration) => (
               <div
                 key={registration.id}
-                className="glass-card p-6 rounded-2xl hover:shadow-xl transition-all"
-                style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.15)' }}
+                className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl hover:border-[var(--border-strong)] transition-all"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   {/* Registration Info */}
@@ -192,31 +190,31 @@ export default function AdminRegistrationsPage() {
                     <div>{getStatusBadge(registration.status)}</div>
                     
                     {/* Event */}
-                    <div className="flex items-center space-x-2 text-white">
-                      <Calendar className="w-5 h-5 text-[#4ecdc4]" />
-                      <span className="font-semibold">{registration.event.title}</span>
+                    <div className="flex items-center space-x-2 text-[var(--text-primary)]">
+                      <Calendar className="w-5 h-5 text-[var(--accent-secondary)]" />
+                      <span className="font-medium">{registration.event.title}</span>
                     </div>
 
                     {/* User */}
-                    <div className="flex items-center space-x-2 text-white/80">
-                      <User className="w-4 h-4 text-white/50" />
+                    <div className="flex items-center space-x-2 text-[var(--text-secondary)]">
+                      <User className="w-4 h-4 text-[var(--text-tertiary)]" />
                       <span>{registration.user.firstName} {registration.user.lastName}</span>
                     </div>
 
-                    <div className="flex items-center space-x-2 text-white/60 text-sm">
+                    <div className="flex items-center space-x-2 text-[var(--text-tertiary)] text-sm">
                       <Mail className="w-4 h-4" />
                       <span>{registration.user.email}</span>
                     </div>
 
                     {/* Date */}
-                    <div className="text-white/50 text-sm">
+                    <div className="text-[var(--text-tertiary)] text-sm">
                       Registered: {new Date(registration.registeredAt).toLocaleDateString()} at {new Date(registration.registeredAt).toLocaleTimeString()}
                     </div>
 
                     {/* Notes */}
                     {registration.notes && (
-                      <div className="glass-card p-3 rounded-lg mt-2" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                        <p className="text-white/70 text-sm"><strong>Notes:</strong> {registration.notes}</p>
+                      <div className="bg-[var(--bg-tertiary)] p-3 rounded-lg mt-2">
+                        <p className="text-[var(--text-secondary)] text-sm"><strong>Notes:</strong> {registration.notes}</p>
                       </div>
                     )}
                   </div>
@@ -227,8 +225,7 @@ export default function AdminRegistrationsPage() {
                       <button
                         onClick={() => handleValidate(registration.id)}
                         disabled={processingId === registration.id}
-                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.8) 0%, rgba(74, 222, 128, 0.8) 100%)', color: 'white' }}
+                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--success)] text-[var(--text-inverse)]"
                       >
                         {processingId === registration.id ? (
                           <Loader2 className="w-5 h-5 animate-spin" />
@@ -243,8 +240,7 @@ export default function AdminRegistrationsPage() {
                       <button
                         onClick={() => handleRefuse(registration.id)}
                         disabled={processingId === registration.id}
-                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5' }}
+                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--error-muted)] border border-[var(--error)]/40 text-[var(--error)]"
                       >
                         {processingId === registration.id ? (
                           <Loader2 className="w-5 h-5 animate-spin" />

@@ -1,42 +1,30 @@
 /**
  * Input Component
  * 
- * Reusable form input with label, icon, and error state support.
- * Provides consistent styling and accessibility across forms.
+ * Premium form input with elegant styling and smooth focus states.
+ * Supports dark/light themes via CSS variables.
+ * Part of the EventBook design system.
  * 
  * @component
  */
 
-import { InputHTMLAttributes, ReactNode } from 'react';
+import { InputHTMLAttributes, ReactNode, useState } from 'react';
 
 /**
  * Input Props Interface
- * 
- * Extends standard HTML input attributes with custom props.
  */
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;      // Accessible label text
-  icon: ReactNode;    // Leading icon (e.g., Mail, Lock)
-  error?: string;     // Error message to display
+  label: string;
+  icon?: ReactNode;
+  error?: string;
+  hint?: string;
 }
 
 /**
  * Input Component
  * 
- * Form input field with consistent design and accessibility features.
- * 
- * Features:
- * - Accessible label with htmlFor association
- * - Leading icon for visual context
- * - Error state with message display
- * - Focus ring for keyboard navigation
- * - Full HTML input compatibility
- * 
- * @param label - Text label for the input field
- * @param icon - Icon element to display before input
- * @param error - Optional error message
- * @param id - HTML id for label association
- * @param props - Any standard HTML input attributes
+ * Elegant, minimal input field with optional icon and error state.
+ * All colors use CSS variables for seamless theme switching.
  * 
  * @example
  * ```tsx
@@ -50,42 +38,80 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  * />
  * ```
  */
-export default function Input({ label, icon, error, id, ...props }: InputProps) {
+export default function Input({ label, icon, error, hint, id, className = '', ...props }: InputProps) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
-    <div>
-      {/* Accessible Label */}
-      <label htmlFor={id} className="block text-sm font-medium mb-2 text-white">
+    <div className="w-full">
+      {/* Label */}
+      <label 
+        htmlFor={id} 
+        className="block text-sm font-medium mb-2 text-[var(--text-primary)]"
+      >
         {label}
       </label>
       
       <div className="relative">
         {/* Leading Icon */}
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50">
-          {icon}
-        </div>
+        {icon && (
+          <div className={`
+            absolute left-3.5 top-1/2 transform -translate-y-1/2 
+            transition-colors duration-200
+            ${isFocused ? 'text-[var(--accent-primary)]' : 'text-[var(--text-tertiary)]'}
+            ${error ? 'text-[var(--error)]' : ''}
+          `}>
+            {icon}
+          </div>
+        )}
         
-        {/* Input Field - Glassmorphism */}
+        {/* Input Field */}
         <input
           id={id}
-          className="glass-card w-full pl-11 pr-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-          style={{ 
-            background: 'rgba(255, 255, 255, 0.12)',
-            borderColor: error ? 'rgba(78, 205, 196, 0.5)' : 'rgba(255, 255, 255, 0.25)',
-          }}
+          className={`
+            w-full 
+            bg-[var(--bg-elevated)]
+            ${icon ? 'pl-11' : 'pl-4'} pr-4 py-3
+            rounded-lg
+            border 
+            transition-all duration-200
+            text-[var(--text-primary)] 
+            placeholder-[var(--text-tertiary)]
+            focus:outline-none
+            ${error 
+              ? 'border-[var(--error)] focus:border-[var(--error)] focus:ring-2 focus:ring-[var(--error-muted)]' 
+              : `border-[var(--border-default)] 
+                 hover:border-[var(--border-strong)] 
+                 focus:border-[var(--accent-primary)] 
+                 focus:ring-2 focus:ring-[var(--accent-primary-muted)]`
+            }
+            ${className}
+          `}
           onFocus={(e) => {
-            e.currentTarget.style.borderColor = '#4ecdc4';
-            e.currentTarget.style.boxShadow = '0 0 0 3px rgba(78, 205, 196, 0.2)';
+            setIsFocused(true);
+            props.onFocus?.(e);
           }}
           onBlur={(e) => {
-            if (!error) e.currentTarget.style.borderColor = 'var(--border)';
-            e.currentTarget.style.boxShadow = 'none';
+            setIsFocused(false);
+            props.onBlur?.(e);
           }}
           {...props}
         />
-        
-        {/* Error Message */}
-        {error && <p className="text-sm mt-1" style={{ color: '#4ecdc4' }}>{error}</p>}
       </div>
+      
+      {/* Error Message */}
+      {error && (
+        <p className="text-sm mt-2 text-[var(--error)] flex items-center gap-1.5">
+          <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {error}
+        </p>
+      )}
+      
+      {/* Hint Text */}
+      {hint && !error && (
+        <p className="text-sm mt-2 text-[var(--text-tertiary)]">{hint}</p>
+      )}
     </div>
   );
 }

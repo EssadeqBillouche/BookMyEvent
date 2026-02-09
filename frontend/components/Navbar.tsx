@@ -1,14 +1,8 @@
 /**
  * Navigation Bar Component
  * 
- * Global navigation component displayed across all pages.
- * Shows different content based on authentication state.
- * 
- * Features:
- * - Logo with home link
- * - User greeting when authenticated
- * - Login/Signup buttons when not authenticated
- * - Logout functionality
+ * Premium navigation with elegant styling and theme support.
+ * Part of the EventBook design system.
  * 
  * @component
  */
@@ -19,26 +13,22 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react';
 import Logo from './Logo';
+import ThemeToggle from './ui/ThemeToggle';
 
 /**
  * Navbar Component
  * 
- * Responsive navigation bar with authentication-aware UI.
- * Uses sticky positioning to remain visible during scroll.
- * Features dynamic opacity that increases on scroll for better visibility.
- * 
- * @returns JSX navigation element
+ * Elegant, minimal navigation bar with authentication-aware UI.
+ * Includes theme toggle and smooth scroll effects.
  */
 export default function Navbar() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  /**
-   * Track scroll position to update navbar opacity
-   */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -48,14 +38,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  /**
-   * Handle Logout
-   * 
-   * Logs out user and redirects to home page.
-   * Clears HTTP-only cookie via backend API call.
-   * 
-   * @async
-   */
   const handleLogout = async () => {
     await logout();
     router.push('/');
@@ -63,52 +45,43 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`glass-card sticky transition-all duration-300 ease-in-out z-50 
-        ${scrolled ? 'top-0 left-0 w-full mx-0 rounded-lg h-20 shadow-lg shadow-black/20' : 'top-4 mx-4 rounded-2xl'}
+      className={`
+        sticky top-0 z-50 transition-all duration-300
+        ${scrolled 
+          ? 'bg-[var(--bg-primary)]/95 backdrop-blur-md shadow-[var(--shadow-sm)] border-b border-[var(--border-subtle)]' 
+          : 'bg-transparent'
+        }
       `}
-      style={{
-        background: 'rgba(29, 48, 63, 0.98)',
-        borderColor: 'rgba(78, 205, 196, 0.3)',
-        backdropFilter: 'blur(20px)',
-        margin: scrolled ? 0 : undefined,
-        borderRadius: scrolled ? '0.75rem' : undefined,
-        left: scrolled ? 0 : undefined,
-        right: scrolled ? 0 : undefined,
-        width: scrolled ? '100vw' : undefined,
-        height: scrolled ? '5rem' : undefined,
-        transition: 'all 0.3s cubic-bezier(0.4,0,0.2,1)',
-      }}
     >
-      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${scrolled ? 'h-20' : ''}`}>
-        <div className={`flex justify-between items-center ${scrolled ? 'h-20' : 'h-16'}`}>
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex justify-between items-center h-16">
           {/* Brand Logo */}
           <Logo />
           
-          {/* Navigation Actions */}
-          <div className="flex items-center space-x-4">
-            {/* Public Events Link - visible to everyone */}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-1">
+            {/* Public Events Link */}
             <Link
               href="/events"
-              className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+              className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg hover:bg-[var(--bg-hover)]"
             >
-              Events
+              Browse Events
             </Link>
 
             {user ? (
-              /* Authenticated User UI */
               <>
                 {/* Admin Links */}
                 {user.role === 'admin' && (
                   <>
                     <Link
                       href="/admin/dashboard"
-                      className="px-4 py-2 font-medium transition-all rounded-lg text-[#4ecdc4] hover:bg-[#4ecdc4]/10"
+                      className="px-4 py-2 text-sm font-medium text-[var(--accent-primary)] hover:bg-[var(--accent-primary-muted)] transition-colors rounded-lg"
                     >
                       Admin
                     </Link>
                     <Link
                       href="/admin/events"
-                      className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                      className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg hover:bg-[var(--bg-hover)]"
                     >
                       Manage Events
                     </Link>
@@ -118,48 +91,138 @@ export default function Navbar() {
                 {/* Dashboard Link */}
                 <Link
                   href={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
-                  className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg hover:bg-[var(--bg-hover)]"
                 >
                   Dashboard
                 </Link>
+
+                <div className="w-px h-6 bg-[var(--border-default)] mx-2" />
+                
+                {/* Theme Toggle */}
+                <ThemeToggle size="sm" />
                 
                 {/* Welcome Message */}
-                <span className="text-sm text-white/70 hidden sm:inline">
-                  Welcome, <span className="font-semibold text-white">{user.firstName}</span>
+                <span className="text-sm text-[var(--text-tertiary)] px-2">
+                  Hi, <span className="font-medium text-[var(--text-primary)]">{user.firstName}</span>
                 </span>
                 
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="glass-card flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 text-white hover:shadow-lg"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg hover:bg-[var(--bg-hover)]"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Logout</span>
                 </button>
               </>
             ) : (
-              /* Guest User UI */
               <>
+                {/* Theme Toggle */}
+                <ThemeToggle size="sm" className="mr-2" />
+                
                 {/* Login Link */}
                 <Link 
                   href="/login" 
-                  className="px-4 py-2 font-medium transition-all rounded-lg text-white hover:bg-white/10" 
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors rounded-lg hover:bg-[var(--bg-hover)]"
                 >
-                  Login
+                  Log in
                 </Link>
                 
                 {/* Sign Up Button */}
                 <Link
                   href="/register"
-                  className="glass-card px-6 py-2 text-white rounded-lg transition-all duration-200 font-medium hover:shadow-lg hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.7) 0%, rgba(110, 231, 222, 0.7) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+                  className="ml-2 px-5 py-2 text-sm font-medium text-[var(--text-inverse)] bg-[var(--accent-primary)] rounded-lg transition-all hover:bg-[var(--accent-primary-hover)] hover:shadow-[var(--shadow-md)]"
                 >
-                  Sign Up
+                  Get Started
                 </Link>
               </>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle size="sm" />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-[var(--border-default)] animate-fade-in">
+            <div className="flex flex-col gap-1">
+              <Link
+                href="/events"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
+              >
+                Browse Events
+              </Link>
+
+              {user ? (
+                <>
+                  {user.role === 'admin' && (
+                    <>
+                      <Link
+                        href="/admin/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="px-4 py-3 text-sm font-medium text-[var(--accent-primary)] hover:bg-[var(--accent-primary-muted)] rounded-lg transition-colors"
+                      >
+                        Admin Dashboard
+                      </Link>
+                      <Link
+                        href="/admin/events"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="px-4 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
+                      >
+                        Manage Events
+                      </Link>
+                    </>
+                  )}
+                  <Link
+                    href={user.role === 'admin' ? '/admin/dashboard' : '/dashboard'}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <div className="h-px bg-[var(--border-default)] my-2" />
+                  <div className="px-4 py-2 text-sm text-[var(--text-tertiary)]">
+                    Signed in as <span className="font-medium text-[var(--text-primary)]">{user.firstName}</span>
+                  </div>
+                  <button
+                    onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
+                    className="flex items-center gap-2 px-4 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors text-left w-full"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] rounded-lg transition-colors"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="mx-4 mt-2 px-4 py-3 text-sm font-medium text-[var(--text-inverse)] bg-[var(--accent-primary)] rounded-lg text-center transition-all hover:bg-[var(--accent-primary-hover)]"
+                  >
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

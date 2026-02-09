@@ -1,82 +1,92 @@
 /**
  * Authentication Layout Component
  * 
- * Specialized layout for authentication pages (login, register).
- * Provides centered card design with branding and legal text.
+ * Premium layout for authentication pages with elegant styling.
+ * Supports dark/light themes via CSS variables.
+ * Part of the EventBook design system.
  * 
  * @component
  */
 
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import Logo from '../Logo';
+import ThemeToggle from '../ui/ThemeToggle';
 
-/**
- * Auth Layout Props
- */
 interface AuthLayoutProps {
-  children: ReactNode;  // Form content (login/register form)
-  title: string;        // Page title (e.g., "Welcome Back")
-  subtitle: string;     // Descriptive subtitle
+  children: ReactNode;
+  title: string;
+  subtitle: string;
 }
 
 /**
  * Auth Layout Component
  * 
- * Centered layout for authentication flows with consistent branding.
- * 
- * Features:
- * - Gradient background matching brand colors
- * - Centered card design for focus
- * - Logo placement for brand recognition
- * - Legal disclaimer footer
- * - Responsive padding
- * 
- * @param children - Form content to be displayed
- * @param title - Main heading text
- * @param subtitle - Supporting text below title
- * 
- * @example
- * ```tsx
- * <AuthLayout title="Welcome Back" subtitle="Sign in to your account">
- *   <LoginForm />
- * </AuthLayout>
- * ```
+ * Elegant, minimal centered layout for authentication flows.
  */
 export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative">
-      {/* Animated background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-[#4ecdc4]/30 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-tr from-[#4ecdc4]/25 to-transparent rounded-full blur-3xl" style={{ animationDelay: '1s' }}></div>
-      </div>
-      
-      <div className="max-w-md w-full relative z-10">
-        {/* Brand Logo */}
-        <div className="flex justify-center mb-10">
+    <div className="min-h-screen bg-[var(--bg-primary)] flex flex-col transition-colors duration-300">
+      {/* Top Navigation */}
+      <nav className="p-6">
+        <div className="max-w-md mx-auto flex justify-between items-center">
           <Logo />
+          <div className="flex items-center gap-3">
+            <ThemeToggle size="sm" />
+            <Link 
+              href="/" 
+              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors link-underline"
+            >
+              Back to home
+            </Link>
+          </div>
         </div>
+      </nav>
+      
+      {/* Main Content */}
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="max-w-md w-full animate-fade-in-up">
+          {/* Auth Card */}
+          <div 
+            className="
+              bg-[var(--bg-elevated)] 
+              border border-[var(--border-default)] 
+              rounded-xl p-8 
+              shadow-[var(--shadow-md)]
+              transition-all duration-300
+            "
+          >
+            {/* Page Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-semibold text-[var(--text-primary)] mb-2 tracking-tight">
+                {title}
+              </h1>
+              <p className="text-[var(--text-secondary)]">{subtitle}</p>
+            </div>
 
-        {/* Auth Card - Glassmorphism Popup Modal */}
-        <div className="glass-card p-10 backdrop-blur-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.5)' }}>
-          {/* Page Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2 text-white drop-shadow-lg">{title}</h1>
-            <p className="text-white/70">{subtitle}</p>
+            {/* Form Content */}
+            {children}
           </div>
 
-          {/* Form Content */}
-          {children}
+          {/* Legal Disclaimer */}
+          <p className="text-center text-xs mt-6 text-[var(--text-tertiary)]">
+            By continuing, you agree to our{' '}
+            <Link 
+              href="/terms" 
+              className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+            >
+              Terms of Service
+            </Link>
+            {' '}and{' '}
+            <Link 
+              href="/privacy" 
+              className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+            >
+              Privacy Policy
+            </Link>
+          </p>
         </div>
-
-        {/* Legal Disclaimer */}
-        <p className="text-center text-sm mt-6 text-white/60">
-          By continuing, you agree to our{' '}
-          <span className="font-medium text-white/80 hover:text-white cursor-pointer">Terms of Service</span>
-          {' '}and{' '}
-          <span className="font-medium text-white/80 hover:text-white cursor-pointer">Privacy Policy</span>
-        </p>
-      </div>
+      </main>
     </div>
   );
 }

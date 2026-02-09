@@ -88,9 +88,9 @@ export default function EventsPage() {
 
   const getAvailabilityColor = (event: Event) => {
     const percentFilled = (event.registeredCount / event.capacity) * 100;
-    if (percentFilled >= 90) return 'text-red-400';
-    if (percentFilled >= 70) return 'text-yellow-400';
-    return 'text-green-400';
+    if (percentFilled >= 90) return 'text-[var(--error)]';
+    if (percentFilled >= 70) return 'text-[var(--warning)]';
+    return 'text-[var(--success)]';
   };
 
   const getAvailabilityText = (event: Event) => {
@@ -111,40 +111,40 @@ export default function EventsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Discover <span className="text-[#4ecdc4]">Events</span>
+          <h1 className="text-4xl md:text-5xl font-semibold text-[var(--text-primary)] mb-4 tracking-tight">
+            Discover <span className="text-[var(--accent-secondary)]">Events</span>
           </h1>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
+          <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
             Find and register for amazing events happening near you
           </p>
         </div>
 
         {/* Search and Filters */}
-        <div className="glass-card p-6 mb-8" style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.15)' }}>
+        <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-xl p-6 mb-8 shadow-[var(--shadow-sm)]">
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[var(--text-tertiary)]" />
               <input
                 type="text"
                 placeholder="Search events..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#4ecdc4]/50 focus:border-[#4ecdc4]"
+                className="w-full pl-12 pr-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 focus:border-[var(--accent-primary)] transition-all"
               />
             </div>
 
             {/* Price Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-white/50" />
+              <Filter className="w-5 h-5 text-[var(--text-tertiary)]" />
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value as 'all' | 'free' | 'paid')}
-                className="px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-[#4ecdc4]/50"
+                className="px-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 transition-all"
               >
-                <option value="all" className="bg-[#1d303f]">All Events</option>
-                <option value="free" className="bg-[#1d303f]">Free Events</option>
-                <option value="paid" className="bg-[#1d303f]">Paid Events</option>
+                <option value="all">All Events</option>
+                <option value="free">Free Events</option>
+                <option value="paid">Paid Events</option>
               </select>
             </div>
 
@@ -152,11 +152,11 @@ export default function EventsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'date' | 'price' | 'popularity')}
-              className="px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-[#4ecdc4]/50"
+              className="px-4 py-3 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 transition-all"
             >
-              <option value="date" className="bg-[#1d303f]">Sort by Date</option>
-              <option value="price" className="bg-[#1d303f]">Sort by Price</option>
-              <option value="popularity" className="bg-[#1d303f]">Sort by Popularity</option>
+              <option value="date">Sort by Date</option>
+              <option value="price">Sort by Price</option>
+              <option value="popularity">Sort by Popularity</option>
             </select>
           </div>
         </div>
@@ -164,16 +164,16 @@ export default function EventsPage() {
         {/* Error Message */}
         {error && (
           <div className="text-center py-8">
-            <p className="text-red-400">{error}</p>
+            <p className="text-[var(--error)]">{error}</p>
           </div>
         )}
 
         {/* Events Grid */}
         {filteredEvents.length === 0 && !error ? (
           <div className="text-center py-16">
-            <Calendar className="w-16 h-16 text-white/30 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No events found</h3>
-            <p className="text-white/60">Try adjusting your search or filters</p>
+            <Calendar className="w-16 h-16 text-[var(--text-tertiary)] mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">No events found</h3>
+            <p className="text-[var(--text-secondary)]">Try adjusting your search or filters</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -183,10 +183,7 @@ export default function EventsPage() {
                 href={`/events/${event.id}`}
                 className="group"
               >
-                <div
-                  className="glass-card overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] h-full flex flex-col"
-                  style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.15)' }}
-                >
+                <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-xl overflow-hidden hover:shadow-[var(--shadow-lg)] transition-all duration-300 hover:border-[var(--border-strong)] h-full flex flex-col">
                   {/* Event Image */}
                   <div className="relative h-48 overflow-hidden">
                     {event.imageUrl ? (
@@ -194,52 +191,52 @@ export default function EventsPage() {
                         src={event.imageUrl}
                         alt={event.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                         unoptimized
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-[#4ecdc4]/30 to-[#6ee7de]/30 flex items-center justify-center">
-                        <Calendar className="w-12 h-12 text-white/50" />
+                      <div className="w-full h-full bg-gradient-to-br from-[var(--accent-secondary)]/20 to-[var(--accent-primary)]/20 flex items-center justify-center">
+                        <Calendar className="w-12 h-12 text-[var(--text-tertiary)]" />
                       </div>
                     )}
                     
                     {/* Featured Badge */}
                     {event.isFeatured && (
-                      <div className="absolute top-3 left-3 flex items-center gap-1 px-3 py-1 rounded-full bg-[#ffd93d]/90 text-black text-sm font-semibold">
+                      <div className="absolute top-3 left-3 flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--accent-primary)] text-[var(--text-inverse)] text-sm font-medium">
                         <Star className="w-4 h-4" />
                         Featured
                       </div>
                     )}
 
                     {/* Price Badge */}
-                    <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white text-sm font-semibold">
+                    <div className="absolute top-3 right-3 px-3 py-1 rounded-full bg-[var(--bg-primary)]/90 backdrop-blur-sm text-[var(--text-primary)] text-sm font-semibold border border-[var(--border-default)]">
                       {event.price === 0 ? 'Free' : `$${event.price}`}
                     </div>
                   </div>
 
                   {/* Event Details */}
                   <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#4ecdc4] transition-colors line-clamp-2">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-primary)] transition-colors line-clamp-2">
                       {event.title}
                     </h3>
                     
-                    <p className="text-white/60 text-sm mb-4 line-clamp-2 flex-1">
+                    <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-2 flex-1">
                       {event.description}
                     </p>
 
                     <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2 text-white/70">
-                        <Calendar className="w-4 h-4 text-[#4ecdc4]" />
+                      <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                        <Calendar className="w-4 h-4 text-[var(--accent-secondary)]" />
                         <span>{formatDate(event.startDate)} at {formatTime(event.startDate)}</span>
                       </div>
                       
-                      <div className="flex items-center gap-2 text-white/70">
-                        <MapPin className="w-4 h-4 text-[#4ecdc4]" />
+                      <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+                        <MapPin className="w-4 h-4 text-[var(--accent-secondary)]" />
                         <span className="truncate">{event.location}</span>
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-[#4ecdc4]" />
+                        <Users className="w-4 h-4 text-[var(--accent-secondary)]" />
                         <span className={getAvailabilityColor(event)}>
                           {getAvailabilityText(event)}
                         </span>
@@ -248,16 +245,15 @@ export default function EventsPage() {
 
                     {/* Progress Bar */}
                     <div className="mt-4">
-                      <div className="flex justify-between text-xs text-white/50 mb-1">
+                      <div className="flex justify-between text-xs text-[var(--text-tertiary)] mb-1">
                         <span>{event.registeredCount} registered</span>
                         <span>{event.capacity} capacity</span>
                       </div>
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-2 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
                         <div
-                          className="h-full rounded-full transition-all duration-500"
+                          className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-[var(--accent-secondary)] to-[var(--accent-primary)]"
                           style={{
                             width: `${Math.min((event.registeredCount / event.capacity) * 100, 100)}%`,
-                            background: 'linear-gradient(90deg, #4ecdc4 0%, #6ee7de 100%)',
                           }}
                         />
                       </div>
@@ -271,7 +267,7 @@ export default function EventsPage() {
 
         {/* Results Count */}
         {filteredEvents.length > 0 && (
-          <div className="text-center mt-8 text-white/50">
+          <div className="text-center mt-8 text-[var(--text-tertiary)]">
             Showing {filteredEvents.length} of {events.length} events
           </div>
         )}

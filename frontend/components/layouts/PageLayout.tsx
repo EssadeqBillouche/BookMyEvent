@@ -1,22 +1,33 @@
+/**
+ * Page Layout Component
+ * 
+ * Premium page wrapper with seamless theme support.
+ * Supports dark/light themes via CSS variables.
+ * Part of the EventBook design system.
+ * 
+ * @component
+ */
+
 import { ReactNode } from 'react';
 
 interface PageLayoutProps {
   children: ReactNode;
+  className?: string;
 }
 
-export default function PageLayout({ children }: PageLayoutProps) {
+export default function PageLayout({ children, className = '' }: PageLayoutProps) {
   return (
-    <div className="min-h-screen relative" style={{ background: '#1d303f' }}>
-      {/* Animated background orbs - same as auth pages */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-[#4ecdc4]/25 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-tr from-[#4ecdc4]/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-gradient-to-br from-[#2a4456]/40 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
-      {/* Content */}
-      <div className="relative z-10">
-        {children}
-      </div>
+    <div 
+      className={`
+        min-h-screen 
+        page-transition
+        bg-[var(--bg-primary)] 
+        text-[var(--text-primary)]
+        transition-colors duration-300
+        ${className}
+      `}
+    >
+      {children}
     </div>
   );
 }

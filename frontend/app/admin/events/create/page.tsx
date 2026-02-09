@@ -88,33 +88,33 @@ function CreateEventContent() {
         <div className="mb-8">
           <Link
             href="/admin/events"
-            className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-4"
+            className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Events</span>
           </Link>
-          <h1 className="text-4xl font-bold text-white">Create New Event</h1>
-          <p className="text-white/70 mt-2">Fill in the details to create a new event</p>
+          <h1 className="text-4xl font-bold text-[var(--text-primary)]">Create New Event</h1>
+          <p className="text-[var(--text-secondary)] mt-2">Fill in the details to create a new event</p>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 rounded-lg glass-card" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: 'rgba(239, 68, 68, 0.4)' }}>
-            <p className="text-red-400">{error}</p>
+          <div className="mb-6 p-4 rounded-lg bg-[var(--error-muted)] border border-[var(--error)]/40">
+            <p className="text-[var(--error)]">{error}</p>
           </div>
         )}
 
         {/* Form */}
         <form onSubmit={(e) => handleSubmit(e, false)} className="space-y-6">
           {/* Basic Info */}
-          <div className="glass-card p-6 rounded-2xl space-y-6" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-[#4ecdc4]" />
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl space-y-6">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] flex items-center gap-2">
+              <FileText className="w-5 h-5 text-[var(--accent-secondary)]" />
               Basic Information
             </h2>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-white">
+              <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 Event Title *
               </label>
               <input
@@ -122,8 +122,7 @@ function CreateEventContent() {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-                style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
                 placeholder="Enter event title"
                 required
                 minLength={3}
@@ -132,7 +131,7 @@ function CreateEventContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-white">
+              <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 Description *
               </label>
               <textarea
@@ -140,8 +139,7 @@ function CreateEventContent() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40 resize-none"
-                style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)] resize-none"
                 placeholder="Describe your event..."
                 required
                 minLength={10}
@@ -149,7 +147,7 @@ function CreateEventContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-white">
+              <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 <ImageIcon className="w-4 h-4 inline mr-1" />
                 Image URL (Optional)
               </label>
@@ -158,23 +156,22 @@ function CreateEventContent() {
                 name="imageUrl"
                 value={formData.imageUrl}
                 onChange={handleChange}
-                className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-                style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
           </div>
 
           {/* Date & Time */}
-          <div className="glass-card p-6 rounded-2xl space-y-6" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#4ecdc4]" />
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl space-y-6">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-[var(--accent-secondary)]" />
               Date & Time
             </h2>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2 text-white">
+                <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                   Start Date & Time *
                 </label>
                 <input
@@ -183,14 +180,13 @@ function CreateEventContent() {
                   value={formData.startDate}
                   onChange={handleChange}
                   min={minDateTime}
-                  className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white"
-                  style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-white">
+                <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                   End Date & Time *
                 </label>
                 <input
@@ -199,8 +195,7 @@ function CreateEventContent() {
                   value={formData.endDate}
                   onChange={handleChange}
                   min={formData.startDate || minDateTime}
-                  className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white"
-                  style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
                   required
                 />
               </div>
@@ -208,14 +203,14 @@ function CreateEventContent() {
           </div>
 
           {/* Location & Capacity */}
-          <div className="glass-card p-6 rounded-2xl space-y-6" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-[#4ecdc4]" />
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl space-y-6">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-[var(--accent-secondary)]" />
               Location & Capacity
             </h2>
 
             <div>
-              <label className="block text-sm font-medium mb-2 text-white">
+              <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                 Location *
               </label>
               <input
@@ -223,8 +218,7 @@ function CreateEventContent() {
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white placeholder-white/40"
-                style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:border-[var(--accent-primary)]"
                 placeholder="Enter venue address or 'Online'"
                 required
                 maxLength={500}
@@ -233,7 +227,7 @@ function CreateEventContent() {
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2 text-white">
+                <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                   <Users className="w-4 h-4 inline mr-1" />
                   Capacity * (1-100,000)
                 </label>
@@ -244,15 +238,14 @@ function CreateEventContent() {
                   onChange={handleChange}
                   min={1}
                   max={100000}
-                  className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white"
-                  style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
                   required
                 />
-                <p className="text-white/50 text-xs mt-1">Maximum number of attendees</p>
+                <p className="text-[var(--text-tertiary)] text-xs mt-1">Maximum number of attendees</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2 text-white">
+                <label className="block text-sm font-medium mb-2 text-[var(--text-primary)]">
                   <DollarSign className="w-4 h-4 inline mr-1" />
                   Price ($)
                 </label>
@@ -263,17 +256,16 @@ function CreateEventContent() {
                   onChange={handleChange}
                   min={0}
                   step={0.01}
-                  className="glass-card w-full px-4 py-3 rounded-lg outline-none transition-all text-white"
-                  style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                  className="w-full px-4 py-3 rounded-lg outline-none transition-all bg-[var(--bg-secondary)] border border-[var(--border-default)] text-[var(--text-primary)] focus:border-[var(--accent-primary)]"
                 />
-                <p className="text-white/50 text-xs mt-1">Leave as 0 for free events</p>
+                <p className="text-[var(--text-tertiary)] text-xs mt-1">Leave as 0 for free events</p>
               </div>
             </div>
           </div>
 
           {/* Options */}
-          <div className="glass-card p-6 rounded-2xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <h2 className="text-xl font-semibold text-white mb-4">Options</h2>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-4">Options</h2>
             
             <label className="flex items-center gap-3 cursor-pointer">
               <input
@@ -281,9 +273,9 @@ function CreateEventContent() {
                 name="isFeatured"
                 checked={formData.isFeatured}
                 onChange={handleCheckboxChange}
-                className="w-5 h-5 rounded border-2 border-white/30 bg-transparent checked:bg-[#4ecdc4] checked:border-[#4ecdc4] transition-all"
+                className="w-5 h-5 rounded border-2 border-[var(--border-default)] bg-transparent checked:bg-[var(--accent-secondary)] checked:border-[var(--accent-secondary)] transition-all"
               />
-              <span className="text-white">Feature this event on homepage</span>
+              <span className="text-[var(--text-primary)]">Feature this event on homepage</span>
             </label>
           </div>
 
@@ -292,8 +284,7 @@ function CreateEventContent() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 glass-card flex items-center justify-center gap-2 px-6 py-4 text-white rounded-xl transition-all duration-300 font-semibold hover:scale-105"
-              style={{ background: 'rgba(255, 255, 255, 0.15)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-[var(--text-primary)] bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-lg transition-all duration-300 font-semibold hover:bg-[var(--bg-hover)]"
             >
               <Save className="w-5 h-5" />
               {loading ? 'Saving...' : 'Save as Draft'}
@@ -303,8 +294,7 @@ function CreateEventContent() {
               type="button"
               onClick={(e) => handleSubmit(e, true)}
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-white rounded-xl transition-all duration-300 font-semibold hover:scale-105 hover:shadow-2xl"
-              style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-[var(--text-inverse)] bg-[var(--accent-primary)] rounded-lg transition-all duration-300 font-semibold hover:bg-[var(--accent-primary-hover)]"
             >
               <Eye className="w-5 h-5" />
               {loading ? 'Publishing...' : 'Save & Publish'}

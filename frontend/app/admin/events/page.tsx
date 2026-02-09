@@ -70,15 +70,15 @@ function AdminEventsContent() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'published':
-        return 'bg-[#4ecdc4]/20 text-[#4ecdc4] border-[#4ecdc4]/30';
+        return 'bg-[var(--success-muted)] text-[var(--success)] border-[var(--success)]/30';
       case 'draft':
-        return 'bg-[#ffd93d]/20 text-[#ffd93d] border-[#ffd93d]/30';
+        return 'bg-[var(--warning-muted)] text-[var(--warning)] border-[var(--warning)]/30';
       case 'cancelled':
-        return 'bg-red-500/20 text-red-400 border-red-500/30';
+        return 'bg-[var(--error-muted)] text-[var(--error)] border-[var(--error)]/30';
       case 'completed':
-        return 'bg-white/20 text-white/70 border-white/30';
+        return 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] border-[var(--border-default)]';
       default:
-        return 'bg-white/10 text-white/60';
+        return 'bg-[var(--bg-tertiary)] text-[var(--text-tertiary)]';
     }
   };
 
@@ -97,7 +97,7 @@ function AdminEventsContent() {
       <PageLayout>
         <Navbar />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center text-white/60">Loading events...</div>
+          <div className="text-center text-[var(--text-secondary)]">Loading events...</div>
         </main>
       </PageLayout>
     );
@@ -111,13 +111,12 @@ function AdminEventsContent() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2">Event Management</h1>
-            <p className="text-white/70">Create and manage events for your platform</p>
+            <h1 className="text-3xl md:text-4xl font-semibold text-[var(--text-primary)] mb-2">Event Management</h1>
+            <p className="text-[var(--text-secondary)]">Create and manage events for your platform</p>
           </div>
           <Link
             href="/admin/events/create"
-            className="group glass-card flex items-center space-x-2 px-6 py-3 text-white rounded-xl transition-all duration-300 font-semibold hover:scale-105 hover:shadow-2xl"
-            style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)', borderColor: 'rgba(78, 205, 196, 0.4)' }}
+            className="flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg transition-all duration-300 font-medium hover:bg-[var(--accent-primary-hover)] hover:shadow-lg"
           >
             <Plus className="w-5 h-5" />
             <span>Create Event</span>
@@ -126,41 +125,40 @@ function AdminEventsContent() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 rounded-lg glass-card" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', borderColor: 'rgba(239, 68, 68, 0.4)' }}>
-            <p className="text-red-400">{error}</p>
+          <div className="mb-6 p-4 rounded-lg bg-[var(--error-muted)] border border-[var(--error)]/40">
+            <p className="text-[var(--error)]">{error}</p>
           </div>
         )}
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="glass-card p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <p className="text-white/60 text-sm">Total Events</p>
-            <p className="text-3xl font-bold text-white">{events.length}</p>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 rounded-xl">
+            <p className="text-[var(--text-secondary)] text-sm">Total Events</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{events.length}</p>
           </div>
-          <div className="glass-card p-4 rounded-xl" style={{ background: 'rgba(78, 205, 196, 0.15)', borderColor: 'rgba(78, 205, 196, 0.3)' }}>
-            <p className="text-[#4ecdc4] text-sm">Published</p>
-            <p className="text-3xl font-bold text-white">{events.filter(e => e.status === 'published').length}</p>
+          <div className="bg-[var(--success-muted)] border border-[var(--success)]/30 p-4 rounded-xl">
+            <p className="text-[var(--success)] text-sm">Published</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{events.filter(e => e.status === 'published').length}</p>
           </div>
-          <div className="glass-card p-4 rounded-xl" style={{ background: 'rgba(255, 217, 61, 0.15)', borderColor: 'rgba(255, 217, 61, 0.3)' }}>
-            <p className="text-[#ffd93d] text-sm">Drafts</p>
-            <p className="text-3xl font-bold text-white">{events.filter(e => e.status === 'draft').length}</p>
+          <div className="bg-[var(--warning-muted)] border border-[var(--warning)]/30 p-4 rounded-xl">
+            <p className="text-[var(--warning)] text-sm">Drafts</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{events.filter(e => e.status === 'draft').length}</p>
           </div>
-          <div className="glass-card p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.08)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
-            <p className="text-white/60 text-sm">Cancelled</p>
-            <p className="text-3xl font-bold text-white">{events.filter(e => e.status === 'cancelled').length}</p>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-4 rounded-xl">
+            <p className="text-[var(--text-secondary)] text-sm">Cancelled</p>
+            <p className="text-3xl font-semibold text-[var(--text-primary)]">{events.filter(e => e.status === 'cancelled').length}</p>
           </div>
         </div>
 
         {/* Events List */}
         {events.length === 0 ? (
-          <div className="glass-card p-12 rounded-2xl text-center" style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}>
-            <Calendar className="w-16 h-16 mx-auto mb-4 text-white/40" />
-            <h3 className="text-xl font-semibold text-white mb-2">No Events Yet</h3>
-            <p className="text-white/60 mb-6">Create your first event to get started</p>
+          <div className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-12 rounded-xl text-center">
+            <Calendar className="w-16 h-16 mx-auto mb-4 text-[var(--text-tertiary)]" />
+            <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">No Events Yet</h3>
+            <p className="text-[var(--text-secondary)] mb-6">Create your first event to get started</p>
             <Link
               href="/admin/events/create"
-              className="inline-flex items-center space-x-2 px-6 py-3 text-white rounded-xl font-semibold"
-              style={{ background: 'linear-gradient(135deg, rgba(78, 205, 196, 0.8) 0%, rgba(110, 231, 222, 0.8) 100%)' }}
+              className="inline-flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg font-medium hover:bg-[var(--accent-primary-hover)]"
             >
               <Plus className="w-5 h-5" />
               <span>Create Event</span>
@@ -171,26 +169,25 @@ function AdminEventsContent() {
             {events.map((event) => (
               <div
                 key={event.id}
-                className="glass-card p-6 rounded-2xl transition-all duration-300 hover:shadow-xl"
-                style={{ background: 'rgba(255, 255, 255, 0.12)', borderColor: 'rgba(255, 255, 255, 0.25)' }}
+                className="bg-[var(--bg-elevated)] border border-[var(--border-default)] p-6 rounded-xl transition-all duration-300 hover:border-[var(--border-strong)]"
               >
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   {/* Event Info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-bold text-white">{event.title}</h3>
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(event.status)}`}>
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)]">{event.title}</h3>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(event.status)}`}>
                         {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
                       </span>
                       {event.isFeatured && (
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#ffd93d]/20 text-[#ffd93d] border border-[#ffd93d]/30">
+                        <span className="px-3 py-1 rounded-full text-xs font-medium bg-[var(--accent-primary-muted)] text-[var(--accent-primary)] border border-[var(--accent-primary)]/30">
                           Featured
                         </span>
                       )}
                     </div>
-                    <p className="text-white/60 text-sm mb-4 line-clamp-2">{event.description}</p>
+                    <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-2">{event.description}</p>
                     
-                    <div className="flex flex-wrap gap-4 text-sm text-white/70">
+                    <div className="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)]">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         <span>{formatDate(event.startDate)}</span>
@@ -214,14 +211,14 @@ function AdminEventsContent() {
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/admin/events/${event.id}`}
-                      className="p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                      className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all"
                       title="View"
                     >
                       <Eye className="w-5 h-5" />
                     </Link>
                     <Link
                       href={`/admin/events/${event.id}/edit`}
-                      className="p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                      className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all"
                       title="Edit"
                     >
                       <Edit2 className="w-5 h-5" />
@@ -231,34 +228,34 @@ function AdminEventsContent() {
                     <div className="relative">
                       <button
                         onClick={() => setActionMenuOpen(actionMenuOpen === event.id ? null : event.id)}
-                        className="p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
+                        className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all"
                       >
                         <MoreVertical className="w-5 h-5" />
                       </button>
                       
                       {actionMenuOpen === event.id && (
-                        <div className="absolute right-0 top-full mt-2 w-48 glass-card rounded-xl overflow-hidden z-50" style={{ background: 'rgba(29, 48, 63, 0.95)', borderColor: 'rgba(255, 255, 255, 0.2)' }}>
+                        <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--bg-elevated)] border border-[var(--border-default)] rounded-lg overflow-hidden z-50 shadow-[var(--shadow-lg)]">
                           {event.status === 'draft' && (
                             <button
                               onClick={() => handlePublish(event.id)}
-                              className="w-full px-4 py-3 text-left text-sm text-white hover:bg-white/10 flex items-center gap-2 transition-all"
+                              className="w-full px-4 py-3 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--bg-hover)] flex items-center gap-2 transition-all"
                             >
-                              <CheckCircle className="w-4 h-4 text-[#4ecdc4]" />
+                              <CheckCircle className="w-4 h-4 text-[var(--success)]" />
                               Publish Event
                             </button>
                           )}
                           {(event.status === 'published' || event.status === 'draft') && (
                             <button
                               onClick={() => handleCancel(event.id)}
-                              className="w-full px-4 py-3 text-left text-sm text-white hover:bg-white/10 flex items-center gap-2 transition-all"
+                              className="w-full px-4 py-3 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--bg-hover)] flex items-center gap-2 transition-all"
                             >
-                              <XCircle className="w-4 h-4 text-[#ffd93d]" />
+                              <XCircle className="w-4 h-4 text-[var(--warning)]" />
                               Cancel Event
                             </button>
                           )}
                           <button
                             onClick={() => handleDelete(event.id)}
-                            className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition-all"
+                            className="w-full px-4 py-3 text-left text-sm text-[var(--error)] hover:bg-[var(--error-muted)] flex items-center gap-2 transition-all"
                           >
                             <Trash2 className="w-4 h-4" />
                             Delete Event
