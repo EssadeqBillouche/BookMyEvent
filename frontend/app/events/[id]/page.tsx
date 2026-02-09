@@ -222,7 +222,7 @@ export default function EventDetailPage() {
               {/* Badges */}
               <div className="absolute top-4 left-4 flex gap-2">
                 {event.isFeatured && (
-                  <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--accent-primary)] text-[var(--text-inverse)] text-sm font-medium">
+                  <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-gray-900 text-sm font-medium" style={{ backgroundColor: '#d4a574' }}>
                     <Star className="w-4 h-4" />
                     Featured
                   </div>
@@ -381,7 +381,8 @@ export default function EventDetailPage() {
                       <button
                         onClick={handleDownloadTicket}
                         disabled={downloadingTicket}
-                        className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg bg-[var(--accent-primary)] text-[var(--text-inverse)] font-medium hover:bg-[var(--accent-primary-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg text-gray-900 font-medium hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ backgroundColor: '#d4a574' }}
                       >
                         {downloadingTicket ? (
                           <>
@@ -432,7 +433,8 @@ export default function EventDetailPage() {
                   <button
                     onClick={handleRegister}
                     disabled={registering}
-                    className="w-full py-4 px-6 rounded-lg bg-[var(--accent-primary)] text-[var(--text-inverse)] font-medium transition-all duration-300 hover:bg-[var(--accent-primary-hover)] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 px-6 rounded-lg text-gray-900 font-medium transition-all duration-300 hover:opacity-90 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ backgroundColor: '#d4a574' }}
                   >
                     {registering ? (
                       <span className="flex items-center justify-center gap-2">

@@ -202,7 +202,7 @@ export default function EventsPage() {
                     
                     {/* Featured Badge */}
                     {event.isFeatured && (
-                      <div className="absolute top-3 left-3 flex items-center gap-1 px-3 py-1 rounded-full bg-[var(--accent-primary)] text-[var(--text-inverse)] text-sm font-medium">
+                      <div className="absolute top-3 left-3 flex items-center gap-1 px-3 py-1 rounded-full text-gray-900 text-sm font-medium" style={{ backgroundColor: '#d4a574' }}>
                         <Star className="w-4 h-4" />
                         Featured
                       </div>

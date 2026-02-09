@@ -127,7 +127,8 @@ function AdminDashboardContent() {
           </div>
           <Link
             href="/admin/events/create"
-            className="group flex items-center space-x-2 px-6 py-3 bg-[var(--accent-primary)] text-[var(--text-inverse)] rounded-lg transition-all duration-300 font-medium hover:bg-[var(--accent-primary-hover)] hover:shadow-lg"
+            className="group flex items-center space-x-2 px-6 py-3 text-gray-900 rounded-lg transition-all duration-300 font-medium hover:opacity-90 hover:shadow-lg"
+            style={{ backgroundColor: '#d4a574' }}
           >
             <Plus className="w-5 h-5" />
             <span>Create Event</span>

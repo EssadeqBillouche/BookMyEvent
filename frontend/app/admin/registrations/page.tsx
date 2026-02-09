@@ -153,9 +153,10 @@ export default function AdminRegistrationsPage() {
               onClick={() => setFilter(tab)}
               className={`px-6 py-3 rounded-lg font-medium transition-all whitespace-nowrap ${
                 filter === tab
-                  ? 'bg-[var(--accent-primary)] text-[var(--text-inverse)] shadow-sm'
+                  ? 'text-gray-900 shadow-sm'
                   : 'bg-[var(--bg-elevated)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] border border-[var(--border-default)]'
               }`}
+              style={filter === tab ? { backgroundColor: '#d4a574' } : {}}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -225,7 +226,8 @@ export default function AdminRegistrationsPage() {
                       <button
                         onClick={() => handleValidate(registration.id)}
                         disabled={processingId === registration.id}
-                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] text-[var(--text-inverse)]"
+                        className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-gray-900 hover:opacity-90"
+                        style={{ backgroundColor: '#d4a574' }}
                       >
                         {processingId === registration.id ? (
                           <Loader2 className="w-5 h-5 animate-spin" />

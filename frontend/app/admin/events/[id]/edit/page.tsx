@@ -367,7 +367,8 @@ function EditEventContent() {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-[var(--text-inverse)] bg-[var(--accent-primary)] rounded-lg transition-all duration-300 font-semibold hover:bg-[var(--accent-primary-hover)]"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 text-gray-900 rounded-lg transition-all duration-300 font-semibold hover:opacity-90"
+              style={{ backgroundColor: '#d4a574' }}
             >
               <Save className="w-5 h-5" />
               {saving ? 'Saving...' : 'Save Changes'}
