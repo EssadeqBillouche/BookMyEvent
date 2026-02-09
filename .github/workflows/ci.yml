@@ -114,7 +114,7 @@ jobs:
   # ============================================
 
   frontend-lint:
-    name: 🔍 Frontend Lint
+    name:  Frontend Lint
     runs-on: ubuntu-latest
     defaults:
       run:
