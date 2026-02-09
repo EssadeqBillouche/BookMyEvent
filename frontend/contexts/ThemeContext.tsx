@@ -11,7 +11,7 @@
 
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useSyncExternalStore } from 'react';
 
 /**
  * Theme Type
@@ -40,6 +40,11 @@ const ThemeContext = createContext<ThemeContextType>({
   mounted: false,
 });
 
+// Helper for hydration-safe mounted detection
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 /**
  * Theme Provider Component
  * 
@@ -50,22 +55,17 @@ const ThemeContext = createContext<ThemeContextType>({
  * @param children - Child components to be wrapped
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
-  const [mounted, setMounted] = useState(false);
-
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    setMounted(true);
-    
-    const storedTheme = localStorage.getItem('eventbook-theme') as Theme | null;
-    
-    if (storedTheme) {
-      setThemeState(storedTheme);
-    } else {
-      // Default to dark mode
-      setThemeState('dark');
+  // Use useSyncExternalStore to safely detect client-side mounting
+  const mounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
+  
+  const [theme, setThemeState] = useState<Theme>(() => {
+    // Initialize from localStorage during state initialization (SSR-safe)
+    if (typeof window !== 'undefined') {
+      const storedTheme = localStorage.getItem('eventbook-theme') as Theme | null;
+      return storedTheme || 'dark';
     }
-  }, []);
+    return 'dark';
+  });
 
   // Apply theme class to document
   useEffect(() => {

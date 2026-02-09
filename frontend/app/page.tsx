@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import PageLayout from '@/components/layouts/PageLayout';
 import Navbar from '@/components/Navbar';
-import Carousel, { HeroSlide } from '@/components/ui/Carousel';
+import Carousel from '@/components/ui/Carousel';
 import Button from '@/components/ui/Button';
 
 export default function Home() {
