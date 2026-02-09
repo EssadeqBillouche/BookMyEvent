@@ -38,13 +38,13 @@ describe('StatCard Component', () => {
   it('applies card styling with border', () => {
     const { container } = render(<StatCard {...defaultProps} />);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('bg-white', 'border', 'rounded-xl');
+    expect(card).toHaveClass('bg-[var(--bg-elevated)]', 'border', 'rounded-xl');
   });
 
   it('has hover shadow effect', () => {
     const { container } = render(<StatCard {...defaultProps} />);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass('hover:shadow-md');
+    expect(card).toHaveClass('hover:shadow-[var(--shadow-md)]');
   });
 
   it('displays value with large font', () => {
