@@ -65,7 +65,10 @@ export class TicketService {
    * res.send(ticketData.buffer);
    * ```
    */
-  async generateTicket(registrationId: string, userId: string): Promise<TicketData> {
+  async generateTicket(
+    registrationId: string,
+    userId: string,
+  ): Promise<TicketData> {
     this.logger.log(`Generating ticket for registration: ${registrationId}`);
 
     // Fetch registration with related event and user data
@@ -209,7 +212,7 @@ export class TicketService {
         // Finalize the PDF document
         doc.end();
       } catch (error) {
-        reject(error);
+        reject(error instanceof Error ? error : new Error(String(error)));
       }
     });
   }
@@ -232,16 +235,16 @@ export class TicketService {
       .text('EventBook', 50, 30);
 
     // Add tagline
-    doc.fontSize(10).font('Helvetica').text('Your Gateway to Amazing Events', 50, 55);
+    doc
+      .fontSize(10)
+      .font('Helvetica')
+      .text('Your Gateway to Amazing Events', 50, 55);
   }
 
   /**
    * Draw a decorative divider line
    */
-  private drawDivider(
-    doc: PDFKit.PDFDocument,
-    color: string,
-  ): void {
+  private drawDivider(doc: PDFKit.PDFDocument, color: string): void {
     const startX = 100;
     const endX = doc.page.width - 100;
     const y = doc.y + 10;
@@ -510,7 +513,11 @@ export class TicketService {
         50,
         footerY + 42,
       )
-      .text('• Arrive at least 15 minutes before the event start time.', 50, footerY + 54);
+      .text(
+        '• Arrive at least 15 minutes before the event start time.',
+        50,
+        footerY + 54,
+      );
 
     // Add generation timestamp
     doc
