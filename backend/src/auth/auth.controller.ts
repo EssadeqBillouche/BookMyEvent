@@ -18,6 +18,13 @@ import {
   HttpStatus,
   Res,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiCookieAuth,
+} from '@nestjs/swagger';
 import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -26,6 +33,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { Public } from './decorators/public.decorator';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -54,6 +62,28 @@ export class AuthController {
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({
+    summary: 'Register a new user',
+    description: 'Creates a new user account and sets authentication cookie',
+  })
+  @ApiBody({ type: RegisterDto })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully registered',
+    schema: {
+      example: {
+        user: {
+          id: 'uuid',
+          email: 'user@example.com',
+          firstName: 'John',
+          lastName: 'Doe',
+          role: 'participant',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Validation failed' })
+  @ApiResponse({ status: 409, description: 'Email already exists' })
   async register(
     @Body() registerDto: RegisterDto,
     @Res({ passthrough: true }) response: Response,
@@ -102,6 +132,27 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'User login',
+    description: 'Authenticates user and sets HTTP-only authentication cookie',
+  })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Login successful',
+    schema: {
+      example: {
+        user: {
+          id: 'uuid',
+          email: 'user@example.com',
+          firstName: 'John',
+          lastName: 'Doe',
+          role: 'participant',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) response: Response,
@@ -135,6 +186,13 @@ export class AuthController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @ApiCookieAuth()
+  @ApiOperation({
+    summary: 'Get user profile',
+    description: 'Returns complete profile data for the authenticated user',
+  })
+  @ApiResponse({ status: 200, description: 'User profile data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Invalid or missing token' })
   async getProfile(@CurrentUser('id') userId: string) {
     return this.authService.getProfile(userId);
   }
@@ -155,6 +213,13 @@ export class AuthController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  @ApiCookieAuth()
+  @ApiOperation({
+    summary: 'Get current user',
+    description: 'Returns minimal user data from JWT token payload',
+  })
+  @ApiResponse({ status: 200, description: 'Current user data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   getCurrentUser(@CurrentUser() user: any): any {
     return user;
   }
@@ -176,6 +241,15 @@ export class AuthController {
   @Public()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'User logout',
+    description: 'Clears the authentication cookie to end the session',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Logout successful',
+    schema: { example: { message: 'Logged out successfully' } },
+  })
   logout(@Res({ passthrough: true }) response: Response): { message: string } {
     response.clearCookie('access_token');
     return { message: 'Logged out successfully' };

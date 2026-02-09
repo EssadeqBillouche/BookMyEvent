@@ -9,6 +9,7 @@
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import cookieParser from 'cookie-parser';
@@ -86,13 +87,83 @@ async function bootstrap() {
   app.use(morgan('dev'));
 
   /**
+   * Swagger/OpenAPI Documentation
+   * Provides interactive API documentation at /api/docs
+   *
+   * Features:
+   * - Interactive API explorer
+   * - Request/Response examples
+   * - Authentication support
+   * - Schema documentation
+   */
+  const config = new DocumentBuilder()
+    .setTitle('BookMyEvent API')
+    .setDescription(`
+## 🎫 BookMyEvent - Event Management Platform API
+
+A comprehensive REST API for managing events, registrations, and tickets.
+
+### Features
+- **Authentication**: Secure cookie-based JWT authentication
+- **Events**: Create, manage, and discover events
+- **Registrations**: Register for events with approval workflow
+- **Tickets**: Generate and download PDF tickets
+
+### Authentication
+This API uses **HTTP-only cookie-based authentication**. 
+- Login via \`POST /auth/login\` to receive an authentication cookie
+- The cookie is automatically sent with subsequent requests
+- Use \`POST /auth/logout\` to clear the authentication cookie
+
+### Rate Limiting
+API requests are rate-limited to ensure fair usage.
+
+### Support
+For issues or questions, please contact the development team.
+    `)
+    .setVersion('1.0.0')
+    .setContact('BookMyEvent Team', 'https://bookmyevent.com', 'support@bookmyevent.com')
+    .setLicense('MIT', 'https://opensource.org/licenses/MIT')
+    .addTag('Authentication', 'User authentication and authorization endpoints')
+    .addTag('Events', 'Event management endpoints')
+    .addTag('Registrations', 'Event registration endpoints')
+    .addTag('Tickets', 'Ticket generation and download endpoints')
+    .addTag('Users', 'User management endpoints (Admin only)')
+    .addCookieAuth('access_token', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'access_token',
+      description: 'JWT token stored in HTTP-only cookie',
+    })
+    .addServer('http://localhost:4000', 'Development Server')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    customSiteTitle: 'BookMyEvent API Documentation',
+    customfavIcon: 'https://nestjs.com/img/logo-small.svg',
+    customCss: `
+      .swagger-ui .topbar { display: none }
+      .swagger-ui .info { margin: 30px 0 }
+      .swagger-ui .info .title { color: #d4a574 }
+    `,
+    swaggerOptions: {
+      persistAuthorization: true,
+      docExpansion: 'none',
+      filter: true,
+      showRequestDuration: true,
+    },
+  });
+
+  /**
    * Start HTTP Server
    * Binds application to port 4000 and begins listening for requests.
    *
    * @constant {number} PORT - Server port (should be moved to environment variable)
    */
   await app.listen(4000, () => {
-    console.log('server running in port 4000');
+    console.log('🚀 Server running on http://localhost:4000');
+    console.log('📚 API Documentation: http://localhost:4000/api/docs');
   });
 }
 
